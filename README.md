@@ -62,9 +62,25 @@ The Analyst agent is a versatile entry point into the BMad Method, operating in 
 
 The Product Manager agent excels at transforming high-level project briefs or initial ideas into comprehensive product specifications and actionable development plans. As a scope refinement specialist, the PM actively challenges assumptions about what features are truly necessary for the MVP, seeking opportunities to reduce complexity while ensuring perfect alignment with core business goals. The PM creates three key artifacts: a detailed Product Requirements Document (PRD) outlining goals, functional and non-functional requirements; a set of epic definitions that break down the work into independently deployable chunks; and an Initial Architect Prompt that captures critical technical decisions. Throughout the process, the PM engages in multiple rounds of scope refinement—first during initial scoping discussions, then after drafting the PRD, and finally after creating epics—always framing conversations around time, cost, and quality tradeoffs. The PM also identifies deployment considerations and testing requirements (if valued by stakeholders), ensuring each epic builds logically on previous ones with Epic 1 containing all necessary infrastructure setup. This agent is essential for users who need to translate their vision into a practical, well-structured development plan with appropriate scope for an MVP.
 
+### Architect
+
+The Architect agent is an expert Solution/Software Architect that operates in three distinct modes to support technical design throughout the product development lifecycle. With deep knowledge across cloud platforms, architectures, databases, and programming languages, the Architect translates requirements into robust, scalable technical designs optimized for AI agent implementation.
+
+#### Mode 1: Deep Research Prompt Generation
+
+This mode creates comprehensive research prompts to investigate technology options, platforms, services, and implementation approaches before making architectural decisions. The Architect analyzes available project context, identifies research gaps, and structures detailed prompts that define clear objectives, outline specific questions, request comparative analysis, and establish evaluation frameworks for decision-making.
+
+#### Mode 2: Architecture Creation
+
+In this mode, the Architect designs and documents the complete technical architecture based on the PRD, epics, and project brief. The agent makes definitive technology decisions (not open-ended options), explains the rationale behind key selections, and produces all necessary technical artifacts including detailed architecture documentation, tech stack specifications, project structure, coding standards, API references, data models, environment variables, and testing strategies—all optimized for implementation by AI agents.
+
+#### Mode 3: Master Architect Advisory
+
+This mode provides ongoing technical guidance throughout the project, explaining concepts, suggesting updates to artifacts, and managing technical direction changes. The Architect assesses change impacts across the project, recommends minimally disruptive approaches for course corrections, identifies technical debt, and ensures all significant decisions are properly documented. The agent uses clear Mermaid diagrams to visually represent system structure and interactions when beneficial for clarity.
+
 ### Product Owner (PO)
 
-## Scrum Master (SM)
+### Scrum Master (SM)
 
 ### Dev Agent (Dev)
 
