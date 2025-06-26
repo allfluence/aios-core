@@ -1,3 +1,10 @@
+# [4.15.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.14.1...v4.15.0) (2025-06-26)
+
+
+### Features
+
+* Add Gemini CLI Integration ([#271](https://github.com/bmadcode/BMAD-METHOD/issues/271)) ([44b9d7b](https://github.com/bmadcode/BMAD-METHOD/commit/44b9d7bcb5cbb6de5a15d8f2ec7918d186ac9576))
+
 ## [4.14.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.14.0...v4.14.1) (2025-06-26)
 
 
