@@ -1,3 +1,15 @@
+# [4.21.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.20.0...v4.21.0) (2025-06-30)
+
+
+### Bug Fixes
+
+* remove unneeded files ([c48f200](https://github.com/bmadcode/BMAD-METHOD/commit/c48f200727384f37a42f4c6b1a946cb90f2445fe))
+
+
+### Features
+
+* massive installer improvement update ([c151bda](https://github.com/bmadcode/BMAD-METHOD/commit/c151bda93833aa310ccc7c0eabcf483376f9e82a))
+
 # [4.20.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.19.2...v4.20.0) (2025-06-29)
 
 
