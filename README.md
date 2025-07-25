@@ -55,20 +55,17 @@ This two-phase approach eliminates both **planning inconsistency** and **context
 
 ## Important: Keep Your AIOS Installation Updated
 
-**Stay up-to-date effortlessly!** If you already have AIOS-FULLSTACK installed in your project, simply run:
+**Stay up-to-date effortlessly!** To update your existing AIOS installation:
 
 ```bash
-npx aios-fullstack install
-# OR
-git pull
-npm run install:aios
+npx github:Pedrovaleriolopez/aios-fullstack install
 ```
 
 This will:
 
-- ✅ Automatically detect your existing v4 installation
-- ✅ Update only the files that have changed and add new files
-- ✅ Create `.bak` backup files for any custom modifications you've made
+- ✅ Automatically detect your existing installation
+- ✅ Update only the files that have changed
+- ✅ Create `.bak` backup files for any custom modifications
 - ✅ Preserve your project-specific configurations
 
 This makes it easy to benefit from the latest improvements, bug fixes, and new agents without losing your customizations!
@@ -77,24 +74,35 @@ This makes it easy to benefit from the latest improvements, bug fixes, and new a
 
 ### One Command for Everything (IDE Installation)
 
-**Just run one of these commands:**
+**Install AIOS directly from GitHub:**
 
 ```bash
-npx aios-fullstack install
-# OR if you already have AIOS installed:
-git pull
-npm run install:aios
+# Enter your project directory
+cd your-project
+
+# Run the installer directly from GitHub
+npx github:Pedrovaleriolopez/aios-fullstack install
 ```
 
-This single command handles:
+This single command:
 
-- **New installations** - Sets up AIOS in your project
-- **Upgrades** - Updates existing installations automatically
-- **Expansion packs** - Installs any expansion packs you've added to package.json
+- ✅ Downloads the latest version from GitHub
+- ✅ Configures your IDE automatically (Windsurf, Cursor, or Claude Code)
+- ✅ Sets up all AIOS agents and workflows
+- ✅ Creates the necessary configuration files
 
-> **That's it!** Whether you're installing for the first time, upgrading, or adding expansion packs - these commands do everything.
+> **That's it!** No cloning, no manual setup - just one command and you're ready to go.
 
 **Prerequisites**: [Node.js](https://nodejs.org) v20+ required
+
+### Updating an Existing Installation
+
+If you already have AIOS installed:
+
+```bash
+npx github:Pedrovaleriolopez/aios-fullstack install
+# The installer will detect your existing installation and update it
+```
 
 ### Fastest Start: Web UI Full Stack Team at your disposal (2 minutes)
 
@@ -107,16 +115,18 @@ This single command handles:
 
 ### Alternative: Clone and Build
 
+For contributors or advanced users who want to modify the source:
+
 ```bash
-# For team members - clone from organization
-git clone https://github.com/aios-team/aios-fullstack.git
+# Clone the repository
+git clone https://github.com/Pedrovaleriolopez/aios-fullstack.git
 cd aios-fullstack
 
-# Setup GitHub CLI and authentication (first time only)
-npm run setup:github
+# Install dependencies
+npm install
 
-# Install AIOS
-npm run install:aios # build and install all to a destination folder
+# Run the installer
+npm run install:aios
 ```
 
 ### Quick Team Setup
@@ -124,14 +134,13 @@ npm run install:aios # build and install all to a destination folder
 For team members joining the project:
 
 ```bash
-# Install with GitHub setup
-npx aios-fullstack setup
+# Install AIOS with GitHub setup
+npx github:Pedrovaleriolopez/aios-fullstack setup
 
 # This will:
 # 1. Check/install GitHub CLI
 # 2. Authenticate with GitHub
-# 3. Verify access to aios-team organization
-# 4. Run the AIOS installer
+# 3. Run the AIOS installer
 ```
 
 ## 🌟 Beyond Software Development - Expansion Packs
