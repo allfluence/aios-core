@@ -18,6 +18,7 @@
     "install:aios": "node tools/installer/bin/aios.js install",
     "install:bmad": "node tools/installer/bin/aios.js install",
     "setup:github": "node tools/setup-github-cli.js",
+    "setup:environment": "node tools/setup-environment.js",
     "setup": "npm run setup:github && npm run install:aios",
     "format": "prettier --write \"**/*.md\"",
     "version:patch": "node tools/version-bump.js patch",

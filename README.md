@@ -104,6 +104,26 @@ npx github:Pedrovaleriolopez/aios-fullstack install
 # The installer will detect your existing installation and update it
 ```
 
+### Configure Your IDE for AIOS Development
+
+After installation, set up your IDE with AIOS-specific rules:
+
+```bash
+# Using AIOS Master agent
+@aios-master
+*setup-environment
+
+# Or directly via npm
+npm run setup:environment
+```
+
+This will:
+- 🔍 Detect your IDE (Windsurf, Cursor, or Claude Code)
+- 💾 Backup existing configurations
+- 📝 Apply AIOS development rules
+- 🔐 Verify GitHub CLI setup
+- ✅ Provide clear feedback
+
 ### Fastest Start: Web UI Full Stack Team at your disposal (2 minutes)
 
 1. **Get the bundle**: Save or clone the [full stack team file](dist/teams/team-fullstack.txt) or choose another team
