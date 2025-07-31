@@ -173,6 +173,40 @@ For issues or questions:
 3. Consult framework logs
 4. Contact framework team
 
+## Security Utilities
+
+The meta-agent includes two critical security utilities:
+
+### SecurityChecker
+Validates generated code for vulnerabilities:
+- Detects dangerous patterns (eval, dynamic imports)
+- Checks for SQL injection risks
+- Validates path traversal attempts
+- Sanitizes user inputs
+
+```javascript
+const checker = new SecurityChecker();
+const result = checker.validateCode(generatedCode);
+if (!result.valid) {
+  console.error('Security issues found:', result.errors);
+}
+```
+
+### YAMLValidator
+Ensures YAML integrity:
+- Validates syntax and structure
+- Checks required fields
+- Auto-fixes common issues
+- Prevents manifest corruption
+
+```javascript
+const validator = new YAMLValidator();
+const result = await validator.validate(yamlContent, 'agent');
+if (!result.valid) {
+  const fixed = await validator.autoFix(yamlContent);
+}
+```
+
 ## Integration with Memory Layer
 
 The meta-agent integrates with the AIOS Memory Layer to:
