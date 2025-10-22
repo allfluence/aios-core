@@ -23,7 +23,10 @@ Esta abordagem de duas fases elimina tanto a **inconsistência de planejamento**
 
 - Node.js >=20.0.0
 - npm
-- GitHub CLI (necessário para colaboração em equipe)
+- **GitHub CLI (gh)** - OBRIGATÓRIO para operações GitHub
+  - Autenticação: `gh auth login`
+  - Usado por agentes para: PRs, Issues, Branch Protection, Releases
+  - **Política do projeto**: Sempre usar `gh` CLI, NUNCA APIs REST diretas para GitHub
 
 **Guias específicos por plataforma:**
 - 📖 [Guia de Instalação para macOS](docs/installation/macos.md)
