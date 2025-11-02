@@ -1,11 +1,13 @@
 {
   "name": "aios-fullstack",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "AIOS-FULLSTACK: AI-Orchestrated System for Full Stack Development - Modern cross-platform CLI with interactive wizard",
   "main": "index.js",
   "bin": {
     "aios-fullstack": "./bin/aios.js",
-    "aios": "./bin/aios.js"
+    "aios": "./bin/aios.js",
+    "aios-fullstack-minimal": "./bin/aios-minimal.js",
+    "aios-minimal": "./bin/aios-minimal.js"
   },
   "files": [
     ".aios-core/",

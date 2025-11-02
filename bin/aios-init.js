@@ -60,10 +60,16 @@ const { detectRepositoryContext } = resolveAiosCoreModule('utils/repository-dete
 async function main() {
   console.clear();
 
+  // Check for minimal mode flag
+  const isMinimalMode = process.argv.includes('--minimal');
+
   // Display beautiful banner
   console.log(BANNER);
   console.log(SUBTITLE);
   console.log(VERSION);
+  if (isMinimalMode) {
+    console.log(chalk.yellow('   🔹 Minimal Installation Mode'));
+  }
   console.log('');
   console.log(chalk.gray('═'.repeat(80)));
   console.log('');
@@ -344,9 +350,15 @@ See .aios-core/user-guide.md for complete documentation.
   let expansionPacks = []; // Declare here to be accessible in summary
 
   if (fs.existsSync(sourceExpansionDir)) {
-    const packs = fs.readdirSync(sourceExpansionDir).filter(f =>
+    let packs = fs.readdirSync(sourceExpansionDir).filter(f =>
       fs.statSync(path.join(sourceExpansionDir, f)).isDirectory()
     );
+
+    // Filter for minimal mode - only show expansion-creator
+    if (isMinimalMode) {
+      packs = packs.filter(pack => pack === 'expansion-creator');
+    }
+
     availablePacks.push(...packs);
   }
 
