@@ -1629,6 +1629,128 @@ Code quality: Production-grade (CodeRabbit verified)
 
 ---
 
+## ✅ PRE-MIGRATION CHECKLIST (Complete Before Q2 2026)
+
+**Status:** In Progress (Story 6.1.2.6)
+**Target Completion:** Q1 2026
+**Owner:** @architect (Aria), @dev (Dex)
+
+### Phase 1: Foundation Preparation (Q1 2026 - Story 6.1.2.6)
+
+**Documentation Hierarchy:**
+- [x] Story 6.1.2.6: Framework config system formalized
+- [x] Documentation hierarchy established (`docs/framework/`)
+- [x] Framework docs separated from project docs
+  - [x] `docs/framework/coding-standards.md` created
+  - [x] `docs/framework/tech-stack.md` created
+  - [x] `docs/framework/source-tree.md` created
+  - [x] Old paths maintained for backward compatibility
+
+**Agent Configuration Optimization:**
+- [x] All 15 agents audited for config usage
+- [x] `agent-config-requirements.yaml` documents each agent's needs
+- [x] Performance optimization complete:
+  - @dev: 9ms (target: <50ms) - 82% faster ✅
+  - @qa: 1ms (target: <50ms) - 99% faster ✅
+  - @po: 1ms (target: <75ms) - 99% faster ✅
+  - @aios-master: <30ms ✅
+- [x] Lazy loading implemented for heavy sections
+- [x] Config caching with 5-minute TTL
+- [x] Performance tracking system operational
+
+**Migration Tooling:**
+- [x] `agent-config-loader.js` - Agent-specific config loading with lazy loading
+- [x] `config-cache.js` - Configuration caching with TTL
+- [x] `performance-tracker.js` - Performance metrics tracking
+- [ ] `migrate-framework-docs.sh` - Automated migration script (pending)
+
+### Phase 2: Pre-Migration Validation (Q1-Q2 2026)
+
+**Critical Requirements:**
+- [ ] Story 6.1.3: Agent greeting system stable
+- [ ] Story 6.1.4: Configuration system v2 complete
+- [ ] All 15 agents activate successfully with new structure
+- [ ] No breaking changes to existing workflows
+- [ ] Performance regression testing complete
+
+**Migration Script Testing:**
+- [ ] Dry-run migration tested in isolated environment
+- [ ] Link updates verified across all documentation
+- [ ] Config path resolution tested
+- [ ] Rollback procedure documented and tested
+
+### Migration Path: Documentation Structure
+
+**Phase 1 (Q1 2026 - Story 6.1.2.6): Current State**
+```
+aios-fullstack/
+├── docs/
+│   ├── framework/              # ✅ Created (official framework docs)
+│   │   ├── coding-standards.md
+│   │   ├── tech-stack.md
+│   │   └── source-tree.md
+│   │
+│   └── architecture/
+│       ├── coding-standards.md    # ⚠️ Keep for backward compat
+│       ├── tech-stack.md          # ⚠️ Keep for backward compat
+│       └── source-tree.md         # ⚠️ Keep for backward compat
+```
+
+**Phase 2 (Q2 2026 - REPO 1 Migration):**
+```
+aios/aios-core/                 # New REPO 1
+├── docs/
+│   ├── framework/              # ← Migrated from aios-fullstack/docs/framework/
+│   │   ├── coding-standards.md
+│   │   ├── tech-stack.md
+│   │   └── source-tree.md
+│   └── ...
+```
+
+**Phase 3 (Q3 2026 - Cleanup):**
+```
+aios-fullstack/                 # Brownfield project
+├── docs/
+│   ├── framework/              # ❌ Remove (migrated to REPO 1)
+│   └── architecture/
+│       ├── coding-standards.md    # ❌ Remove
+│       ├── tech-stack.md          # ❌ Remove
+│       └── source-tree.md         # ❌ Remove
+```
+
+### Backward Compatibility Strategy
+
+**During Migration (Q2 2026):**
+- Keep old paths working via symlinks or redirects
+- Update agent config files to use new paths
+- Provide migration guide for custom agents
+
+**After Migration (Q3 2026):**
+- Remove old paths only after 100% of agents updated
+- Add deprecation warnings 1 month before removal
+- Document breaking changes in migration guide
+
+### Success Criteria
+
+**Pre-Migration (Q1 2026):**
+- ✅ All framework documentation in `docs/framework/`
+- ✅ Agent config system optimized (all agents <100ms load time)
+- [ ] Migration script tested and validated
+- [ ] Zero breaking changes to agent activation
+
+**Post-Migration (Q2 2026):**
+- [ ] REPO 1 (`aios/aios-core`) contains all framework docs
+- [ ] All agents work in both repositories
+- [ ] Performance maintained or improved
+- [ ] Documentation links fully updated
+
+**Validation (Q3 2026):**
+- [ ] Brownfield project (`aios-fullstack`) cleaned up
+- [ ] Old paths removed without breaking changes
+- [ ] Community feedback: migration was smooth
+
+---
+
 ## 🎯 CONCLUSION
 
 **DECISION APPROVED:** Restructure AIOS into 5 separate repositories with phased open-source strategy beginning Q1 2026.

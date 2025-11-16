@@ -39,6 +39,8 @@
     "register-mcp-tool": "node aios-core/utils/register-mcp-tool.js",
     "setup:github": "node tools/setup-github-cli.js",
     "setup": "npm run setup:github && npm run install:aios",
+    "stories:index": "node .aios-core/utils/story-index-generator.js docs/stories",
+    "stories:backlog": "node .aios-core/utils/backlog-manager.js generate docs/stories/backlog.md",
     "format": "prettier --write \"**/*.md\"",
     "test": "jest",
     "test:watch": "jest --watch",

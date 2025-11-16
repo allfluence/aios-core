@@ -129,6 +129,15 @@ async function completeDecisionLogging(storyId, status = 'completed') {
     console.log(`  Status: ${summary.status}`);
     console.log(`  Log: ${logPath}\n`);
 
+    // Update decision log index (Phase 2: Task 5)
+    try {
+      const { addToIndex } = require('./decision-log-indexer');
+      await addToIndex(logPath);
+    } catch (indexError) {
+      console.warn('Warning: Could not update decision log index:', indexError.message);
+      // Non-fatal error - continue even if indexing fails
+    }
+
     // Reset global context for next session
     globalContext = null;
 

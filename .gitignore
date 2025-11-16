@@ -64,9 +64,13 @@ sync-*.sh                     # Agent sync scripts
 
 # AI assistant files
 CLAUDE.md
-.ai/*
 .claude
 .gemini
+
+# AI Session Artifacts (Story 6.1.2.6 - Decision Logging)
+# Auto-generated decision logs from yolo mode executions
+.ai/
+*.decision-log.md
 
 # Project-specific
 .aios-core

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1763298742141",
+    "type": "T",
+    "title": "Add unit tests for decision-log-generator",
+    "description": "Write comprehensive unit tests for all functions in decision-log-generator.js",
+    "priority": "High",
+    "relatedStory": "6.1.2.6",
+    "createdBy": "@dev",
+    "createdAt": "2025-11-16T13:12:22.141Z",
+    "tags": [
+      "testing",
+      "decision-logging"
+    ],
+    "estimatedEffort": "2 hours",
+    "status": "Open"
+  }
+]

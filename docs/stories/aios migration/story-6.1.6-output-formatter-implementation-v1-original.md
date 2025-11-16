@@ -1,4 +1,4 @@
-# Story 6.1.6: Output Formatter Implementation (Layer 2) (v2)
+# Story 6.1.6: Output Formatter Implementation (Layer 2)
 
 **Story ID:** STORY-6.1.6
 **Epic:** Epic-6.1 - Agent Identity System
@@ -7,7 +7,6 @@
 **Priority:** 🔴 Critical
 **Owner:** Dev (Dex)
 **Created:** 2025-01-14
-**Updated:** 2025-01-15 (v2 - Aligned with Story 6.1.2.5)
 **Duration:** 2 days
 **Investment:** $200
 
@@ -70,8 +69,8 @@ Create output-formatter.js script that injects agent personality into standardiz
 - Implement `PersonalizedOutputFormatter` class
 - Methods: `format()`, `buildFixedHeader()`, `buildPersonalizedStatus()`, `buildFixedMetrics()`
 - Load agent persona_profile from agent files
-- **Select vocabulary from persona_profile.communication.vocabulary** (Decisão 3 - Opção A)
-- Generate status messages matching agent tone (persona_profile.communication.tone)
+- Select vocabulary words based on archetype
+- Generate status messages matching agent tone
 
 **Task 1.2: Create Pattern Validator** (4 hours)
 - Create `.aios-core/scripts/validate-output-pattern.js`
@@ -130,8 +129,7 @@ Create output-formatter.js script that injects agent personality into standardiz
 ## 🔗 Dependencies
 
 ### Prerequisites (Blocking)
-- **Story 6.1.2:** Agent File Updates (agents need persona_profile section) ✅ DONE
-- **Story 6.1.2.5:** Contextual Agent Load System (personality injection patterns established) ✅ DONE
+- **Story 6.1.2:** Agent File Updates (agents need persona_profile section)
 
 ### Dependent Stories (This Blocks)
 - **Story 6.1.7:** Core Tasks Migration (tasks will use formatter)
@@ -174,22 +172,10 @@ Create output-formatter.js script that injects agent personality into standardiz
 - Benchmark every method (target <10ms per method)
 
 **Dependencies:**
+- YAML parser for archetype-vocabulary.yaml
 - Markdown parser for agent files (extract persona_profile)
 - Jest for testing
 - No new external dependencies if possible
-
-**Vocabulary Source (User Decision - Decisão 3 - Opção A):**
-- **Use existing** `persona_profile.communication.vocabulary` from agent files
-- **Do NOT create** separate `archetype-vocabulary.yaml` file
-- Example:
-  ```yaml
-  persona_profile:
-    communication:
-      vocabulary:
-        - construir
-        - implementar
-        - desenvolver
-  ```
 
 **Code Style:**
 - Follow existing AIOS-FULLSTACK patterns
@@ -220,7 +206,7 @@ Create output-formatter.js script that injects agent personality into standardiz
 
 ### Files Referenced
 - `.aios-core/agents/*.md` (read persona_profile sections)
-- `.aios-core/scripts/greeting-builder.js` (reference for personality injection patterns from Story 6.1.2.5)
+- `.aios-core/data/archetype-vocabulary.yaml` (vocabulary lookup)
 
 ---
 
@@ -535,49 +521,12 @@ Validation complete:
 
 | Date | Version | Changes | Author |
 |------|---------|---------|--------|
-| 2025-01-15 | 2.0 | Updated to align with Story 6.1.2.5: Added Story 6.1.2.5 as dependency, clarified vocabulary source (use persona_profile.communication.vocabulary, not archetype-vocabulary.yaml), user decision approved (Decisão 3 - Opção A) | Quinn (qa) |
 | 2025-01-15 | 1.1 | Added missing sections: Story, CodeRabbit Integration, Dev Notes, Testing, Change Log | Pax (po) |
 | 2025-01-14 | 1.0 | Initial story creation | Pax (po) |
 
 ---
 
-## 📝 v2 Update Notes
-
-**What Changed in v2:**
-
-1. **Added Dependency:** Story 6.1.2.5 (Contextual Agent Load System)
-   - GreetingBuilder demonstrates personality injection patterns
-   - Provides reference implementation for vocabulary selection
-
-2. **Clarified Vocabulary Source:** (Decisão 3 - Opção A approved by user)
-   - **Use:** persona_profile.communication.vocabulary from agent files
-   - **Do NOT create:** separate archetype-vocabulary.yaml file
-   - **Rationale:** Avoids duplication, uses existing agent structure
-
-3. **Updated File References:**
-   - Removed reference to non-existent archetype-vocabulary.yaml
-   - Added reference to greeting-builder.js as pattern reference
-
-4. **Clarified Implementation:**
-   - Task 1.1 now explicitly states vocabulary source
-   - Dev Notes section includes vocabulary source decision
-   - Files Referenced section updated
-
-**Why These Changes:**
-- Story 6.1.2.5 was implemented after Story 6.1.6 was drafted
-- Alignment prevents duplicate vocabulary systems
-- Provides clear implementation guidance for developers
-
-**Impact:**
-- **Duration:** Unchanged (2 days)
-- **Cost:** Unchanged ($200)
-- **Complexity:** Slightly reduced (clear vocabulary source)
-- **Risk:** Reduced (no duplicate systems)
-
----
-
-**Last Updated:** 2025-01-15 (v2)
-**Previous Story:** [Story 6.1.2.5 - Contextual Agent Load System](story-6.1.2.5-contextual-agent-load-system.md)
+**Last Updated:** 2025-01-15
+**Previous Story:** [Story 6.1.2 - Agent File Updates](story-6.1.2.md)
 **Next Story:** [Story 6.1.7 - Core Tasks Migration](story-6.1.7-core-tasks-migration.md)
 **Next Review:** After completion
-**Analysis:** [Story Dependency Analysis](../../analysis/story-dependency-analysis-6.1.4-and-6.1.6.md)
