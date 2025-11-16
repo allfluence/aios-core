@@ -344,17 +344,17 @@ describe('decision-log-generator', () => {
 
       expect(content).toContain('# Decision Log: Story story-6.1.2.6');
       expect(content).toContain('**Agent:** dev');
-      expect(content).toContain('**Story Path:** docs/stories/story-6.1.2.6.md');
+      expect(content).toContain('**Story:** docs/stories/story-6.1.2.6.md');
       expect(content).toContain('**Status:** completed');
-      expect(content).toContain('## Key Decisions');
+      expect(content).toContain('## Decisions Made');
       expect(content).toContain('Use Axios for HTTP');
-      expect(content).toContain('## Files Modified');
+      expect(content).toContain('### Files Modified');
       expect(content).toContain('src/api.js');
-      expect(content).toContain('## Tests Run');
+      expect(content).toContain('### Test Results');
       expect(content).toContain('api.test.js');
-      expect(content).toContain('## Rollback Information');
+      expect(content).toContain('### Rollback Instructions');
       expect(content).toContain('git reset --hard abc123def456');
-      expect(content).toContain('## Performance Metrics');
+      expect(content).toContain('### Performance Impact');
       expect(content).toContain('Agent Load Time: 150ms');
     });
 
