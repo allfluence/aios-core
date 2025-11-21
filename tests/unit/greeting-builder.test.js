@@ -33,7 +33,6 @@ describe('GreetingBuilder', () => {
   let mockAgent;
 
   beforeEach(() => {
-    builder = new GreetingBuilder();
     jest.clearAllMocks();
 
     // Setup default mock agent
@@ -58,13 +57,19 @@ describe('GreetingBuilder', () => {
       ]
     };
 
-    // Setup default mocks
-    ContextDetector.prototype.detectSessionType = jest.fn().mockReturnValue('new');
-    GitConfigDetector.prototype.get = jest.fn().mockReturnValue({
-      configured: true,
-      type: 'github',
-      branch: 'main'
-    });
+    // Setup default mocks - must be done BEFORE creating GreetingBuilder instance
+    ContextDetector.mockImplementation(() => ({
+      detectSessionType: jest.fn().mockReturnValue('new')
+    }));
+
+    GitConfigDetector.mockImplementation(() => ({
+      get: jest.fn().mockReturnValue({
+        configured: true,
+        type: 'github',
+        branch: 'main'
+      })
+    }));
+
     loadProjectStatus.mockResolvedValue({
       branch: 'main',
       modifiedFiles: ['file1.js', 'file2.js'],
@@ -74,11 +79,14 @@ describe('GreetingBuilder', () => {
       isGitRepo: true
     });
     formatStatusDisplay.mockReturnValue('Project Status Display');
+
+    // Create builder AFTER mocks are set up
+    builder = new GreetingBuilder();
   });
 
   describe('Session Type Greetings', () => {
     test('should build new session greeting with full details', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('new');
+      builder.contextDetector.detectSessionType.mockReturnValue('new');
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
@@ -89,7 +97,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should build existing session greeting without role', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('existing');
+      builder.contextDetector.detectSessionType.mockReturnValue('existing');
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
@@ -99,7 +107,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should build workflow session greeting with minimal presentation', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('workflow');
+      builder.contextDetector.detectSessionType.mockReturnValue('workflow');
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
@@ -111,7 +119,7 @@ describe('GreetingBuilder', () => {
 
   describe('Git Configuration', () => {
     test('should show project status when git configured', async () => {
-      GitConfigDetector.prototype.get.mockReturnValue({
+      builder.gitConfigDetector.get.mockReturnValue({
         configured: true,
         type: 'github',
         branch: 'main'
@@ -124,7 +132,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should hide project status when git not configured', async () => {
-      GitConfigDetector.prototype.get.mockReturnValue({
+      builder.gitConfigDetector.get.mockReturnValue({
         configured: false,
         type: null,
         branch: null
@@ -137,7 +145,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should show git warning at END when not configured', async () => {
-      GitConfigDetector.prototype.get.mockReturnValue({
+      builder.gitConfigDetector.get.mockReturnValue({
         configured: false,
         type: null,
         branch: null
@@ -153,7 +161,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should not show git warning when configured', async () => {
-      GitConfigDetector.prototype.get.mockReturnValue({
+      builder.gitConfigDetector.get.mockReturnValue({
         configured: true,
         type: 'github',
         branch: 'main'
@@ -167,7 +175,7 @@ describe('GreetingBuilder', () => {
 
   describe('Command Visibility', () => {
     test('should show full commands for new session', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('new');
+      builder.contextDetector.detectSessionType.mockReturnValue('new');
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
@@ -178,7 +186,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should show quick commands for existing session', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('existing');
+      builder.contextDetector.detectSessionType.mockReturnValue('existing');
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
@@ -189,7 +197,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should show key commands for workflow session', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('workflow');
+      builder.contextDetector.detectSessionType.mockReturnValue('workflow');
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
@@ -228,7 +236,7 @@ describe('GreetingBuilder', () => {
 
   describe('Current Context', () => {
     test('should show workflow context when in workflow session', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('workflow');
+      builder.contextDetector.detectSessionType.mockReturnValue('workflow');
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
@@ -237,7 +245,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should show last command in existing session', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('existing');
+      builder.contextDetector.detectSessionType.mockReturnValue('existing');
 
       const greeting = await builder.buildGreeting(mockAgent, {
         lastCommand: 'validate-story-draft'
@@ -250,7 +258,7 @@ describe('GreetingBuilder', () => {
 
   describe('Project Status Formatting', () => {
     test('should use full format for new/existing sessions', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('new');
+      builder.contextDetector.detectSessionType.mockReturnValue('new');
 
       await builder.buildGreeting(mockAgent, {});
 
@@ -258,7 +266,7 @@ describe('GreetingBuilder', () => {
     });
 
     test('should use condensed format for workflow session', async () => {
-      ContextDetector.prototype.detectSessionType.mockReturnValue('workflow');
+      builder.contextDetector.detectSessionType.mockReturnValue('workflow');
       loadProjectStatus.mockResolvedValue({
         branch: 'main',
         modifiedFilesTotalCount: 5,
@@ -296,18 +304,20 @@ describe('GreetingBuilder', () => {
     });
 
     test('should fallback on context detection error', async () => {
-      ContextDetector.prototype.detectSessionType.mockImplementation(() => {
+      builder.contextDetector.detectSessionType.mockImplementation(() => {
         throw new Error('Detection failed');
       });
 
       const greeting = await builder.buildGreeting(mockAgent, {});
 
+      // When context detection fails, it defaults to 'new' session and builds full greeting
       expect(greeting).toContain('TestAgent (Tester) ready');
-      expect(greeting).toContain('Type `*help`');
+      expect(greeting).toContain('Available Commands'); // Defaults to 'new' session
+      expect(greeting).toContain('Test automation expert'); // Shows role for 'new' session
     });
 
     test('should fallback on git config error', async () => {
-      GitConfigDetector.prototype.get.mockImplementation(() => {
+      builder.gitConfigDetector.get.mockImplementation(() => {
         throw new Error('Git check failed');
       });
 
