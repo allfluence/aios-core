@@ -88,9 +88,9 @@ function validateApiKeyFormat(key, provider = null) {
         break;
 
       case 'github':
-        // GitHub tokens start with ghp_, gho_, or ghs_
-        if (!trimmed.match(/^gh[pos]_/)) {
-          return { valid: false, error: 'GitHub tokens should start with ghp_, gho_, or ghs_' };
+        // GitHub tokens: ghp_ (personal), gho_ (OAuth), ghs_ (server), ghu_ (user), ghr_ (refresh), github_pat_ (fine-grained)
+        if (!trimmed.match(/^(ghp_|gho_|ghs_|ghu_|ghr_|github_pat_)/)) {
+          return { valid: false, error: 'GitHub tokens should start with ghp_, gho_, ghs_, ghu_, ghr_, or github_pat_' };
         }
         break;
 
