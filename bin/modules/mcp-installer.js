@@ -52,18 +52,25 @@ const MCP_CONFIGS = {
   context7: {
     id: 'context7',
     name: 'Context7',
-    type: 'http',
-    transport: 'http',
-    url: 'https://mcp.context7.com/mcp',
+    package: '@upstash/context7-mcp',
+    transport: 'stdio',
     healthCheck: {
-      type: 'http-connection',
+      type: 'config-validation',
       timeout: 5000,
-      description: 'HTTP connection test'
+      description: 'Configuration validation'
     },
-    getConfig: () => {
-      // Note: SSE endpoint is deprecated, use HTTP endpoint instead
+    getConfig: (platform) => {
+      // Use npx/stdio transport for reliable local execution
+      // HTTP endpoint returns 406 for non-MCP protocol requests
+      if (platform === 'win32') {
+        return {
+          command: 'cmd',
+          args: ['/c', 'npx', '-y', '@upstash/context7-mcp']
+        };
+      }
       return {
-        url: 'https://mcp.context7.com/mcp'
+        command: 'npx',
+        args: ['-y', '@upstash/context7-mcp']
       };
     }
   },

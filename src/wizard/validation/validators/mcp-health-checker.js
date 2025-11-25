@@ -8,8 +8,6 @@
  */
 
 const fs = require('fs');
-const http = require('http');
-const https = require('https');
 
 /**
  * Validate MCPs with health checks
@@ -213,58 +211,30 @@ async function testBrowserMCP(config) {
 }
 
 /**
- * Test Context7 MCP (HTTP connection)
- * Note: SSE endpoint is deprecated, use HTTP endpoint (mcp.context7.com/mcp)
+ * Test Context7 MCP (npx/stdio configuration)
+ * Now uses @upstash/context7-mcp package via npx
  * @private
  */
 async function testContext7MCP(config) {
-  if (!config || !config.url) {
+  // Context7 now uses npx/stdio transport instead of HTTP
+  if (!config || !config.command) {
     return {
       success: false,
-      message: 'Invalid configuration - missing URL',
+      message: 'Invalid configuration - missing command',
       details: { configValid: false }
     };
   }
 
-  // Test HTTP endpoint connectivity
-  return new Promise((resolve) => {
-    const url = config.url;
-    const protocol = url.startsWith('https') ? https : http;
-    const timeout = 5000;
-
-    const req = protocol.get(url, { timeout }, (res) => {
-      // HTTP endpoint may return various success codes
-      const isSuccess = res.statusCode >= 200 && res.statusCode < 400;
-      resolve({
-        success: isSuccess,
-        message:
-          isSuccess
-            ? 'HTTP endpoint accessible'
-            : `HTTP endpoint returned ${res.statusCode}`,
-        details: {
-          statusCode: res.statusCode,
-          url: url
-        }
-      });
-    });
-
-    req.on('error', (error) => {
-      resolve({
-        success: false,
-        message: `HTTP connection failed: ${error.message}`,
-        details: { error: error.message, url: url }
-      });
-    });
-
-    req.on('timeout', () => {
-      req.destroy();
-      resolve({
-        success: false,
-        message: 'HTTP connection timeout',
-        details: { timeout: timeout, url: url }
-      });
-    });
-  });
+  // Basic validation: Check if command is configured for npx execution
+  return {
+    success: true,
+    message: 'Configuration valid (runtime test requires MCP server launch)',
+    details: {
+      configValid: true,
+      command: config.command,
+      note: 'Full test deferred to first use'
+    }
+  };
 }
 
 /**

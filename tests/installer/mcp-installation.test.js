@@ -82,10 +82,10 @@ describe('MCP Installation Module', () => {
       expect(typeof browser.getConfig).toBe('function');
     });
 
-    test('context7 MCP should be HTTP type', () => {
+    test('context7 MCP should use npx/stdio transport', () => {
       const context7 = MCP_CONFIGS.context7;
-      expect(context7.type).toBe('http');
-      expect(context7.url).toBe('https://mcp.context7.com/mcp');
+      expect(context7.package).toBe('@upstash/context7-mcp');
+      expect(context7.transport).toBe('stdio');
       expect(typeof context7.getConfig).toBe('function');
     });
 
@@ -119,11 +119,20 @@ describe('MCP Installation Module', () => {
       expect(config.args[0]).toBe('-y');
     });
 
-    test('context7 config should be platform-independent', () => {
+    test('context7 config should be platform-specific npx/stdio', () => {
       const context7 = MCP_CONFIGS.context7;
-      const config = context7.getConfig();
 
-      expect(config.url).toBe('https://mcp.context7.com/mcp');
+      // Test Windows config
+      const winConfig = context7.getConfig('win32');
+      expect(winConfig.command).toBe('cmd');
+      expect(winConfig.args).toContain('/c');
+      expect(winConfig.args).toContain('npx');
+      expect(winConfig.args).toContain('@upstash/context7-mcp');
+
+      // Test Unix config
+      const unixConfig = context7.getConfig('darwin');
+      expect(unixConfig.command).toBe('npx');
+      expect(unixConfig.args).toContain('@upstash/context7-mcp');
     });
 
     test('exa should include tools parameter', () => {

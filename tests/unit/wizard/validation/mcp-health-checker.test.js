@@ -4,12 +4,10 @@
  */
 
 const fs = require('fs');
-const https = require('https');
 const { validateMCPs, runHealthCheck } = require('../../../../src/wizard/validation/validators/mcp-health-checker');
 
 // Mock dependencies
 jest.mock('fs');
-jest.mock('https');
 
 describe('MCP Health Checker', () => {
   beforeEach(() => {
@@ -23,7 +21,7 @@ describe('MCP Health Checker', () => {
       fs.readFileSync.mockReturnValue(JSON.stringify({
         mcpServers: {
           browser: { command: 'npx', args: ['-y', '@modelcontextprotocol/server-puppeteer'] },
-          context7: { url: 'https://mcp.context7.com/mcp' }
+          context7: { command: 'npx', args: ['-y', '@upstash/context7-mcp'] }
         }
       }));
 
@@ -34,12 +32,6 @@ describe('MCP Health Checker', () => {
         },
         configPath: '.mcp.json'
       };
-
-      // Mock successful HTTP response for Context7
-      https.get = jest.fn((url, options, callback) => {
-        callback({ statusCode: 200 });
-        return { on: jest.fn(), destroy: jest.fn() };
-      });
 
       // When
       const result = await validateMCPs(mcpContext);
@@ -206,24 +198,19 @@ describe('MCP Health Checker', () => {
       expect(result.duration).toBeGreaterThanOrEqual(0);
     });
 
-    it('should test Context7 MCP HTTP connection', async () => {
+    it('should validate Context7 MCP npx/stdio configuration', async () => {
       // Given
       const mcpConfig = {
-        url: 'https://mcp.context7.com/mcp'
+        command: 'npx',
+        args: ['-y', '@upstash/context7-mcp']
       };
-
-      // Mock successful HTTPS response
-      https.get = jest.fn((url, options, callback) => {
-        callback({ statusCode: 200 });
-        return { on: jest.fn(), destroy: jest.fn() };
-      });
 
       // When
       const result = await runHealthCheck('context7', mcpConfig);
 
       // Then
       expect(result.success).toBe(true);
-      expect(result.message).toContain('HTTP endpoint accessible');
+      expect(result.message).toContain('Configuration valid');
     });
 
     it('should detect Exa API key placeholder', async () => {
@@ -277,29 +264,18 @@ describe('MCP Health Checker', () => {
       expect(result.message).toContain('Configuration valid');
     });
 
-    it('should handle MCP health check timeouts', async () => {
+    it('should handle missing Context7 command gracefully', async () => {
       // Given
       const mcpConfig = {
-        url: 'https://mcp.context7.com/mcp'
+        // Missing command - invalid configuration
       };
-
-      // Mock timeout
-      https.get = jest.fn(() => {
-        const req = {
-          on: jest.fn((event, handler) => {
-            if (event === 'timeout') {
-              setTimeout(() => handler(), 10);
-            }
-          }),
-          destroy: jest.fn()
-        };
-        return req;
-      });
 
       // When
       const result = await runHealthCheck('context7', mcpConfig);
 
-      // Then - should handle timeout gracefully
+      // Then - should report invalid configuration
+      expect(result.success).toBe(false);
+      expect(result.message).toContain('Invalid configuration');
       expect(result.duration).toBeGreaterThanOrEqual(0);
     });
   });

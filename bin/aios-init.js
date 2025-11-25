@@ -433,11 +433,18 @@ See .aios-core/user-guide.md for complete documentation.
   }
 
   // Step 7: Expansion Packs (CHECKBOX with visual)
-  // Try multiple locations for expansion-packs (npm package vs local development)
+  // Try multiple locations for expansion-packs (npm package vs local development vs npx)
+  // __dirname is the 'bin/' directory of the package, so '..' gives us the package root
+  const packageRoot = path.resolve(__dirname, '..');
+
   const possibleExpansionDirs = [
+    // Primary: relative to this script (works for npx and local)
+    path.join(packageRoot, 'expansion-packs'),
+    // Secondary: context-based framework location
     path.join(context.frameworkLocation, 'expansion-packs'),
-    path.join(__dirname, '..', 'expansion-packs'),
-    path.join(context.projectRoot, 'node_modules', 'aios-fullstack', 'expansion-packs')
+    // Tertiary: installed in project's node_modules
+    path.join(context.projectRoot, 'node_modules', 'aios-fullstack', 'expansion-packs'),
+    path.join(context.projectRoot, 'node_modules', '@aios', 'fullstack', 'expansion-packs')
   ];
 
   let sourceExpansionDir = null;

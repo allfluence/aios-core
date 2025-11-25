@@ -154,7 +154,6 @@ function showCompletion() {
   console.log('\n' + headings.divider());
   console.log(status.celebrate('Installation Complete!'));
   console.log(colors.info('Your AIOS project is ready to use.'));
-  console.log(status.tip('Run `npm start` to launch your project'));
   console.log(headings.divider() + '\n');
 }
 
