@@ -190,7 +190,8 @@ describe('IDE Config Generator', () => {
 
       expect(result.success).toBe(true);
 
-      const configPath = path.join(testDir, '.trae', 'config.json');
+      // Trae v2.1 uses .trae/rules.md (text format, not JSON)
+      const configPath = path.join(testDir, '.trae', 'rules.md');
       expect(await fs.pathExists(configPath)).toBe(true);
     });
 
@@ -205,12 +206,15 @@ describe('IDE Config Generator', () => {
       const configPath = path.join(testDir, '.cursorrules');
       const content = await fs.readFile(configPath, 'utf8');
 
-      expect(content).toContain('my-project');
-      expect(content).toContain('brownfield');
+      // v2.1 templates use static content from .aios-core/templates/ide-rules/
+      // They contain AIOS-FULLSTACK standard rules
+      expect(content).toContain('AIOS-FULLSTACK');
+      expect(content).toContain('Development Rules');
     });
 
-    it('should validate JSON config before writing', async () => {
-      const selectedIDEs = ['trae'];
+    it('should create roo-code config in .roo directory', async () => {
+      // roo-code uses .roo/rules.md (text format)
+      const selectedIDEs = ['roo-code'];
       const wizardState = { projectName: 'test', projectType: 'greenfield' };
 
       const result = await generateIDEConfigs(selectedIDEs, wizardState, {
@@ -219,15 +223,17 @@ describe('IDE Config Generator', () => {
 
       expect(result.success).toBe(true);
 
-      const configPath = path.join(testDir, '.trae', 'config.json');
+      const configPath = path.join(testDir, '.roo', 'rules.md');
+      expect(await fs.pathExists(configPath)).toBe(true);
+
       const content = await fs.readFile(configPath, 'utf8');
-
-      // Should be valid JSON
-      expect(() => JSON.parse(content)).not.toThrow();
+      // Should contain AIOS rules content
+      expect(content).toContain('AIOS-FULLSTACK');
     });
 
-    it('should validate YAML config before writing', async () => {
-      const selectedIDEs = ['antigravity'];
+    it('should create text config files successfully', async () => {
+      // All v2.1 IDEs use text (markdown) format for rules
+      const selectedIDEs = ['cline'];
       const wizardState = { projectName: 'test', projectType: 'greenfield' };
 
       const result = await generateIDEConfigs(selectedIDEs, wizardState, {
@@ -236,7 +242,7 @@ describe('IDE Config Generator', () => {
 
       expect(result.success).toBe(true);
 
-      const configPath = path.join(testDir, '.antigravity.yaml');
+      const configPath = path.join(testDir, '.cline', 'rules.md');
       expect(await fs.pathExists(configPath)).toBe(true);
     });
 

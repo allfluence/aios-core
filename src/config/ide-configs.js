@@ -22,12 +22,34 @@ const path = require('path');
  * @property {string} format - Config file format: 'text', 'json', or 'yaml'
  */
 
+/**
+ * IDE Configuration Metadata
+ *
+ * AIOS-FULLSTACK v2.1 supports 8 IDEs:
+ * - Claude Code (Anthropic's official CLI)
+ * - Cursor (AI-first code editor)
+ * - Windsurf (AI-powered development)
+ * - Trae (Modern AI code editor)
+ * - Roo Code (VS Code extension with modes)
+ * - Cline (VS Code AI coding assistant)
+ * - Gemini CLI (Google's AI assistant)
+ * - GitHub Copilot (GitHub's AI pair programmer)
+ */
 const IDE_CONFIGS = {
+  'claude-code': {
+    name: 'Claude Code',
+    description: 'Anthropic official CLI - Recommended for AIOS',
+    configFile: path.join('.claude', 'CLAUDE.md'),
+    template: 'ide-rules/claude-rules.md',
+    requiresDirectory: true,
+    format: 'text',
+    recommended: true
+  },
   cursor: {
     name: 'Cursor',
     description: 'AI-first code editor with built-in AI assistant',
     configFile: '.cursorrules',
-    template: 'templates/ide/cursor.rules',
+    template: 'ide-rules/cursor-rules.md',
     requiresDirectory: false,
     format: 'text'
   },
@@ -35,41 +57,49 @@ const IDE_CONFIGS = {
     name: 'Windsurf',
     description: 'AI-powered development environment',
     configFile: '.windsurfrules',
-    template: 'templates/ide/windsurf.rules',
+    template: 'ide-rules/windsurf-rules.md',
     requiresDirectory: false,
     format: 'text'
   },
   trae: {
     name: 'Trae',
     description: 'Modern AI code editor',
-    configFile: path.join('.trae', 'config.json'),
-    template: 'templates/ide/trae-config.json',
+    configFile: path.join('.trae', 'rules.md'),
+    template: 'ide-rules/trae-rules.md',
     requiresDirectory: true,
-    format: 'json'
+    format: 'text'
   },
-  zed: {
-    name: 'Zed',
-    description: 'High-performance multiplayer code editor',
-    configFile: path.join('.zed', 'settings.json'),
-    template: 'templates/ide/zed-settings.json',
+  'roo-code': {
+    name: 'Roo Code',
+    description: 'VS Code extension with mode-based AI assistance',
+    configFile: '.roo/rules.md',
+    template: 'ide-rules/roo-rules.md',
     requiresDirectory: true,
-    format: 'json'
+    format: 'text'
   },
-  antigravity: {
-    name: 'Antigravity',
-    description: 'Next-gen AI development tool',
-    configFile: '.antigravity.yaml',
-    template: 'templates/ide/antigravity.yaml',
-    requiresDirectory: false,
-    format: 'yaml'
-  },
-  continue: {
-    name: 'Continue.dev',
-    description: 'Open-source autopilot for software development',
-    configFile: path.join('.continue', 'config.json'),
-    template: 'templates/ide/continue-config.json',
+  cline: {
+    name: 'Cline',
+    description: 'VS Code AI coding assistant',
+    configFile: path.join('.cline', 'rules.md'),
+    template: 'ide-rules/cline-rules.md',
     requiresDirectory: true,
-    format: 'json'
+    format: 'text'
+  },
+  'gemini-cli': {
+    name: 'Gemini CLI',
+    description: 'Google AI assistant for development',
+    configFile: path.join('.gemini', 'rules.md'),
+    template: 'ide-rules/gemini-rules.md',
+    requiresDirectory: true,
+    format: 'text'
+  },
+  'github-copilot': {
+    name: 'GitHub Copilot',
+    description: 'GitHub AI pair programmer',
+    configFile: path.join('.github', 'copilot-instructions.md'),
+    template: 'ide-rules/copilot-rules.md',
+    requiresDirectory: true,
+    format: 'text'
   }
 };
 
@@ -101,13 +131,27 @@ function isValidIDE(ideKey) {
 
 /**
  * Get formatted choices for inquirer prompt
- * @returns {Array<{name: string, value: string}>} Inquirer-compatible choices
+ * @returns {Array<{name: string, value: string, checked?: boolean}>} Inquirer-compatible choices
  */
 function getIDEChoices() {
-  return getIDEKeys().map(key => ({
-    name: `${IDE_CONFIGS[key].name} - ${IDE_CONFIGS[key].description}`,
-    value: key
-  }));
+  const { colors } = require('../utils/aios-colors');
+
+  return getIDEKeys().map(key => {
+    const config = IDE_CONFIGS[key];
+    const isRecommended = config.recommended === true;
+
+    // Format: "IDE Name - Description" with recommended highlight
+    let displayName = config.name;
+    if (isRecommended) {
+      displayName = colors.highlight(config.name) + colors.success(' (Recommended)');
+    }
+
+    return {
+      name: `${displayName} ${colors.dim('- ' + config.description)}`,
+      value: key,
+      checked: isRecommended // Pre-select recommended IDEs
+    };
+  });
 }
 
 module.exports = {

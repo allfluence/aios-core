@@ -19,17 +19,31 @@ const args = process.argv.slice(2);
 const command = args[0];
 
 // Helper: Run initialization wizard
-function runWizard() {
-  const initScript = path.join(__dirname, 'aios-init.js');
+async function runWizard() {
+  // Use the new v2.1 wizard from src/wizard/index.js
+  const wizardPath = path.join(__dirname, '..', 'src', 'wizard', 'index.js');
 
-  if (!fs.existsSync(initScript)) {
-    console.error('❌ Initialization wizard not found:', initScript);
+  if (!fs.existsSync(wizardPath)) {
+    // Fallback to legacy wizard if new wizard not found
+    const legacyScript = path.join(__dirname, 'aios-init.js');
+    if (fs.existsSync(legacyScript)) {
+      console.log('⚠️  Using legacy wizard (src/wizard not found)');
+      require(legacyScript);
+      return;
+    }
+    console.error('❌ Initialization wizard not found');
     console.error('Please ensure AIOS-FullStack is installed correctly.');
     process.exit(1);
   }
 
-  // Run the wizard
-  require(initScript);
+  try {
+    // Run the new v2.1 wizard
+    const { runWizard: executeWizard } = require(wizardPath);
+    await executeWizard();
+  } catch (error) {
+    console.error('❌ Wizard error:', error.message);
+    process.exit(1);
+  }
 }
 
 // Helper: Show help
@@ -162,7 +176,7 @@ function runDoctor() {
 }
 
 // Helper: Create new project
-function initProject(projectName) {
+async function initProject(projectName) {
   if (!projectName) {
     console.error('❌ Project name is required');
     console.log('\nUsage: npx aios-fullstack@latest init <project-name>');
@@ -188,50 +202,58 @@ function initProject(projectName) {
   process.chdir(targetPath);
 
   // Run the initialization wizard
-  runWizard();
+  await runWizard();
 }
 
-// Command routing
-switch (command) {
-  case 'install':
-    // Install in current project
-    console.log('🚀 AIOS-FullStack Installation\n');
-    runWizard();
-    break;
+// Command routing (async main function)
+async function main() {
+  switch (command) {
+    case 'install':
+      // Install in current project
+      console.log('🚀 AIOS-FullStack Installation\n');
+      await runWizard();
+      break;
 
-  case 'init':
-    // Create new project
-    const projectName = args[1];
-    initProject(projectName);
-    break;
+    case 'init':
+      // Create new project
+      const projectName = args[1];
+      await initProject(projectName);
+      break;
 
-  case 'info':
-    showInfo();
-    break;
+    case 'info':
+      showInfo();
+      break;
 
-  case 'doctor':
-    runDoctor();
-    break;
+    case 'doctor':
+      runDoctor();
+      break;
 
-  case '--version':
-  case '-v':
-  case '-V':
-    showVersion();
-    break;
+    case '--version':
+    case '-v':
+    case '-V':
+      showVersion();
+      break;
 
-  case '--help':
-  case '-h':
-    showHelp();
-    break;
+    case '--help':
+    case '-h':
+      showHelp();
+      break;
 
-  case undefined:
-    // No arguments - run wizard directly (npx default behavior)
-    console.log('🚀 AIOS-FullStack Installation\n');
-    runWizard();
-    break;
+    case undefined:
+      // No arguments - run wizard directly (npx default behavior)
+      console.log('🚀 AIOS-FullStack Installation\n');
+      await runWizard();
+      break;
 
-  default:
-    console.error(`❌ Unknown command: ${command}`);
-    console.log('\nRun with --help to see available commands');
-    process.exit(1);
+    default:
+      console.error(`❌ Unknown command: ${command}`);
+      console.log('\nRun with --help to see available commands');
+      process.exit(1);
+  }
 }
+
+// Execute main function
+main().catch(error => {
+  console.error('❌ Fatal error:', error.message);
+  process.exit(1);
+});
