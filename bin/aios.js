@@ -61,6 +61,12 @@ USAGE:
   npx aios-fullstack@latest --version    # Show version
   npx aios-fullstack@latest --help       # Show this help
 
+SERVICE DISCOVERY:
+  aios workers search <query>            # Search for workers
+  aios workers search "json" --category=data
+  aios workers search "transform" --tags=etl,data
+  aios workers search "api" --format=json
+
 EXAMPLES:
   # Install in current directory
   npx aios-fullstack@latest
@@ -70,6 +76,9 @@ EXAMPLES:
 
   # Create new project
   npx aios-fullstack@latest init my-project
+
+  # Search for workers
+  aios workers search "json csv"
 
 For more information, visit: https://github.com/Pedrovaleriolopez/aios-fullstack
 `);
@@ -208,6 +217,17 @@ async function initProject(projectName) {
 // Command routing (async main function)
 async function main() {
   switch (command) {
+    case 'workers':
+      // Service Discovery CLI - Story 2.7
+      try {
+        const { run } = require('../.aios-core/cli/index.js');
+        await run(process.argv);
+      } catch (error) {
+        console.error(`❌ Workers command error: ${error.message}`);
+        process.exit(1);
+      }
+      break;
+
     case 'install':
       // Install in current project
       console.log('🚀 AIOS-FullStack Installation\n');
