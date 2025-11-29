@@ -11,7 +11,7 @@
  * Fallback: Simple greeting on any error
  */
 
-const ContextDetector = require('./context-detector');
+const ContextDetector = require('../core/session/context-detector');
 const GitConfigDetector = require('./git-config-detector');
 const WorkflowNavigator = require('./workflow-navigator');
 const GreetingPreferenceManager = require('./greeting-preference-manager');

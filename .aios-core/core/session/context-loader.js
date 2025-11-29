@@ -10,12 +10,14 @@
  * - Identifies active workflow
  * - Provides natural language summary for new agent
  *
+ * @module core/session/context-loader
+ * @migrated Story 2.2 - Core Module Creation
  * Part of Story 6.1.2.5 UX Improvements
  */
 
 const fs = require('fs');
 const path = require('path');
-const ContextDetector = require('../core/session/context-detector');
+const ContextDetector = require('./context-detector');
 
 const SESSION_STATE_PATH = path.join(process.cwd(), '.aios', 'session-state.json');
 const MAX_COMMANDS_HISTORY = 10;

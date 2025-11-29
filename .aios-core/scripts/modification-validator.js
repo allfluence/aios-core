@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const yaml = require('js-yaml');
-const { validateYAML } = require('./yaml-validator');
+const { validateYAML } = require('../core/utils/yaml-validator');
 const DependencyAnalyzer = require('./dependency-analyzer');
 const SecurityChecker = require('./security-checker');
 

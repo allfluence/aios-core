@@ -1,23 +1,33 @@
 # Backlog
 
-**Generated:** 2025-11-16T13:15:53.636Z
-**Total Items:** 1
+**Generated:** 2025-11-29T14:45:00.000Z
+**Total Items:** 4
 
 ---
 
 ## 📊 Summary by Type
 
-- 📌 **Follow-up**: 0
-- 🔧 **Technical Debt**: 1
+- 📌 **Follow-up**: 1
+- 🔧 **Technical Debt**: 3
 - ✨ **Enhancement**: 0
 
 ---
 
-## 🔧 Technical Debt (1 items)
+## 🔧 Technical Debt (3 items)
 
 | ID | Type | Title | Priority | Related Story | Effort | Tags | Created By |
 |----|------|-------|----------|---------------|--------|------|------------|
 | 1763298742141 | 🔧 Technical Debt | Add unit tests for decision-log-generator | 🟠 High | [6.1.2.6](../stories/6.1.2.6.md) | 2 hours | `testing`, `decision-logging` | @dev |
+| 1732891500001 | 🔧 Technical Debt | Core Module Security Hardening | 🟠 High | [2.2](v2.1/sprint-2/story-2.2-core-module.md) | 4 hours | `security`, `core`, `coderabbit` | @qa |
+| 1732891500002 | 🔧 Technical Debt | Core Module Code Quality Fixes | 🟡 Medium | [2.2](v2.1/sprint-2/story-2.2-core-module.md) | 2 hours | `quality`, `core`, `coderabbit` | @qa |
+
+---
+
+## 📌 Follow-up (1 items)
+
+| ID | Type | Title | Priority | Related Story | Effort | Tags | Created By |
+|----|------|-------|----------|---------------|--------|------|------------|
+| 1732891500003 | 📌 Follow-up | Create TypeScript definitions for Core Module | 🟡 Medium | [2.2](v2.1/sprint-2/story-2.2-core-module.md) | 3 hours | `typescript`, `core`, `dx` | @qa |
 
 ---
 

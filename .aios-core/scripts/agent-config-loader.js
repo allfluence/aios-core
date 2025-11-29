@@ -10,7 +10,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const yaml = require('yaml');
-const { globalConfigCache } = require('./config-cache');
+const { globalConfigCache } = require('../core/config/config-cache');
 const { trackConfigLoad } = require('./performance-tracker');
 
 /**
