@@ -1,0 +1,294 @@
+# Quality Gate Decision - Story 2.14
+# Migration Script v2.0 → v2.1
+
+schema: 1
+story: "2.14"
+story_title: "Migration Script v2.0 → v2.1"
+gate: PENDING
+status_reason: "Story validated. Blocked waiting for dependencies (2.10-2.13)."
+reviewer: "Pax (PO)"
+updated: "2025-11-30T00:00:00Z"
+
+waiver:
+  active: false
+
+# Pre-implementation validation
+pre_validation:
+  story_format: PASS
+  acceptance_criteria: PASS
+  definition_of_done: PASS
+  dependencies_clear: PASS
+  estimates_reasonable: PASS
+  rollback_plan: PASS
+
+# Required tests (from story smoke tests MIG-01 to MIG-15)
+required_tests:
+  p0_critical:
+    - id: MIG-01
+      name: "Backup Created"
+      description: "Backup directory created"
+      status: PENDING
+
+    - id: MIG-02
+      name: "Backup Verified"
+      description: "Checksum verification passes"
+      status: PENDING
+
+    - id: MIG-03
+      name: "Analysis Works"
+      description: "Structure analysis completes"
+      status: PENDING
+
+    - id: MIG-04
+      name: "Core Migrated"
+      description: "Core module files migrated"
+      status: PENDING
+
+    - id: MIG-05
+      name: "Dev Migrated"
+      description: "Development module migrated"
+      status: PENDING
+
+    - id: MIG-06
+      name: "Imports Updated"
+      description: "All imports rewritten"
+      status: PENDING
+
+    - id: MIG-07
+      name: "Validation Pass"
+      description: "Post-migration validation OK"
+      status: PENDING
+
+    - id: MIG-08
+      name: "Rollback Works"
+      description: "Rollback restores v2.0"
+      status: PENDING
+
+  p1_important:
+    - id: MIG-09
+      name: "Dry Run"
+      description: "--dry-run shows plan only"
+      status: PENDING
+
+    - id: MIG-10
+      name: "Progress Output"
+      description: "Progress shown during migration"
+      status: PENDING
+
+    - id: MIG-11
+      name: "Conflict Detection"
+      description: "Detects existing v2.1 files"
+      status: PENDING
+
+    - id: MIG-12
+      name: "Permissions"
+      description: "File permissions preserved"
+      status: PENDING
+
+  p2_nice_to_have:
+    - id: MIG-13
+      name: "Large Project"
+      description: "Works on 200+ file project"
+      status: PENDING
+
+    - id: MIG-14
+      name: "Partial Migration"
+      description: "Handles interrupted migration"
+      status: PENDING
+
+    - id: MIG-15
+      name: "Real Project Test"
+      description: "Test on 3+ real v2.0 projects"
+      status: PENDING
+
+# Deliverables scope
+deliverables:
+  files_to_create:
+    - ".aios-core/cli/commands/migrate/index.js"
+    - ".aios-core/cli/commands/migrate/backup.js"
+    - ".aios-core/cli/commands/migrate/analyze.js"
+    - ".aios-core/cli/commands/migrate/execute.js"
+    - ".aios-core/cli/commands/migrate/update-imports.js"
+    - ".aios-core/cli/commands/migrate/validate.js"
+    - ".aios-core/cli/commands/migrate/rollback.js"
+    - ".aios-core/core/migration/migration-config.yaml"
+    - ".aios-core/core/migration/module-mapping.yaml"
+    - "tests/unit/migration-backup.test.js"
+    - "tests/unit/migration-analyze.test.js"
+    - "tests/unit/migration-execute.test.js"
+    - "tests/integration/full-migration.test.js"
+  files_to_update:
+    - ".aios-core/cli/index.js"
+
+  migration_phases:
+    - name: "Phase 1: Backup"
+      checks:
+        - backup_creation
+        - checksum_verification
+      behavior: "fail-fast"
+    - name: "Phase 2: Analysis"
+      checks:
+        - structure_detection
+        - migration_plan
+      behavior: "fail-fast"
+    - name: "Phase 3: Migration"
+      checks:
+        - core_migration
+        - development_migration
+        - product_migration
+        - infrastructure_migration
+      behavior: "atomic rollback"
+    - name: "Phase 4: Import Updates"
+      checks:
+        - import_scanning
+        - path_transformation
+      behavior: "atomic rollback"
+    - name: "Phase 5: Validation"
+      checks:
+        - structure_validation
+        - lint_check
+        - test_run
+      behavior: "report and confirm"
+
+# Risk assessment (pre-implementation)
+risk_summary:
+  totals:
+    critical: 1
+    high: 2
+    medium: 2
+    low: 1
+  highest: critical
+  identified_risks:
+    - id: "DATALOSS-001"
+      severity: critical
+      finding: "Migration could cause data loss if backup fails"
+      mitigation: "Verify backup before proceeding, atomic operations"
+      status: PLANNED
+
+    - id: "IMPORT-001"
+      severity: high
+      finding: "Import path updates could break code"
+      mitigation: "AST-based parsing, validation after update"
+      status: PLANNED
+
+    - id: "ATOMIC-001"
+      severity: high
+      finding: "Interrupted migration could leave inconsistent state"
+      mitigation: "Transaction-like operations, rollback journal"
+      status: PLANNED
+
+    - id: "PERF-001"
+      severity: medium
+      finding: "Large projects may take too long"
+      mitigation: "Progress reporting, parallel file operations"
+      status: PLANNED
+
+    - id: "COMPAT-001"
+      severity: medium
+      finding: "Different v2.0 variations may exist"
+      mitigation: "Flexible structure detection, manual override"
+      status: PLANNED
+
+    - id: "PERM-001"
+      severity: low
+      finding: "File permissions may not be preserved on Windows"
+      mitigation: "Document limitation, best-effort preservation"
+      status: PLANNED
+
+  recommendations:
+    must_fix:
+      - "Backup verification MUST pass before migration"
+    before_start:
+      - "Test backup/restore on sample project"
+      - "Document supported v2.0 variations"
+      - "Design rollback journal format"
+    during_implementation:
+      - "Implement backup system first"
+      - "Test rollback early and often"
+      - "Use real v2.0 project for testing"
+    before_completion:
+      - "All 15 MIG tests must pass"
+      - "Test on 3+ real projects"
+      - "Document migration process thoroughly"
+
+# Quality scoring (pre-implementation baseline)
+quality_score: 88
+# Score breakdown:
+# - Format compliance: 20/20
+# - Acceptance criteria clarity: 18/20
+# - Task breakdown: 17/20
+# - Risk mitigation: 16/20
+# - Documentation: 17/20
+
+# Gate criteria for PASS
+pass_criteria:
+  - "All P0 tests (MIG-01 to MIG-08) must pass"
+  - "All P1 tests (MIG-09 to MIG-12) must pass"
+  - "All P2 tests (MIG-13 to MIG-15) should pass (not blocking)"
+  - "Backup system creates verified backups"
+  - "All 4 modules migrate correctly"
+  - "All imports updated without breaks"
+  - "Rollback restores original state"
+  - "Tested on 3+ real v2.0 projects"
+
+expires: "2025-12-15T00:00:00Z"
+
+evidence:
+  story_validated: true
+  po_approved: true
+  dependencies_met:
+    - story: "2.2"
+      status: "Done"
+    - story: "2.3"
+      status: "Ready for Review"
+    - story: "2.4"
+      status: "Done"
+    - story: "2.5"
+      status: "Done"
+    - story: "2.6"
+      status: "Done"
+    - story: "2.7"
+      status: "Done"
+    - story: "2.8-2.9"
+      status: "Done"
+    - story: "2.10"
+      status: "Ready for Dev"
+    - story: "2.11"
+      status: "Ready for Dev"
+    - story: "2.12"
+      status: "Ready for Dev"
+    - story: "2.13"
+      status: "Done"
+  adr_reference: "ADR-002-migration-map.md"
+  blocking_stories:
+    - "2.15 (Update Installer)"
+    - "2.16 (Documentation)"
+
+# CodeRabbit Integration
+coderabbit_integration:
+  enabled: true
+  focus_areas:
+    primary:
+      - "File operation safety (no data loss)"
+      - "Path manipulation correctness"
+      - "Rollback atomicity"
+      - "Error handling completeness"
+    secondary:
+      - "Progress reporting"
+      - "User confirmation points"
+      - "Backup verification"
+  self_healing:
+    primary_agent: "@dev"
+    max_iterations: 3
+    timeout_minutes: 20
+    severity_filter:
+      - CRITICAL
+      - HIGH
+
+# QA Verification Results (to be filled after implementation)
+qa_verification:
+  reviewer: null
+  date: null
+  acceptance_criteria: {}
+  regression_tests: {}
+  notes: []

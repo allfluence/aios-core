@@ -894,8 +894,8 @@ atomic_layer: Molecule
 - **CRITICAL:** All outputs use standardized template (familiaridade = produtividade)
 - **CRITICAL:** Track duration and tokens for all executions
 - **CRITICAL:** Use agent's vocabulary and tone consistently
-- See `docs/standards/TASK-FORMAT-SPECIFICATION-V1.md` for complete spec
-- See `docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md` for personality guidelines
+- See `.aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md` for complete spec
+- See `.aios-core/docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md` for personality guidelines
 
 ---
 

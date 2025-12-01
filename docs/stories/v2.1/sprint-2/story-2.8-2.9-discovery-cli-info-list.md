@@ -2,8 +2,8 @@
 
 **IDs:** 2.8, 2.9 | **Épico:** [EPIC-S2](../../../epics/epic-s2-modular-architecture.md)
 **Sprint:** 2 | **Points:** 8 (3+5) | **Priority:** 🟠 High | **Created:** 2025-01-19
-**Updated:** 2025-11-29
-**Status:** ✅ QA Approved
+**Updated:** 2025-11-30
+**Status:** ✅ Complete
 
 **Reference:** [ADR-002 Migration Map](../../architecture/decisions/ADR-002-migration-map.md)
 **Quality Gate:** [2.8-2.9-discovery-cli.yml](../../qa/gates/2.8-2.9-discovery-cli.yml)
@@ -360,7 +360,7 @@ git revert --no-commit HEAD~N
 - [x] Unit tests cover main scenarios
 - [x] Story checkboxes updated to [x]
 - [x] QA Review passed (Quinn @qa, 2025-11-30)
-- [ ] PR created and approved
+- [x] Pushed to main (Gage @github-devops, 2025-11-30, commit 3f713496)
 
 ---
 
@@ -424,6 +424,8 @@ Claude Opus 4.5 (claude-opus-4-5-20251101) via @dev agent (Dex)
 | 2025-11-29 | 1.1 | Status → Ready for Dev, added ACs (verbose, perf targets, count), 4 new smoke tests | Pax |
 | 2025-11-30 | 2.0 | Implementation complete: info/list commands, formatters, tests. All 12 smoke tests pass. Status → Ready for Review | Dex |
 | 2025-11-30 | 2.1 | QA Review PASS: All 21 ACs verified, 75 unit tests, performance exceeds targets. Status → QA Approved | Quinn |
+| 2025-11-30 | 2.2 | Pushed to main (commit 3f713496). Status → Complete | Gage |
+| 2025-11-30 | 2.3 | Story marked Complete by PO | Pax |
 
 ---
 

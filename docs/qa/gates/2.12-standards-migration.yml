@@ -1,0 +1,188 @@
+# Quality Gate Decision - Story 2.12
+# Framework Standards Migration
+
+schema: 1
+story: "2.12"
+story_title: "Framework Standards Migration"
+gate: PENDING
+status_reason: "Story validated and ready for development. Quality gate file created."
+reviewer: "Pax (PO)"
+updated: "2025-11-30T00:00:00Z"
+
+waiver:
+  active: false
+
+# Pre-implementation validation
+pre_validation:
+  story_format: PASS
+  acceptance_criteria: PASS
+  definition_of_done: PASS
+  dependencies_clear: PASS
+  estimates_reasonable: PASS
+  rollback_plan: PASS
+
+# Required tests (from story smoke tests STD-01 to STD-06)
+required_tests:
+  p0_critical:
+    - id: STD-01
+      name: "Dir Exists"
+      description: "`.aios-core/docs/standards/` exists"
+      status: PENDING
+
+    - id: STD-02
+      name: "Files Moved"
+      description: "All 8+ standards files in new location"
+      status: PENDING
+
+    - id: STD-03
+      name: "No Old Files"
+      description: "No standards files in old location"
+      status: PENDING
+
+  p1_important:
+    - id: STD-04
+      name: "Links Valid"
+      description: "No broken internal links"
+      status: PENDING
+
+    - id: STD-05
+      name: "Refs Updated"
+      description: "External references point to new paths"
+      status: PENDING
+
+  p2_nice_to_have:
+    - id: STD-06
+      name: "Content Intact"
+      description: "File content unchanged after move"
+      status: PENDING
+
+# Deliverables scope
+deliverables:
+  files_to_create:
+    - ".aios-core/docs/standards/"
+    - ".aios-core/docs/architecture/"
+    - ".aios-core/docs/api/"
+    - ".aios-core/docs/standards/AIOS-FRAMEWORK-MASTER.md"
+    - ".aios-core/docs/standards/AIOS-LIVRO-DE-OURO.md"
+    - ".aios-core/docs/standards/EXECUTOR-DECISION-TREE.md"
+    - ".aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md"
+    - ".aios-core/docs/standards/OPEN-SOURCE-VS-SERVICE-DIFFERENCES.md"
+  files_to_delete:
+    - "docs/standards/AIOS-FRAMEWORK-MASTER.md"
+    - "docs/standards/AIOS-LIVRO-DE-OURO.md"
+    - "docs/standards/EXECUTOR-DECISION-TREE.md"
+    - "docs/standards/TASK-FORMAT-SPECIFICATION-V1.md"
+  files_to_update:
+    - "Multiple files with updated references"
+
+  migration_scope:
+    - name: "Directory Structure"
+      files:
+        - ".aios-core/docs/standards/"
+        - ".aios-core/docs/architecture/"
+        - ".aios-core/docs/api/"
+    - name: "File Migration"
+      files:
+        - "8+ standards files"
+    - name: "Reference Updates"
+      files:
+        - "All internal references"
+        - "README.md"
+
+# Risk assessment (pre-implementation)
+risk_summary:
+  totals:
+    critical: 0
+    high: 0
+    medium: 2
+    low: 1
+  highest: medium
+  identified_risks:
+    - id: "REFS-001"
+      severity: medium
+      finding: "Many files may reference old paths"
+      mitigation: "Grep for all references, update systematically"
+      status: PLANNED
+
+    - id: "LINKS-001"
+      severity: medium
+      finding: "External links may break"
+      mitigation: "Run link checker before and after"
+      status: PLANNED
+
+    - id: "CONTENT-001"
+      severity: low
+      finding: "File encoding may change during move"
+      mitigation: "Use binary-safe file operations"
+      status: PLANNED
+
+  recommendations:
+    must_fix: []
+    before_start:
+      - "Run full grep for all old paths"
+      - "List all files to migrate"
+      - "Backup standards directory"
+    during_implementation:
+      - "Move files before updating references"
+      - "Update references in batches"
+      - "Validate links after each batch"
+    before_completion:
+      - "All 6 STD tests must pass"
+      - "No broken links"
+      - "Content checksums match"
+
+# Quality scoring (pre-implementation baseline)
+quality_score: 92
+# Score breakdown:
+# - Format compliance: 20/20
+# - Acceptance criteria clarity: 19/20
+# - Task breakdown: 18/20
+# - Risk mitigation: 18/20
+# - Documentation: 17/20
+
+# Gate criteria for PASS
+pass_criteria:
+  - "All P0 tests (STD-01 to STD-03) must pass"
+  - "All P1 tests (STD-04 to STD-05) must pass"
+  - "All P2 tests (STD-06) should pass (not blocking)"
+  - "Directory structure created correctly"
+  - "All files migrated"
+  - "All references updated"
+  - "No broken links"
+
+expires: "2025-12-15T00:00:00Z"
+
+evidence:
+  story_validated: true
+  po_approved: true
+  dependencies_met:
+    - story: "2.2"
+      status: "Done"
+  adr_reference: "ADR-002-migration-map.md"
+  blocking_stories:
+    - "2.16 (Documentation)"
+
+# CodeRabbit Integration
+coderabbit_integration:
+  enabled: true
+  focus_areas:
+    primary:
+      - "Broken links detection"
+      - "Reference path correctness"
+    secondary:
+      - "Documentation formatting"
+      - "Consistent path patterns"
+  self_healing:
+    primary_agent: "@dev"
+    max_iterations: 1
+    timeout_minutes: 5
+    severity_filter:
+      - CRITICAL
+
+# QA Verification Results (to be filled after implementation)
+qa_verification:
+  reviewer: null
+  date: null
+  acceptance_criteria: {}
+  regression_tests: {}
+  notes: []

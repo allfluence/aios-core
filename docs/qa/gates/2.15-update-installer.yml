@@ -1,0 +1,193 @@
+# Quality Gate Decision - Story 2.15
+# Update Installer for Modules
+
+schema: 1
+story: "2.15"
+story_title: "Update Installer for Modules"
+gate: PENDING
+status_reason: "Story validated. Blocked waiting for Story 2.14 (Migration Script)."
+reviewer: "Pax (PO)"
+updated: "2025-11-30T00:00:00Z"
+
+waiver:
+  active: false
+
+# Pre-implementation validation
+pre_validation:
+  story_format: PASS
+  acceptance_criteria: PASS
+  definition_of_done: PASS
+  dependencies_clear: PASS
+  estimates_reasonable: PASS
+  rollback_plan: PASS
+
+# Required tests (from story smoke tests INS-01 to INS-06)
+required_tests:
+  p0_critical:
+    - id: INS-01
+      name: "Core Created"
+      description: "core/ directory exists"
+      status: PENDING
+
+    - id: INS-02
+      name: "Dev Created"
+      description: "development/ directory exists"
+      status: PENDING
+
+    - id: INS-03
+      name: "Product Created"
+      description: "product/ directory exists"
+      status: PENDING
+
+    - id: INS-04
+      name: "Infra Created"
+      description: "infrastructure/ directory exists"
+      status: PENDING
+
+  p1_important:
+    - id: INS-05
+      name: "Manifests"
+      description: "Manifest files generated"
+      status: PENDING
+
+    - id: INS-06
+      name: "Legacy Mode"
+      description: "--legacy creates flat structure"
+      status: PENDING
+
+# Deliverables scope
+deliverables:
+  files_to_create:
+    - "tests/integration/installer-v21.test.js"
+  files_to_update:
+    - "tools/installer/lib/installer.js"
+    - "tools/installer/lib/file-generator.js"
+    - "tools/installer/lib/directory-structure.js"
+    - "tools/installer/templates/"
+
+  module_structure:
+    - name: "Core Module"
+      path: ".aios-core/core/"
+      contents:
+        - "registry/"
+        - "quality-gates/"
+        - "manifest/"
+        - "utils/"
+    - name: "Development Module"
+      path: ".aios-core/development/"
+      contents:
+        - "agents/"
+        - "tasks/"
+        - "templates/"
+        - "checklists/"
+        - "scripts/"
+    - name: "Product Module"
+      path: ".aios-core/product/"
+      contents:
+        - "cli/"
+        - "api/"
+    - name: "Infrastructure Module"
+      path: ".aios-core/infrastructure/"
+      contents:
+        - "config/"
+        - "hooks/"
+        - "telemetry/"
+
+# Risk assessment (pre-implementation)
+risk_summary:
+  totals:
+    critical: 0
+    high: 1
+    medium: 1
+    low: 1
+  highest: high
+  identified_risks:
+    - id: "COMPAT-001"
+      severity: high
+      finding: "New installer may break existing workflows"
+      mitigation: "Legacy flag support, thorough testing"
+      status: PLANNED
+
+    - id: "FILES-001"
+      severity: medium
+      finding: "File generation paths need updates everywhere"
+      mitigation: "Centralized path configuration"
+      status: PLANNED
+
+    - id: "TEMPLATE-001"
+      severity: low
+      finding: "Templates may have hardcoded paths"
+      mitigation: "Audit all templates"
+      status: PLANNED
+
+  recommendations:
+    must_fix: []
+    before_start:
+      - "Audit all file generation paths"
+      - "Test current installer behavior"
+      - "Document expected output structure"
+    during_implementation:
+      - "Update paths in centralized config first"
+      - "Test each module directory creation"
+      - "Verify legacy mode works"
+    before_completion:
+      - "All 6 INS tests must pass"
+      - "Fresh install creates correct structure"
+      - "Legacy mode preserves old behavior"
+
+# Quality scoring (pre-implementation baseline)
+quality_score: 93
+# Score breakdown:
+# - Format compliance: 20/20
+# - Acceptance criteria clarity: 19/20
+# - Task breakdown: 18/20
+# - Risk mitigation: 18/20
+# - Documentation: 18/20
+
+# Gate criteria for PASS
+pass_criteria:
+  - "All P0 tests (INS-01 to INS-04) must pass"
+  - "All P1 tests (INS-05 to INS-06) must pass"
+  - "Fresh install creates 4-module structure"
+  - "All default files in correct locations"
+  - "Manifest files generated"
+  - "--legacy flag works"
+
+expires: "2025-12-15T00:00:00Z"
+
+evidence:
+  story_validated: true
+  po_approved: true
+  dependencies_met:
+    - story: "2.14"
+      status: "Blocked"
+      note: "Must wait for migration script to be tested"
+  adr_reference: "ADR-002-migration-map.md"
+  blocking_stories:
+    - "2.16 (Documentation)"
+
+# CodeRabbit Integration
+coderabbit_integration:
+  enabled: true
+  focus_areas:
+    primary:
+      - "Directory creation correctness"
+      - "File path updates"
+      - "Manifest generation"
+    secondary:
+      - "Legacy mode compatibility"
+      - "Template path updates"
+  self_healing:
+    primary_agent: "@dev"
+    max_iterations: 2
+    timeout_minutes: 10
+    severity_filter:
+      - CRITICAL
+
+# QA Verification Results (to be filled after implementation)
+qa_verification:
+  reviewer: null
+  date: null
+  acceptance_criteria: {}
+  regression_tests: {}
+  notes: []

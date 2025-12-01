@@ -1,0 +1,228 @@
+# Quality Gate Decision - Story 2.16
+# Documentation Sprint 2
+
+schema: 1
+story: "2.16"
+story_title: "Documentation Sprint 2"
+gate: PENDING
+status_reason: "Story validated. Blocked waiting for all Sprint 2 stories to complete."
+reviewer: "Pax (PO)"
+updated: "2025-11-30T00:00:00Z"
+
+waiver:
+  active: false
+
+# Pre-implementation validation
+pre_validation:
+  story_format: PASS
+  acceptance_criteria: PASS
+  definition_of_done: PASS
+  dependencies_clear: PASS
+  estimates_reasonable: PASS
+  rollback_plan: PASS
+
+# Required tests (from story smoke tests DOC-01 to DOC-10)
+required_tests:
+  p0_critical:
+    - id: DOC-01
+      name: "Module Guide Exists"
+      description: "module-system.md created"
+      status: PENDING
+
+    - id: DOC-02
+      name: "Discovery Guide Exists"
+      description: "service-discovery.md created"
+      status: PENDING
+
+    - id: DOC-03
+      name: "Migration Guide Exists"
+      description: "v2.0-to-v2.1.md created"
+      status: PENDING
+
+    - id: DOC-04
+      name: "QG Guide Exists"
+      description: "quality-gates.md created"
+      status: PENDING
+
+    - id: DOC-05
+      name: "MCP Guide Exists"
+      description: "mcp-global-setup.md created"
+      status: PENDING
+
+  p1_important:
+    - id: DOC-06
+      name: "Links Valid"
+      description: "No broken internal links"
+      status: PENDING
+
+    - id: DOC-07
+      name: "Code Examples"
+      description: "Code examples are correct"
+      status: PENDING
+
+    - id: DOC-08
+      name: "README Updated"
+      description: "README.md links to new docs"
+      status: PENDING
+
+  p2_nice_to_have:
+    - id: DOC-09
+      name: "Diagrams Present"
+      description: "Architecture diagrams included"
+      status: PENDING
+
+    - id: DOC-10
+      name: "Spelling/Grammar"
+      description: "No obvious errors"
+      status: PENDING
+
+# Deliverables scope
+deliverables:
+  files_to_create:
+    - "docs/architecture/module-system.md"
+    - "docs/guides/service-discovery.md"
+    - "docs/guides/quality-gates.md"
+    - "docs/guides/mcp-global-setup.md"
+    - "docs/migration/v2.0-to-v2.1.md"
+  files_to_update:
+    - "docs/README.md"
+    - "README.md"
+
+  documentation_sections:
+    - name: "Module Architecture Guide"
+      file: "docs/architecture/module-system.md"
+      topics:
+        - "Why modular architecture"
+        - "4-module structure"
+        - "Module boundaries"
+        - "Diagrams"
+    - name: "Service Discovery Guide"
+      file: "docs/guides/service-discovery.md"
+      topics:
+        - "ServiceRegistry API"
+        - "Code examples"
+        - "CLI commands"
+        - "Service types"
+    - name: "Migration Guide"
+      file: "docs/migration/v2.0-to-v2.1.md"
+      topics:
+        - "Prerequisites"
+        - "Step-by-step instructions"
+        - "Backup/rollback"
+        - "Troubleshooting"
+    - name: "Quality Gate Guide"
+      file: "docs/guides/quality-gates.md"
+      topics:
+        - "3-layer system"
+        - "Configuration"
+        - "CLI commands"
+        - "CI/CD integration"
+    - name: "MCP Global Setup Guide"
+      file: "docs/guides/mcp-global-setup.md"
+      topics:
+        - "Global ~/.aios/mcp/ structure"
+        - "Platform-specific instructions"
+        - "aios mcp commands"
+
+# Risk assessment (pre-implementation)
+risk_summary:
+  totals:
+    critical: 0
+    high: 0
+    medium: 1
+    low: 2
+  highest: medium
+  identified_risks:
+    - id: "SYNC-001"
+      severity: medium
+      finding: "Documentation may become outdated if features change"
+      mitigation: "Write docs close to implementation, review before merge"
+      status: PLANNED
+
+    - id: "LINKS-001"
+      severity: low
+      finding: "Links may break if files are moved later"
+      mitigation: "Use relative paths, validate with link checker"
+      status: PLANNED
+
+    - id: "EXAMPLES-001"
+      severity: low
+      finding: "Code examples may not work"
+      mitigation: "Test all code examples before including"
+      status: PLANNED
+
+  recommendations:
+    must_fix: []
+    before_start:
+      - "All Sprint 2 stories must be complete"
+      - "Review implemented features for accuracy"
+      - "Gather CLI command outputs"
+    during_implementation:
+      - "Write one guide at a time"
+      - "Validate links after each guide"
+      - "Test code examples"
+    before_completion:
+      - "All 10 DOC tests must pass"
+      - "Link checker passes"
+      - "Peer review for accuracy"
+
+# Quality scoring (pre-implementation baseline)
+quality_score: 94
+# Score breakdown:
+# - Format compliance: 20/20
+# - Acceptance criteria clarity: 19/20
+# - Task breakdown: 19/20
+# - Risk mitigation: 18/20
+# - Documentation: 18/20
+
+# Gate criteria for PASS
+pass_criteria:
+  - "All P0 tests (DOC-01 to DOC-05) must pass"
+  - "All P1 tests (DOC-06 to DOC-08) must pass"
+  - "All P2 tests (DOC-09 to DOC-10) should pass (not blocking)"
+  - "Module Architecture Guide complete and accurate"
+  - "Service Discovery Guide complete with examples"
+  - "Migration Guide complete with troubleshooting"
+  - "Quality Gate Guide complete with configuration"
+  - "MCP Global Setup Guide complete for all platforms"
+  - "All internal links validated"
+
+expires: "2025-12-15T00:00:00Z"
+
+evidence:
+  story_validated: true
+  po_approved: true
+  dependencies_met:
+    - story: "2.2-2.15"
+      status: "Various (see individual stories)"
+      note: "All must be complete before final documentation"
+  adr_reference: "ADR-002-migration-map.md"
+  blocking_stories: []
+  note: "Final story in Sprint 2 - blocks nothing"
+
+# CodeRabbit Integration
+coderabbit_integration:
+  enabled: true
+  focus_areas:
+    primary:
+      - "Documentation completeness"
+      - "Link validation"
+      - "Markdown formatting"
+    secondary:
+      - "Code example correctness"
+      - "Consistent terminology"
+      - "Cross-reference accuracy"
+  self_healing:
+    primary_agent: "@dev"
+    max_iterations: 1
+    timeout_minutes: 5
+    severity_filter:
+      - CRITICAL
+
+# QA Verification Results (to be filled after implementation)
+qa_verification:
+  reviewer: null
+  date: null
+  acceptance_criteria: {}
+  regression_tests: {}
+  notes: []

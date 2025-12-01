@@ -427,8 +427,8 @@ function validateTask(task) {
 
 ## Related Documents
 
-- `docs/standards/TASK-FORMAT-SPECIFICATION-V1.md` - Complete task format spec
-- `docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md` - Personality guidelines
+- `.aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md` - Complete task format spec
+- `.aios-core/docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md` - Personality guidelines
 - `docs/WORKFLOW-COMPLETE-CONSOLIDATED-V3.md` - Service workflow example
 - `.aios-core/templates/personalized-task-template-v2.md` - Open-source task template
 

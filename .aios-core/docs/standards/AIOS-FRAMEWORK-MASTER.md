@@ -1847,10 +1847,10 @@ templates/
 - **Framework Structure:** `docs/architecture/source-tree.md`
 - **Coding Standards:** `docs/framework/coding-standards.md`
 - **Technology Stack:** `docs/framework/tech-stack.md`
-- **Agent Standard:** `docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md`
-- **Task Format:** `docs/standards/TASK-FORMAT-SPECIFICATION-V1.md`
-- **Executor Tree:** `docs/standards/EXECUTOR-DECISION-TREE.md`
-- **Architectural Decisions:** `docs/standards/V3-ARCHITECTURAL-DECISIONS.md`
+- **Agent Standard:** `.aios-core/docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md`
+- **Task Format:** `.aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md`
+- **Executor Tree:** `.aios-core/docs/standards/EXECUTOR-DECISION-TREE.md`
+- **Architectural Decisions:** `.aios-core/docs/standards/V3-ARCHITECTURAL-DECISIONS.md`
 - **Repository Restructuring:** `docs/decisions/decision-005-repository-restructuring-FINAL.md`
 
 ### Implementation Stories

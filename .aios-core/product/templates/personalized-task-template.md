@@ -152,7 +152,7 @@ Eu recomendo #3 pra começar - facilita construir rápido e depois separar se ne
 
 ### Standard Task Report
 
-All task outputs MUST use this structure (see `docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md`):
+All task outputs MUST use this structure (see `.aios-core/docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md`):
 
 **FIXED SECTIONS (never change order):**
 1. Header (lines 1-7: Agent, Task, Timestamps, Duration, Tokens)
@@ -335,7 +335,7 @@ params:
 - **CRITICAL:** Always follow output template structure (familiaridade = produtividade)
 - **CRITICAL:** Track duration and tokens for all task executions
 - **CRITICAL:** Use agent's vocabulary and tone consistently
-- See `docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md` for complete guidelines
+- See `.aios-core/docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md` for complete guidelines
 
 ---
 

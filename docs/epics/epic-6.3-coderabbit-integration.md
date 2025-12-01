@@ -166,6 +166,44 @@ Every PR receives **FREE automatic code review** powered by CodeRabbit AI:
 
 ---
 
+### Story 6.3.3: CodeRabbit Self-Healing & Workflow Integration
+**Objective:** Integrate CodeRabbit self-healing loops into AIOS agent workflows (@dev, @qa, @devops)
+
+**Background:**
+- Documentation suite created in `docs/guides/coderabbit/`
+- CLI installed and authenticated in WSL
+- GitHub App installed on repository
+- `.coderabbit.yaml` configured (balanced profile)
+
+**Tasks:**
+1. [ ] Investigate all agent/task/workflow files for integration points
+2. [ ] Create decision document with rationale for each integration point
+3. [ ] Update agent definitions with `coderabbit_integration` config
+4. [ ] Update task definitions with self-healing steps
+5. [ ] Test CLI commands and self-healing loop
+6. [ ] Update documentation
+
+**Self-Healing Matrix:**
+| Agent | Task | Self-Healing | Iterations | Severity |
+|-------|------|--------------|------------|----------|
+| @dev | `*develop` | Light | 1-2 | CRITICAL only |
+| @qa | `*review` | Full | 3 | CRITICAL + HIGH |
+| @devops | `*pre-push` | Check | 0 | Report only |
+
+**Acceptance Criteria:**
+- [ ] All AIOS files reviewed for integration points
+- [ ] Decision document created
+- [ ] Agent definitions updated
+- [ ] Task definitions updated
+- [ ] CLI commands tested
+- [ ] Documentation updated
+
+**Estimated Time:** 1-2 days
+
+**Story File:** [6.3.3-coderabbit-self-healing-integration.md](../stories/6.3.3-coderabbit-self-healing-integration.md)
+
+---
+
 ## 📈 Success Metrics
 
 ### Completion Criteria

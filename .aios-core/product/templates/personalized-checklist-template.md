@@ -304,7 +304,7 @@ jobs:
 
 ## Related Documents
 
-- **Standard:** `docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md`
+- **Standard:** `.aios-core/docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md`
 - **Agent File:** `.aios-core/agents/{agent-id}.md`
 - **Tasks Using This:** {list of tasks that execute this checklist}
 

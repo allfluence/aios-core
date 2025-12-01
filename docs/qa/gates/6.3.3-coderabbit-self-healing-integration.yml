@@ -1,0 +1,48 @@
+schema: 1
+story: '6.3.3'
+story_title: 'CodeRabbit Self-Healing & Workflow Integration'
+gate: PASS
+status_reason: 'All 6 acceptance criteria met. Configuration/documentation story with comprehensive decision document, agent configs, task updates, and documentation all verified.'
+reviewer: 'Quinn (Test Architect)'
+updated: '2025-11-29T00:00:00Z'
+
+top_issues: []
+waiver: { active: false }
+
+quality_score: 100
+expires: '2025-12-13T00:00:00Z'
+
+evidence:
+  tests_reviewed: 0  # Configuration/documentation story - no code tests
+  risks_identified: 1  # Minor: Self-healing not exercised in this story
+  trace:
+    ac_covered: [1, 2, 3, 4, 5, 6]
+    ac_gaps: []
+
+nfr_validation:
+  security:
+    status: PASS
+    notes: 'No security-sensitive code changes. WSL commands use hardcoded paths only.'
+  performance:
+    status: PASS
+    notes: 'N/A - Configuration story. Timeout values defined appropriately (15-30 min).'
+  reliability:
+    status: PASS
+    notes: 'Self-healing loops include iteration limits and timeout handling.'
+  maintainability:
+    status: PASS
+    notes: 'Comprehensive decision document created. Clear separation of agent behaviors documented.'
+
+recommendations:
+  immediate: []
+  future:
+    - action: 'Exercise self-healing loop in actual development story'
+      refs: ['docs/stories/6.3.3-coderabbit-self-healing-integration.md']
+    - action: 'Consider adding automated YAML syntax validation for agent files'
+      refs: ['.aios-core/agents/']
+
+notes:
+  - type: observation
+    text: 'This is a configuration/documentation story. Self-healing loops are defined but will be exercised in future development stories.'
+  - type: observation
+    text: '@devops pre-push task was already complete - good discovery during investigation phase.'
