@@ -121,7 +121,7 @@ jobs:
       - name: Prepare packages
         run: |
           # Create lib directories for packages that need them
-          for pkg in aios-core memory security performance telemetry; do
+          for pkg in .aios-core memory security performance telemetry; do
             if [ -d "$pkg" ]; then
               mkdir -p "$pkg/lib"
             fi

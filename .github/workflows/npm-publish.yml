@@ -83,7 +83,7 @@ jobs:
       - name: Build all packages
         run: |
           # Create lib directories for packages that need them
-          for pkg in aios-core memory security performance telemetry; do
+          for pkg in .aios-core memory security performance telemetry; do
             if [ -d "$pkg" ]; then
               mkdir -p "$pkg/lib"
               echo '{"built": true}' > "$pkg/lib/build.json"
@@ -109,7 +109,7 @@ jobs:
           name: build-artifacts
           path: |
             dist/
-            aios-core/lib/
+            .aios-core/lib/
             memory/lib/
             security/lib/
             performance/lib/
@@ -162,7 +162,7 @@ jobs:
               PKG_NAME="@aios-fullstack/workspace"
               ;;
             "core")
-              PKG_DIR="aios-core"
+              PKG_DIR=".aios-core"
               PKG_NAME="@aios-fullstack/core"
               ;;
             *)

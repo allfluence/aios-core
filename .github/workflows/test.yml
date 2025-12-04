@@ -97,7 +97,7 @@ jobs:
               PKG_NAME="@aios-fullstack/workspace"
               ;;
             "core")
-              PKG_DIR="aios-core"
+              PKG_DIR=".aios-core"
               PKG_NAME="@aios-fullstack/core"
               ;;
             *)
@@ -178,7 +178,7 @@ jobs:
 
       - name: Test individual packages
         run: |
-          for pkg in aios-core memory security performance telemetry; do
+          for pkg in .aios-core memory security performance telemetry; do
             if [ -d "$pkg" ] && [ -f "$pkg/package.json" ]; then
               echo "Testing package: $pkg"
               
