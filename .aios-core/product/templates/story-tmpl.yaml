@@ -23,6 +23,21 @@ agent_config:
     - Change Log
 
 sections:
+  - id: community-origin
+    title: Community Origin
+    type: optional
+    instruction: |
+      **For stories originating from community ideas:**
+      Complete this section if this story was created from a community idea discussion.
+      Leave blank for internally-planned stories.
+    template: |
+      **Discussion URL**: {{discussion_url}}
+      **Author**: @{{author_username}}
+      **Approved Date**: {{approved_date}}
+      **Approved By**: @{{approver_username}}
+    owner: scrum-master
+    editors: [scrum-master, po]
+
   - id: status
     title: Status
     type: choice

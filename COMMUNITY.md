@@ -157,6 +157,18 @@ Report violations to: conduct@allfluence.com
 
 1. Check if it exists in [Ideas](https://github.com/allfluence/aios-core/discussions/categories/ideas)
 2. If new, [share your idea](https://github.com/allfluence/aios-core/discussions/new?category=ideas)
+3. Read our [Feature Request Process](docs/FEATURE_PROCESS.md) for detailed guidelines
+
+### Feature Request Process
+
+We have a structured process for proposing new features:
+
+1. **Quick Ideas** - Open a Discussion in the "Ideas" category
+2. **RFC Process** - For significant features, write an RFC using our [template](/.github/RFC_TEMPLATE.md)
+3. **Community Voting** - Use :+1: reactions to show support
+4. **Implementation** - Approved ideas move to our backlog
+
+See [Feature Request Process](docs/FEATURE_PROCESS.md) for complete details.
 
 ## Resources
 
