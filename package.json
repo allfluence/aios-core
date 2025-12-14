@@ -1,6 +1,6 @@
 {
   "name": "aios-core",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "AIOS: AI-Orchestrated System for Full Stack Development - Core Framework",
   "main": "index.js",
   "module": "index.esm.js",
