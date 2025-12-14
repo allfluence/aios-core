@@ -161,6 +161,16 @@ This endpoint provides:
 - Tool/function calling support
 - Streaming responses
 
+### Security Note: Permission Bypass
+
+Both `claude-max` and `claude-free` commands use the `--dangerously-skip-permissions` flag by default. This:
+
+- **Skips confirmation prompts** for file operations, command execution, etc.
+- **Should only be used in trusted repositories/environments**
+- **Is not recommended for untrusted codebases**
+
+A warning is displayed each time you run these commands. If you prefer interactive confirmations, run `claude` directly instead of using the routing commands.
+
 ---
 
 ## Troubleshooting

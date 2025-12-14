@@ -6,8 +6,12 @@
 setlocal enabledelayedexpansion
 
 :: Find project root (look for .env file)
+:: Loop guard prevents infinite loop on UNC paths
 set "PROJECT_ROOT=%CD%"
+set /a "LOOP_COUNT=0"
 :find_env
+set /a "LOOP_COUNT+=1"
+if %LOOP_COUNT% gtr 50 goto :no_env
 if exist "%PROJECT_ROOT%\.env" goto :found_env
 if "%PROJECT_ROOT%"=="%PROJECT_ROOT:~0,3%" goto :no_env
 for %%i in ("%PROJECT_ROOT%\..") do set "PROJECT_ROOT=%%~fi"
@@ -67,5 +71,10 @@ echo Cost: ~$0.14/M tokens
 echo.
 
 endlocal & set "ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic" & set "ANTHROPIC_API_KEY=%DEEPSEEK_API_KEY%" & set "ANTHROPIC_MODEL=deepseek-chat" & set "API_TIMEOUT_MS=600000"
+
+>&2 echo.
+>&2 echo [93mWARNING: Running with --dangerously-skip-permissions (no confirmation prompts)[0m
+>&2 echo [93mOnly use in trusted repositories/environments.[0m
+>&2 echo.
 
 claude --dangerously-skip-permissions %*

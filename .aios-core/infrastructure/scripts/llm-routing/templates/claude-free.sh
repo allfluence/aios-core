@@ -54,4 +54,9 @@ echo -e "\033[92mTool Calling: SUPPORTED\033[0m"
 echo "Cost: ~\$0.14/M tokens"
 echo ""
 
+>&2 echo ""
+>&2 echo -e "\033[93mWARNING: Running with --dangerously-skip-permissions (no confirmation prompts)\033[0m"
+>&2 echo -e "\033[93mOnly use in trusted repositories/environments.\033[0m"
+>&2 echo ""
+
 claude --dangerously-skip-permissions "$@"

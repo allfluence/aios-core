@@ -145,12 +145,21 @@ function installLLMRouting(options = {}) {
       result.envCreated = true;
       onProgress(`✅ Created .env from .env.example`);
     } catch (error) {
+      result.success = false;
       result.errors.push(`Failed to create .env: ${error.message}`);
+      onError(`❌ Failed to create .env: ${error.message}`);
     }
   }
 
-  // Update ~/.claude.json to mark LLM routing as installed
-  updateClaudeConfig();
+  // Final guard: if any errors were collected, mark as failure
+  if (result.errors.length > 0) {
+    result.success = false;
+  }
+
+  // Only update ~/.claude.json when installation succeeded
+  if (result.success) {
+    updateClaudeConfig();
+  }
 
   return result;
 }
@@ -227,7 +236,7 @@ function getInstallationSummary(result) {
     summary.push('');
   } else {
     summary.push('');
-    summary.push('⚠️  LLM Routing installation completed with errors:');
+    summary.push('❌ LLM Routing installation failed:');
     result.errors.forEach(err => summary.push(`   • ${err}`));
     summary.push('');
   }
