@@ -29,7 +29,7 @@ node .aios-core/infrastructure/scripts/llm-routing/install-llm-routing.js
 
 ### Setup DeepSeek API Key
 
-1. Get your API key at: https://platform.deepseek.com/api_keys
+1. Get your API key at: <https://platform.deepseek.com/api_keys>
 2. Add to your project's `.env` file:
 
 ```bash
@@ -152,7 +152,7 @@ claude-free
 4. Launches Claude Code with DeepSeek backend
 
 **DeepSeek Endpoint:**
-```
+```text
 https://api.deepseek.com/anthropic
 ```
 
@@ -258,7 +258,7 @@ rm ~/bin/claude-max
 - **Tool Definition:** `.aios-core/infrastructure/tools/cli/llm-routing.yaml`
 - **Install Script:** `.aios-core/infrastructure/scripts/llm-routing/install-llm-routing.js`
 - **Task Definition:** `.aios-core/development/tasks/setup-llm-routing.md`
-- **DeepSeek API:** https://platform.deepseek.com/api_keys
+- **DeepSeek API:** <https://platform.deepseek.com/api_keys>
 
 ---
 

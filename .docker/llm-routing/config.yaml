@@ -11,7 +11,9 @@ model_list:
       api_key: "os.environ/DEEPSEEK_API_KEY"
       drop_params: true
 
-  # Claude mappings -> DeepSeek
+  # Claude mappings -> DeepSeek (for cost optimization)
+  # NOTE: These aliases route Claude model names to DeepSeek for ~99% cost savings
+  # Users calling these model names will receive DeepSeek responses
   - model_name: "claude-3-5-sonnet-20241022"
     litellm_params:
       model: "deepseek/deepseek-chat"

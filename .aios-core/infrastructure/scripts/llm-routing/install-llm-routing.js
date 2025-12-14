@@ -26,11 +26,16 @@ const LLM_ROUTING_VERSION = '1.0.0';
 function getInstallDir() {
   if (isWindows) {
     // Try npm global directory first (usually in PATH)
-    const npmGlobal = path.join(process.env.APPDATA || '', 'npm');
-    if (fs.existsSync(npmGlobal)) {
+    const appData = process.env.APPDATA;
+    if (appData) {
+      const npmGlobal = path.join(appData, 'npm');
+      // Create npm directory if it doesn't exist
+      if (!fs.existsSync(npmGlobal)) {
+        fs.mkdirSync(npmGlobal, { recursive: true });
+      }
       return npmGlobal;
     }
-    // Fallback to user profile
+    // Fallback to user profile when APPDATA is not set
     return os.homedir();
   } else {
     // macOS/Linux: /usr/local/bin or ~/bin
@@ -103,6 +108,7 @@ function installLLMRouting(options = {}) {
     const dest = path.join(installDir, targetNames[index]);
 
     if (!fs.existsSync(src)) {
+      result.success = false;
       result.errors.push(`Source file not found: ${src}`);
       onError(`❌ Source file not found: ${src}`);
       return;
@@ -113,7 +119,7 @@ function installLLMRouting(options = {}) {
 
       // Make executable on Unix
       if (!isWindows) {
-        fs.chmodSync(dest, '755');
+        fs.chmodSync(dest, 0o755);
       }
 
       result.filesInstalled.push(targetNames[index]);

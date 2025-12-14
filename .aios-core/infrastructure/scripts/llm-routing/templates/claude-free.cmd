@@ -31,8 +31,8 @@ pause
 exit /b 1
 
 :found_env
-:: Load DEEPSEEK_API_KEY from .env
-for /f "usebackq tokens=1,* delims==" %%a in ("%PROJECT_ROOT%\.env") do (
+:: Load DEEPSEEK_API_KEY from .env (skip comments starting with #)
+for /f "usebackq eol=# tokens=1,* delims==" %%a in ("%PROJECT_ROOT%\.env") do (
     if "%%a"=="DEEPSEEK_API_KEY" set "DEEPSEEK_API_KEY=%%b"
 )
 

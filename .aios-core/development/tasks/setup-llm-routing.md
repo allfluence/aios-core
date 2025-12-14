@@ -112,13 +112,15 @@ node .aios-core/infrastructure/scripts/llm-routing/install-llm-routing.js
 
 ### Step 2: Configure DeepSeek API Key (for claude-free)
 
-**Option A: Project .env file**
+#### Option A: Project .env file
+
 ```bash
 # Create .env in your project root
 DEEPSEEK_API_KEY=sk-your-key-here
 ```
 
-**Option B: Global environment variable**
+#### Option B: Global environment variable
+
 ```bash
 # Windows
 setx DEEPSEEK_API_KEY "sk-your-key-here"
@@ -185,7 +187,7 @@ claude-free
 ### API key error
 1. Create `.env` in project root
 2. Add: `DEEPSEEK_API_KEY=sk-your-key`
-3. Get key at: https://platform.deepseek.com/api_keys
+3. Get key at: <https://platform.deepseek.com/api_keys>
 
 ### Tool calling fails
 - Verify DeepSeek API endpoint is reachable
@@ -196,8 +198,8 @@ claude-free
 
 ## References
 
-- [DeepSeek API](https://platform.deepseek.com/api_keys)
-- [Claude Code Documentation](https://docs.anthropic.com/claude-code)
+- [DeepSeek API](<https://platform.deepseek.com/api_keys>)
+- [Claude Code Documentation](<https://docs.anthropic.com/claude-code>)
 - Tool Definition: `.aios-core/infrastructure/tools/cli/llm-routing.yaml`
 - Install Script: `.aios-core/infrastructure/scripts/llm-routing/install-llm-routing.js`
 

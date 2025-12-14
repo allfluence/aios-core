@@ -4,7 +4,8 @@
 
 services:
   litellm-proxy:
-    image: ghcr.io/berriai/litellm:main-latest
+    # Pin to stable version for reproducible builds
+    image: ghcr.io/berriai/litellm:v1.55.10-stable
     container_name: aios-litellm-proxy
     ports:
       - "4000:4000"
