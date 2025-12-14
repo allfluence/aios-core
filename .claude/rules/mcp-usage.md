@@ -2,7 +2,23 @@
 paths: **/*
 ---
 
-# MCP Server Usage Rules
+# MCP Server Usage Rules - AIOS Architecture
+
+## MCP Configuration Architecture
+
+AIOS uses a hybrid MCP architecture for optimal performance and security:
+
+### Direct in Claude Code (global ~/.claude.json)
+| MCP | Purpose |
+|-----|---------|
+| **playwright** | Browser automation, screenshots, web testing |
+| **desktop-commander** | Docker container operations via docker-gateway |
+
+### Inside Docker Desktop (via desktop-commander)
+| MCP | Purpose |
+|-----|---------|
+| **EXA** | Web search, research, company/competitor analysis |
+| **Context7** | Library documentation lookup |
 
 ## CRITICAL: Tool Selection Priority
 
@@ -17,38 +33,68 @@ ALWAYS prefer native Claude Code tools over MCP servers:
 | Search content | `Grep` tool | docker-gateway |
 | List directories | `Bash(ls)` or `Glob` | docker-gateway |
 
-## docker-gateway (Desktop Commander) Restrictions
+## desktop-commander (docker-gateway) Usage
 
 ### ONLY use docker-gateway when:
 1. User explicitly says "use docker" or "use container"
 2. User explicitly mentions "Desktop Commander"
 3. Task specifically requires Docker container operations
-4. User asks to run something inside a Docker container
+4. Accessing MCPs running inside Docker (EXA, Context7)
+5. User asks to run something inside a Docker container
 
 ### NEVER use docker-gateway for:
 - Reading local files (use `Read` tool)
 - Writing local files (use `Write` or `Edit` tools)
-- Running shell commands (use `Bash` tool)
+- Running shell commands on host (use `Bash` tool)
 - Searching files (use `Glob` or `Grep` tools)
 - Listing directories (use `Bash(ls)` or `Glob`)
-- Running Node.js or Python scripts (use `Bash` tool)
+- Running Node.js or Python scripts on host (use `Bash` tool)
 
-## playwright MCP Restrictions
+## playwright MCP Usage
 
 ### ONLY use playwright when:
 1. User explicitly asks for browser automation
 2. User wants to take screenshots of web pages
 3. User needs to interact with a website
 4. Task requires web scraping or testing
+5. Filling forms or clicking elements on web pages
 
 ### NEVER use playwright for:
 - General file operations
 - Running commands
 - Anything not related to web browsers
 
+## EXA MCP Usage (via Docker)
+
+### Use EXA (mcp__docker-gateway__web_search_exa) for:
+1. Web searches for current information
+2. Research and documentation lookup
+3. Company and competitor research
+4. Finding code examples online
+
+### Access pattern:
+```
+mcp__docker-gateway__web_search_exa
+```
+
+## Context7 MCP Usage (via Docker)
+
+### Use Context7 for:
+1. Library documentation lookup
+2. API reference for packages/frameworks
+3. Getting up-to-date docs for dependencies
+
+### Access pattern:
+```
+mcp__docker-gateway__resolve-library-id
+mcp__docker-gateway__get-library-docs
+```
+
 ## Rationale
 
-- Native tools execute on the LOCAL system (Windows)
-- docker-gateway executes inside Docker containers (Linux)
+- **Native tools** execute on the LOCAL system (Windows/Mac/Linux)
+- **docker-gateway** executes inside Docker containers (Linux)
 - Using docker-gateway for local operations causes path mismatches and failures
-- Native tools are faster and more reliable for local operations
+- Native tools are faster and more reliable for local file operations
+- EXA and Context7 run inside Docker for isolation and consistent environment
+- playwright runs directly for better browser integration with host system
