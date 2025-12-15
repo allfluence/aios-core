@@ -1,6 +1,6 @@
-# Contributing to AIOS-FULLSTACK
+# Contributing to Synkra AIOS
 
-Thank you for your interest in contributing to AIOS-FULLSTACK! This guide will help you understand our development workflow and validation process.
+Thank you for your interest in contributing to Synkra AIOS! This guide will help you understand our development workflow and validation process.
 
 ## 📋 Table of Contents
 
@@ -26,8 +26,8 @@ Thank you for your interest in contributing to AIOS-FULLSTACK! This guide will h
 1. **Fork and clone the repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/aios-fullstack.git
-cd aios-fullstack
+git clone https://github.com/YOUR_USERNAME/@synkra/aios-core.git
+cd @synkra/aios-core
 ```
 
 2. **Install dependencies**
@@ -51,7 +51,7 @@ npm run typecheck
 
 ## Development Workflow
 
-AIOS-FULLSTACK uses a story-driven development approach with a multi-layer validation system.
+Synkra AIOS uses a story-driven development approach with a multi-layer validation system.
 
 ### 1. Create a Feature Branch
 
@@ -385,4 +385,4 @@ See our [Squads Guide](docs/guides/squads-guide.md) for:
 
 ---
 
-**Thank you for contributing to AIOS-FULLSTACK!** 🚀
+**Thank you for contributing to Synkra AIOS!** 🚀
