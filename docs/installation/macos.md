@@ -57,7 +57,7 @@ Download from [cli.github.com](https://cli.github.com/)
 
 3. Run the installer:
    ```bash
-   npx github:SynkraAI/@synkra/aios-core install
+   npx github:SynkraAI/aios-core install
    ```
 
 ### What the Installer Does
@@ -143,7 +143,7 @@ macOS filesystems can be case-insensitive by default. If you experience issues:
 To update an existing installation:
 
 ```bash
-npx github:SynkraAI/@synkra/aios-core install
+npx github:SynkraAI/aios-core install
 ```
 
 The updater will:

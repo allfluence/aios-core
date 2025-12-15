@@ -44,7 +44,7 @@ See [Migration Guide](./migration-v2.0-to-v2.1.md) for breaking changes and upgr
 
 1. Check [Troubleshooting Guide](./troubleshooting.md)
 2. Search [FAQ](./faq.md)
-3. Open a [GitHub Issue](https://github.com/SynkraAI/@synkra/aios-core/issues)
+3. Open a [GitHub Issue](https://github.com/SynkraAI/aios-core/issues)
 
 ---
 
@@ -93,5 +93,5 @@ See [Migration Guide](./migration-v2.0-to-v2.1.md) for breaking changes and upgr
 
 ## Support
 
-- **GitHub Issues**: [@synkra/aios-core/issues](https://github.com/SynkraAI/@synkra/aios-core/issues)
+- **GitHub Issues**: [@synkra/aios-core/issues](https://github.com/SynkraAI/aios-core/issues)
 - **Documentation**: [docs/](../)

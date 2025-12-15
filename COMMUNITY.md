@@ -1,6 +1,6 @@
-# AIOS Community
+# Synkra AIOS Community
 
-Welcome to the AIOS community!
+Welcome to the Synkra AIOS community!
 
 We're building the future of AI-orchestrated development together.
 

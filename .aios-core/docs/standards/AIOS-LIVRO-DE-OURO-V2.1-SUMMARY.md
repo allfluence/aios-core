@@ -28,7 +28,7 @@ For complete content that remained unchanged (Layer 0, most of Layer 1), refer t
 
 ```bash
 # Old way (v2.0)
-$ git clone https://github.com/SynkraAI/@synkra/aios-core
+$ git clone https://github.com/SynkraAI/aios-core
 $ cd @synkra/aios-core
 $ npm install
 $ cp .env.example .env
@@ -730,7 +730,7 @@ Time elapsed: 12m 18s
 1. ✅ Read this summary (done!)
 2. → Read [Worker Contribution Guide](#worker-contribution)
 3. → Read [Architecture Deep Dive](#architecture-v21)
-4. → Browse [Open Issues](https://github.com/SynkraAI/@synkra/aios-core/issues)
+4. → Browse [Open Issues](https://github.com/SynkraAI/aios-core/issues)
 5. → Join [Discord Community](https://discord.gg/aios)
 
 ---
@@ -1144,7 +1144,7 @@ Impact: Clear roadmap, easy to track progress
 **v2.0 Installation:**
 ```bash
 # 1. Clone repository
-$ git clone https://github.com/SynkraAI/@synkra/aios-core
+$ git clone https://github.com/SynkraAI/aios-core
 $ cd @synkra/aios-core
 
 # 2. Install dependencies

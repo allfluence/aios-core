@@ -78,7 +78,7 @@ You have the right to:
 ## Open Source Transparency
 
 As an open-source project, all code is publicly available for inspection:
-- Repository: [github.com/SynkraAI/@synkra/aios-core](https://github.com/SynkraAI/@synkra/aios-core)
+- Repository: [github.com/SynkraAI/aios-core](https://github.com/SynkraAI/aios-core)
 - No hidden data collection mechanisms
 - All configuration options are documented
 
@@ -94,12 +94,12 @@ We take security seriously:
 - API keys and credentials are never stored by AIOS (users manage their own)
 - Regular security audits of the codebase
 
-For security vulnerabilities, please [open an issue](https://github.com/SynkraAI/@synkra/aios-core/issues) or email security@SynkraAI.com.
+For security vulnerabilities, please [open an issue](https://github.com/SynkraAI/aios-core/issues) or email security@SynkraAI.com.
 
 ## Contact
 
 For privacy concerns or questions:
-- **GitHub Issues:** [Open an issue](https://github.com/SynkraAI/@synkra/aios-core/issues)
+- **GitHub Issues:** [Open an issue](https://github.com/SynkraAI/aios-core/issues)
 - **Email:** privacy@SynkraAI.com
 - **Discord:** [Community Server](https://discord.gg/gk8jAdXWmj)
 

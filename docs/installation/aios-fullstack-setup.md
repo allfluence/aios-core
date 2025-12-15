@@ -532,7 +532,7 @@ sudo systemctl restart aios-1mcp  # Linux
 **Community:**
 - GitHub Issues: https://github.com/your-org/@synkra/aios-core/issues
 - Discord: https://discord.gg/aios
-- Email: support@@synkra/aios-core.com
+- Email: support@synkra/aios-core.com
 
 ---
 

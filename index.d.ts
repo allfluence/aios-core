@@ -1,5 +1,5 @@
-// AIOS-FullStack Workspace - TypeScript Definitions
-declare module '@@synkra/aios-core/workspace' {
+// Synkra AIOS - TypeScript Definitions
+declare module '@synkra/aios-core/workspace' {
     export class AIOS {
         constructor(config?: any);
         initialize(): Promise<AIOS>;
@@ -8,12 +8,12 @@ declare module '@@synkra/aios-core/workspace' {
         search(query: string, options?: any): Promise<any[]>;
         healthCheck(): Promise<any>;
     }
-    
-    export * as core from '@@synkra/aios-core/core';
-    export * as memory from '@@synkra/aios-core/memory';
-    export * as security from '@@synkra/aios-core/security';
-    export * as performance from '@@synkra/aios-core/performance';
-    export * as telemetry from '@@synkra/aios-core/telemetry';
-    
+
+    export * as core from '@synkra/aios-core/core';
+    export * as memory from '@synkra/aios-core/memory';
+    export * as security from '@synkra/aios-core/security';
+    export * as performance from '@synkra/aios-core/performance';
+    export * as telemetry from '@synkra/aios-core/telemetry';
+
     export default AIOS;
 }

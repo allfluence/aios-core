@@ -287,7 +287,7 @@ rm -rf workflows/
 rm -rf tasks/
 rm -rf templates/
 rm -rf Squads/
-rm -rf node_modules/@@synkra/aios-core/
+rm -rf node_modules/@synkra/aios-core/
 
 # Remove global files
 echo "Removing global files..."
@@ -305,9 +305,9 @@ npm cache clean --force
 
 # Remove from package.json
 echo "Updating package.json..."
-npm uninstall @@synkra/aios-core/core
-npm uninstall @@synkra/aios-core/memory
-npm uninstall @@synkra/aios-core/meta-agent
+npm uninstall @synkra/aios-core/core
+npm uninstall @synkra/aios-core/memory
+npm uninstall @synkra/aios-core/meta-agent
 
 echo "Uninstall complete!"
 ```
@@ -389,7 +389,7 @@ pkill -9 -f aios || true
 # Remove all files
 rm -rf .aios* aios* *aios*
 rm -rf agents workflows tasks templates
-rm -rf node_modules/@@synkra/aios-core
+rm -rf node_modules/@synkra/aios-core
 rm -rf ~/.aios* ~/.config/aios* ~/.cache/aios*
 
 # Clean npm

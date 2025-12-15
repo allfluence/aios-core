@@ -66,18 +66,18 @@ jobs:
           echo "" >> CHANGELOG.md
           echo "| Package | Description | Installation |" >> CHANGELOG.md
           echo "|---------|-------------|--------------|" >> CHANGELOG.md
-          echo "| [@@synkra/aios-core/workspace](https://www.npmjs.com/package/@@synkra/aios-core/workspace) | Complete workspace with all components | \`npm install @@synkra/aios-core/workspace\` |" >> CHANGELOG.md
-          echo "| [@@synkra/aios-core/core](https://www.npmjs.com/package/@@synkra/aios-core/core) | Meta-agent orchestration and task management | \`npm install @@synkra/aios-core/core\` |" >> CHANGELOG.md
-          echo "| [@@synkra/aios-core/memory](https://www.npmjs.com/package/@@synkra/aios-core/memory) | Vector storage and semantic search | \`npm install @@synkra/aios-core/memory\` |" >> CHANGELOG.md
-          echo "| [@@synkra/aios-core/security](https://www.npmjs.com/package/@@synkra/aios-core/security) | Input sanitization and vulnerability scanning | \`npm install @@synkra/aios-core/security\` |" >> CHANGELOG.md
-          echo "| [@@synkra/aios-core/performance](https://www.npmjs.com/package/@@synkra/aios-core/performance) | Monitoring, profiling, and optimization | \`npm install @@synkra/aios-core/performance\` |" >> CHANGELOG.md
-          echo "| [@@synkra/aios-core/telemetry](https://www.npmjs.com/package/@@synkra/aios-core/telemetry) | Analytics, error reporting, and metrics | \`npm install @@synkra/aios-core/telemetry\` |" >> CHANGELOG.md
+          echo "| [@synkra/aios-core/workspace](https://www.npmjs.com/package/@synkra/aios-core/workspace) | Complete workspace with all components | \`npm install @synkra/aios-core/workspace\` |" >> CHANGELOG.md
+          echo "| [@synkra/aios-core/core](https://www.npmjs.com/package/@synkra/aios-core/core) | Meta-agent orchestration and task management | \`npm install @synkra/aios-core/core\` |" >> CHANGELOG.md
+          echo "| [@synkra/aios-core/memory](https://www.npmjs.com/package/@synkra/aios-core/memory) | Vector storage and semantic search | \`npm install @synkra/aios-core/memory\` |" >> CHANGELOG.md
+          echo "| [@synkra/aios-core/security](https://www.npmjs.com/package/@synkra/aios-core/security) | Input sanitization and vulnerability scanning | \`npm install @synkra/aios-core/security\` |" >> CHANGELOG.md
+          echo "| [@synkra/aios-core/performance](https://www.npmjs.com/package/@synkra/aios-core/performance) | Monitoring, profiling, and optimization | \`npm install @synkra/aios-core/performance\` |" >> CHANGELOG.md
+          echo "| [@synkra/aios-core/telemetry](https://www.npmjs.com/package/@synkra/aios-core/telemetry) | Analytics, error reporting, and metrics | \`npm install @synkra/aios-core/telemetry\` |" >> CHANGELOG.md
           
           echo "" >> CHANGELOG.md
           echo "## 🚀 Quick Start" >> CHANGELOG.md
           echo "" >> CHANGELOG.md
           echo "\`\`\`javascript" >> CHANGELOG.md
-          echo "const { AIOS } = require('@@synkra/aios-core/workspace');" >> CHANGELOG.md
+          echo "const { AIOS } = require('@synkra/aios-core/workspace');" >> CHANGELOG.md
           echo "" >> CHANGELOG.md
           echo "const aios = new AIOS({" >> CHANGELOG.md
           echo "  // Optional configuration" >> CHANGELOG.md

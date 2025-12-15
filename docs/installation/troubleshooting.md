@@ -679,7 +679,7 @@ ls -la .aios-core/
 
 1. Run `npx @synkra/aios-core status` and note the output
 2. Check this troubleshooting guide
-3. Search existing [GitHub Issues](https://github.com/SynkraAI/@synkra/aios-core/issues)
+3. Search existing [GitHub Issues](https://github.com/SynkraAI/aios-core/issues)
 
 ### Information to Include in Bug Reports
 
@@ -714,7 +714,7 @@ ls -la .aios-core/
 
 ### Support Channels
 
-- **GitHub Issues**: [@synkra/aios-core/issues](https://github.com/SynkraAI/@synkra/aios-core/issues)
+- **GitHub Issues**: [@synkra/aios-core/issues](https://github.com/SynkraAI/aios-core/issues)
 - **Documentation**: [docs/installation/](./README.md)
 - **FAQ**: [faq.md](./faq.md)
 

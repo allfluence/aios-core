@@ -26,8 +26,8 @@ Thank you for your interest in contributing to Synkra AIOS! This guide will help
 1. **Fork and clone the repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/@synkra/aios-core.git
-cd @synkra/aios-core
+git clone https://github.com/YOUR_USERNAME/aios-core.git
+cd aios-core
 ```
 
 2. **Install dependencies**

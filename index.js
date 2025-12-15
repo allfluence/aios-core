@@ -1,9 +1,9 @@
-// AIOS-FullStack Workspace - Complete Framework Entry Point
-const core = require('@@synkra/aios-core/core');
-const memory = require('@@synkra/aios-core/memory');
-const security = require('@@synkra/aios-core/security');
-const performance = require('@@synkra/aios-core/performance');
-const telemetry = require('@@synkra/aios-core/telemetry');
+// Synkra AIOS - Complete Framework Entry Point
+const core = require('@synkra/aios-core/core');
+const memory = require('@synkra/aios-core/memory');
+const security = require('@synkra/aios-core/security');
+const performance = require('@synkra/aios-core/performance');
+const telemetry = require('@synkra/aios-core/telemetry');
 
 // Main AIOS class that orchestrates all components
 class AIOS {

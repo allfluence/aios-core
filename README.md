@@ -321,7 +321,7 @@ Para contribuidores ou usuários avançados que queiram modificar o código font
 ```bash
 # Clonar o repositório
 git clone https://github.com/SynkraAI/aios-core.git
-cd @synkra/aios-core
+cd aios-core
 
 # Instalar dependências
 npm install

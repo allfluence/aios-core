@@ -75,7 +75,7 @@ cp -r .aios-core/tasks/custom ../backups/custom-tasks/
 
 ```bash
 # Record current version
-npm list @@synkra/aios-core/core > ../backups/version-info.txt
+npm list @synkra/aios-core/core > ../backups/version-info.txt
 
 # List custom files
 find .aios-core -name "*.custom.*" -type f > ../backups/custom-files.txt
@@ -121,13 +121,13 @@ aios init --upgrade
 ```bash
 # Update project dependencies
 cd your-project
-npm update @@synkra/aios-core/core
+npm update @synkra/aios-core/core
 
 # Reinstall dependencies
 npm install
 
 # Verify upgrade
-npm list @@synkra/aios-core/core
+npm list @synkra/aios-core/core
 ```
 
 ## Post-Upgrade Verification
@@ -269,7 +269,7 @@ aios memory reset
 If you encounter issues not covered here:
 
 1. **Check Logs**: Review `.aios-core/logs/upgrade.log`
-2. **GitHub Issues**: [github.com/SynkraAI/@synkra/aios-core/issues](https://github.com/SynkraAI/@synkra/aios-core/issues)
+2. **GitHub Issues**: [github.com/SynkraAI/aios-core/issues](https://github.com/SynkraAI/aios-core/issues)
 3. **Discord Community**: [discord.gg/gk8jAdXWmj](https://discord.gg/gk8jAdXWmj)
 4. **Documentation**: [docs directory](./README.md)
 

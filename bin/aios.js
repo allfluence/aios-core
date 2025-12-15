@@ -80,7 +80,7 @@ EXAMPLES:
   # Search for workers
   aios workers search "json csv"
 
-For more information, visit: https://github.com/SynkraAI/@synkra/aios-core
+For more information, visit: https://github.com/SynkraAI/aios-core
 `);
 }
 

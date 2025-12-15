@@ -1,4 +1,4 @@
-// @@synkra/aios-core/core - ES Module Entry Point
+// @synkra/aios-core/core - ES Module Entry Point
 import MetaAgent from './utils/component-generator.js';
 import TaskManager from './utils/batch-creator.js';
 import ElicitationEngine from './utils/elicitation-engine.js';

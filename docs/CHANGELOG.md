@@ -110,5 +110,5 @@ npx @synkra/aios-core install --force-upgrade
 - [Installation Guide](./installation/v2.1-quick-start.md)
 - [Troubleshooting](./installation/troubleshooting.md)
 - [FAQ](./installation/faq.md)
-- [GitHub Repository](https://github.com/SynkraAI/@synkra/aios-core)
-- [Issue Tracker](https://github.com/SynkraAI/@synkra/aios-core/issues)
+- [GitHub Repository](https://github.com/SynkraAI/aios-core)
+- [Issue Tracker](https://github.com/SynkraAI/aios-core/issues)

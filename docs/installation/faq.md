@@ -559,7 +559,7 @@ projectStatus:
 
 **Answer:**
 
-1. **Fork the repository:** https://github.com/SynkraAI/@synkra/aios-core
+1. **Fork the repository:** https://github.com/SynkraAI/aios-core
 
 2. **Create a feature branch:**
 
@@ -595,8 +595,8 @@ projectStatus:
 | ------------------- | ---------------------------------------------------------- |
 | **Documentation**   | `docs/` in your project                                    |
 | **Troubleshooting** | [troubleshooting.md](./troubleshooting.md)                 |
-| **GitHub Issues**   | https://github.com/SynkraAI/@synkra/aios-core/issues |
-| **Source Code**     | https://github.com/SynkraAI/@synkra/aios-core        |
+| **GitHub Issues**   | https://github.com/SynkraAI/aios-core/issues |
+| **Source Code**     | https://github.com/SynkraAI/aios-core        |
 
 **Before asking for help:**
 

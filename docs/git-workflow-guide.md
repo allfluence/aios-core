@@ -935,5 +935,5 @@ strategy:
 ---
 
 **Questions? Issues?**
-- [Open an Issue](https://github.com/SynkraAI/@synkra/aios-core/issues)
+- [Open an Issue](https://github.com/SynkraAI/aios-core/issues)
 - [Join Discord](https://discord.gg/gk8jAdXWmj)

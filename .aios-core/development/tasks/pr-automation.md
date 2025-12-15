@@ -71,7 +71,7 @@ To help users contribute to the AIOS open-source project (`@synkra/aios-core`) b
 
 - **pr_url**: `string`
   - **Description**: URL of created pull request
-  - **Example**: `"https://github.com/SynkraAI/@synkra/aios-core/pull/123"`
+  - **Example**: `"https://github.com/SynkraAI/aios-core/pull/123"`
 
 - **pr_number**: `number`
   - **Description**: PR number
@@ -253,7 +253,7 @@ To help users contribute to the AIOS open-source project (`@synkra/aios-core`) b
     - Use GitHub CLI:
       ```bash
       gh pr create \
-        --repo SynkraAI/@synkra/aios-core \
+        --repo SynkraAI/aios-core \
         --title "{title}" \
         --body "{description}" \
         --base main \

@@ -83,7 +83,7 @@ Se você está contribuindo para o AIOS-FullStack em si:
 
 ```bash
 # Clone o repositório
-git clone https://github.com/SynkraAI/@synkra/aios-core
+git clone https://github.com/SynkraAI/aios-core
 cd @synkra/aios-core
 
 # Instale dependências
@@ -821,7 +821,7 @@ O agente @github-devops funciona com QUALQUER repositório git:
 @github-devops
 *detect-repo
 # Output:
-# Repository: github.com/SynkraAI/@synkra/aios-core
+# Repository: github.com/SynkraAI/aios-core
 # Mode: framework-development
 # Quality Gates: Testes do framework AIOS
 ```
@@ -1396,7 +1396,7 @@ Use este checklist para garantir que está seguindo o workflow corretamente:
 - [Trabalhando em Brownfield](./working-in-the-brownfield.md)
 
 ### Suporte
-- [GitHub Issues](https://github.com/SynkraAI/@synkra/aios-core/issues)
+- [GitHub Issues](https://github.com/SynkraAI/aios-core/issues)
 
 ### Exemplos
 Veja `Squads/` para exemplos de:

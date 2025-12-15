@@ -98,11 +98,11 @@ jobs:
               ;;
             "core")
               PKG_DIR=".aios-core"
-              PKG_NAME="@@synkra/aios-core/core"
+              PKG_NAME="@synkra/aios-core/core"
               ;;
             *)
               PKG_DIR="$PACKAGE"
-              PKG_NAME="@@synkra/aios-core/$PACKAGE"
+              PKG_NAME="@synkra/aios-core/$PACKAGE"
               ;;
           esac
           

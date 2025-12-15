@@ -143,7 +143,7 @@ These Terms of Use, together with the [LICENSE](LICENSE), [Privacy Policy](PRIVA
 
 For questions about these terms:
 
-- **GitHub Issues:** [Open an issue](https://github.com/SynkraAI/@synkra/aios-core/issues)
+- **GitHub Issues:** [Open an issue](https://github.com/SynkraAI/aios-core/issues)
 - **Email:** legal@SynkraAI.com
 - **Discord:** [Community Server](https://discord.gg/gk8jAdXWmj)
 
