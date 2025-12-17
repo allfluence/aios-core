@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-17T14:30:41.635Z",
+  "lastUpdated": "2025-12-17T14:40:26.299Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-15T00:53:18.237Z"
     },
     "layer2": {
-      "passRate": 0.864406779661017,
-      "avgTimeMs": 154068,
-      "totalRuns": 59,
-      "lastRun": "2025-12-17T14:30:41.633Z",
+      "passRate": 0.85,
+      "avgTimeMs": 154500,
+      "totalRuns": 60,
+      "lastRun": "2025-12-17T14:40:26.297Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -1955,6 +1955,23 @@
     },
     {
       "timestamp": "2025-12-17T14:30:41.633Z",
+      "layer": 2,
+      "passed": false,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 6,
+        "branchName": "feature/deepseek-usage-tracking",
+        "author": "Pedrovaleriolopez",
+        "lintResult": "failure",
+        "typecheckResult": "success",
+        "testResult": "failure",
+        "storyResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-17T14:40:26.297Z",
       "layer": 2,
       "passed": false,
       "durationMs": 180000,
