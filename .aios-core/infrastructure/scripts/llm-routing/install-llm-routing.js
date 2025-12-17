@@ -163,7 +163,7 @@ function installLLMRouting(options = {}) {
 
   // Only update ~/.claude.json when installation succeeded
   if (result.success) {
-    updateClaudeConfig();
+    updateClaudeConfig(enableTracking);
   }
 
   return result;
@@ -171,8 +171,9 @@ function installLLMRouting(options = {}) {
 
 /**
  * Update ~/.claude.json to mark LLM routing as installed
+ * @param {boolean} trackingEnabled - Whether tracking is enabled
  */
-function updateClaudeConfig() {
+function updateClaudeConfig(trackingEnabled = true) {
   const claudeConfigPath = path.join(os.homedir(), '.claude.json');
 
   try {
@@ -186,7 +187,7 @@ function updateClaudeConfig() {
       version: LLM_ROUTING_VERSION,
       installedAt: new Date().toISOString(),
       commands: ['claude-max', 'claude-free', 'deepseek-usage', 'deepseek-proxy'],
-      trackingEnabled: true
+      trackingEnabled
     };
 
     fs.writeFileSync(claudeConfigPath, JSON.stringify(config, null, 2));
