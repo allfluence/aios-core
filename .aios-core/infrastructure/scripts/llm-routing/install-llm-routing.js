@@ -17,7 +17,7 @@ const path = require('path');
 const os = require('os');
 
 const isWindows = os.platform() === 'win32';
-const LLM_ROUTING_VERSION = '1.0.0';
+const LLM_ROUTING_VERSION = '1.1.0'; // Added usage tracking support
 
 /**
  * Get the installation directory for commands
@@ -61,6 +61,7 @@ function getInstallDir() {
  * @param {Object} options - Installation options
  * @param {string} options.projectRoot - Project root directory
  * @param {string} options.templatesDir - Templates directory
+ * @param {boolean} options.enableTracking - Enable usage tracking (default: true)
  * @param {Function} options.onProgress - Progress callback
  * @param {Function} options.onError - Error callback
  * @returns {Object} Installation result
@@ -69,6 +70,7 @@ function installLLMRouting(options = {}) {
   const {
     projectRoot = process.cwd(),
     templatesDir = path.join(__dirname, 'templates'),
+    enableTracking = true,
     onProgress = console.log,
     onError = console.error
   } = options;
@@ -94,13 +96,16 @@ function installLLMRouting(options = {}) {
   onProgress(`📂 Installing to: ${installDir}`);
 
   // Determine which scripts to install
+  // Use tracked version of claude-free if tracking is enabled
+  const claudeFreeScript = enableTracking ? 'claude-free-tracked' : 'claude-free';
+
   const scripts = isWindows
-    ? ['claude-free.cmd', 'claude-max.cmd']
-    : ['claude-free.sh', 'claude-max.sh'];
+    ? [`${claudeFreeScript}.cmd`, 'claude-max.cmd', 'deepseek-usage.cmd', 'deepseek-proxy.cmd']
+    : [`${claudeFreeScript}.sh`, 'claude-max.sh', 'deepseek-usage.sh', 'deepseek-proxy.sh'];
 
   const targetNames = isWindows
-    ? ['claude-free.cmd', 'claude-max.cmd']
-    : ['claude-free', 'claude-max'];
+    ? ['claude-free.cmd', 'claude-max.cmd', 'deepseek-usage.cmd', 'deepseek-proxy.cmd']
+    : ['claude-free', 'claude-max', 'deepseek-usage', 'deepseek-proxy'];
 
   // Install each script
   scripts.forEach((script, index) => {
@@ -180,7 +185,8 @@ function updateClaudeConfig() {
     config.aiosLLMRouting = {
       version: LLM_ROUTING_VERSION,
       installedAt: new Date().toISOString(),
-      commands: ['claude-max', 'claude-free']
+      commands: ['claude-max', 'claude-free', 'deepseek-usage', 'deepseek-proxy'],
+      trackingEnabled: true
     };
 
     fs.writeFileSync(claudeConfigPath, JSON.stringify(config, null, 2));
@@ -216,11 +222,13 @@ function getInstallationSummary(result) {
   if (result.success) {
     summary.push('');
     summary.push('📋 LLM Routing Installation Complete!');
-    summary.push('═'.repeat(50));
+    summary.push('═'.repeat(60));
     summary.push('');
     summary.push('Commands installed:');
-    summary.push('  • claude-max   → Uses your Claude Max subscription');
-    summary.push('  • claude-free  → Uses DeepSeek (~$0.14/M tokens)');
+    summary.push('  • claude-max      → Uses your Claude Max subscription');
+    summary.push('  • claude-free     → Uses DeepSeek (~$0.14/M tokens) with tracking');
+    summary.push('  • deepseek-usage  → View usage statistics by alias');
+    summary.push('  • deepseek-proxy  → Manage the usage tracking proxy');
     summary.push('');
 
     if (result.envCreated) {
@@ -231,8 +239,12 @@ function getInstallationSummary(result) {
     }
 
     summary.push('Usage:');
-    summary.push('  claude-max   # For premium Claude experience');
-    summary.push('  claude-free  # For cost-effective development');
+    summary.push('  claude-max          # Premium Claude experience');
+    summary.push('  claude-free         # Cost-effective development (tracked)');
+    summary.push('  deepseek-usage      # View all usage stats');
+    summary.push('  deepseek-usage <alias>  # Stats for specific alias');
+    summary.push('');
+    summary.push('Usage data saved to: ~/.aios/usage-tracking/deepseek-usage.json');
     summary.push('');
   } else {
     summary.push('');
