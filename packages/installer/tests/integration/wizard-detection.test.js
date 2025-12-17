@@ -39,7 +39,8 @@ describe('Wizard Integration with Project Type Detection', () => {
 
       expect(result.projectType).toBe('GREENFIELD');
       expect(result.targetDir).toBe('/test-greenfield');
-      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('GREENFIELD'));
+      // Output uses lowercase format for display
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('greenfield'));
     });
 
     test('getProjectType helper returns GREENFIELD for empty directory', () => {
@@ -79,7 +80,7 @@ describe('Wizard Integration with Project Type Detection', () => {
 
       expect(result.projectType).toBe('BROWNFIELD');
       expect(result.targetDir).toBe('/test-brownfield');
-      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('BROWNFIELD'));
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('brownfield'));
     });
 
     test('wizard correctly detects and processes BROWNFIELD project with .git', async () => {
@@ -97,7 +98,7 @@ describe('Wizard Integration with Project Type Detection', () => {
       const result = await runWizard({ targetDir: '/test-git' });
 
       expect(result.projectType).toBe('BROWNFIELD');
-      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('BROWNFIELD'));
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('brownfield'));
     });
 
     test('getProjectType helper returns BROWNFIELD for existing project', () => {
@@ -134,7 +135,8 @@ describe('Wizard Integration with Project Type Detection', () => {
 
       expect(result.projectType).toBe('EXISTING_AIOS');
       expect(result.targetDir).toBe('/test-existing');
-      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('EXISTING_AIOS'));
+      // Output shows "brownfield" since EXISTING_AIOS is treated as brownfield update
+      expect(console.log).toHaveBeenCalledWith(expect.stringContaining('brownfield'));
     });
 
     test('confirmProjectType shows update/reinstall message for EXISTING_AIOS', async () => {
@@ -212,7 +214,7 @@ describe('Wizard Integration with Project Type Detection', () => {
       });
 
       await expect(runWizard({ targetDir: '/invalid' })).rejects.toThrow(
-        'Failed to detect project type',
+        'Directory does not exist',
       );
     });
 
@@ -341,7 +343,7 @@ describe('Wizard Integration with Project Type Detection', () => {
       await runWizard({ targetDir: '/test' });
 
       expect(console.log).toHaveBeenCalledWith(
-        expect.stringContaining('Detecting project type'),
+        expect.stringContaining('Analyzing project directory'),
       );
     });
   });

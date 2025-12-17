@@ -60,7 +60,8 @@ describe('Config Generator', () => {
 
       expect(context.DEPLOYMENT_WORKFLOW).toBe('direct-to-main');
       expect(context.STAGING_BRANCH).toBe('null');
-      expect(context.DEFAULT_TARGET).toBe('main');
+      // direct-to-main uses 'production' as symbolic target (resolved by deployment-config-loader)
+      expect(context.DEFAULT_TARGET).toBe('production');
     });
 
     it('should include quality gates', () => {
@@ -69,7 +70,7 @@ describe('Config Generator', () => {
           lint: true,
           typecheck: false,
           tests: true,
-          security: true,
+          securityScan: true,
           minCoverage: 80,
         },
       };

@@ -7,6 +7,29 @@
  * @module env-template
  */
 
+const path = require('path');
+const fs = require('fs');
+
+/**
+ * Get the current AIOS version from package.json
+ * @returns {string} The version string
+ */
+function getAiosVersion() {
+  try {
+    // Try to find the root package.json
+    const rootPkgPath = path.resolve(__dirname, '../../../../package.json');
+    if (fs.existsSync(rootPkgPath)) {
+      const pkg = JSON.parse(fs.readFileSync(rootPkgPath, 'utf8'));
+      return pkg.version || '2.2.0';
+    }
+  } catch {
+    // Ignore errors
+  }
+  return '2.2.0';
+}
+
+const AIOS_VERSION = getAiosVersion();
+
 /**
  * Generate .env file content
  *
@@ -118,7 +141,7 @@ VERCEL_TOKEN=
 # AIOS Core Configuration
 # --------------------------------------------
 NODE_ENV=development
-AIOS_VERSION=2.1.6
+AIOS_VERSION=${AIOS_VERSION}
 
 # --------------------------------------------
 # Custom Configuration
@@ -230,7 +253,7 @@ VERCEL_TOKEN=
 # AIOS Core Configuration
 # --------------------------------------------
 NODE_ENV=development
-AIOS_VERSION=2.1.6
+AIOS_VERSION=${AIOS_VERSION}
 
 # --------------------------------------------
 # Custom Configuration

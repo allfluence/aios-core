@@ -17,7 +17,7 @@ describe('.env Template Generator', () => {
       expect(content).toContain(`AIOS_VERSION=${pkg.version}`);
       expect(content).toContain('OPENAI_API_KEY=');
       expect(content).toContain('ANTHROPIC_API_KEY=');
-      expect(content).toContain('# AIOS Environment Configuration');
+      expect(content).toContain('# Synkra AIOS Environment Configuration');
     });
 
     it('should generate .env with provided API keys', () => {
@@ -49,9 +49,9 @@ describe('.env Template Generator', () => {
     it('should include helpful comments', () => {
       const content = generateEnvContent();
 
-      expect(content).toContain('# AI Providers');
-      expect(content).toContain('# Optional Services');
-      expect(content).toContain('# Get yours at:');
+      expect(content).toContain('# LLM Providers');
+      expect(content).toContain('# Search & Research Tools');
+      expect(content).toContain('Get your key at:');
     });
 
     it('should not contain sensitive data in comments', () => {
@@ -70,7 +70,7 @@ describe('.env Template Generator', () => {
       const lines = content.split('\n').filter(line => !line.startsWith('#') && line.trim());
       lines.forEach(line => {
         if (line.includes('=')) {
-          expect(line).toMatch(/^[A-Z_]+=.*/);
+          expect(line).toMatch(/^[A-Z0-9_]+=.*/);
           // Check there are NO spaces before or after the = sign
           expect(line).not.toMatch(/\s=/); // No space before =
           expect(line).not.toMatch(/=\s[^=]*$/); // No space after = (except in comments)
@@ -109,7 +109,7 @@ describe('.env Template Generator', () => {
 
       expect(content).toContain('https://platform.openai.com');
       expect(content).toContain('https://console.anthropic.com');
-      expect(content).toContain('https://app.clickup.com');
+      expect(content).toContain('ClickUp Settings');
       expect(content).toContain('https://github.com/settings/tokens');
     });
 
@@ -171,8 +171,8 @@ describe('.env Template Generator', () => {
 
       // Should have clear section headers
       expect(content).toContain('# AIOS Core Configuration');
-      expect(content).toContain('# AI Providers');
-      expect(content).toContain('# Optional Services');
+      expect(content).toContain('# LLM Providers');
+      expect(content).toContain('# Search & Research Tools');
     });
 
     it('should include usage instructions', () => {
