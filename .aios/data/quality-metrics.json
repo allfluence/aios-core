@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-18T19:34:49.628Z",
+  "lastUpdated": "2025-12-18T22:02:14.696Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-18T18:35:33.357Z"
     },
     "layer2": {
-      "passRate": 0.897196261682243,
-      "avgTimeMs": 153084,
-      "totalRuns": 107,
-      "lastRun": "2025-12-18T19:34:49.626Z",
+      "passRate": 0.8981481481481481,
+      "avgTimeMs": 153333,
+      "totalRuns": 108,
+      "lastRun": "2025-12-18T22:02:14.695Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -65,7 +65,7 @@
       },
       {
         "date": "2025-12-18",
-        "value": 0.84375
+        "value": 0.8484848484848485
       }
     ]
   },
@@ -3580,6 +3580,23 @@
         "branchName": "feat/story-6.17-semantic-release",
         "author": "Pedrovaleriolopez",
         "lintResult": "failure",
+        "typecheckResult": "success",
+        "testResult": "success",
+        "storyResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-18T22:02:14.695Z",
+      "layer": 2,
+      "passed": true,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 9,
+        "branchName": "feat/sprint-7-squad-system",
+        "author": "Pedrovaleriolopez",
+        "lintResult": "success",
         "typecheckResult": "success",
         "testResult": "success",
         "storyResult": "success"
