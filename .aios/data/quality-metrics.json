@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-18T19:05:47.075Z",
+  "lastUpdated": "2025-12-18T19:34:49.628Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-18T18:35:33.357Z"
     },
     "layer2": {
-      "passRate": 0.9056603773584906,
-      "avgTimeMs": 152830,
-      "totalRuns": 106,
-      "lastRun": "2025-12-18T19:05:47.073Z",
+      "passRate": 0.897196261682243,
+      "avgTimeMs": 153084,
+      "totalRuns": 107,
+      "lastRun": "2025-12-18T19:34:49.626Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -65,7 +65,7 @@
       },
       {
         "date": "2025-12-18",
-        "value": 0.8709677419354839
+        "value": 0.84375
       }
     ]
   },
@@ -3561,6 +3561,23 @@
         "triggeredBy": "pr",
         "prNumber": 7,
         "branchName": "fix/story-6.16-scripts-path-consolidation",
+        "author": "Pedrovaleriolopez",
+        "lintResult": "failure",
+        "typecheckResult": "success",
+        "testResult": "success",
+        "storyResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-18T19:34:49.626Z",
+      "layer": 2,
+      "passed": false,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 8,
+        "branchName": "feat/story-6.17-semantic-release",
         "author": "Pedrovaleriolopez",
         "lintResult": "failure",
         "typecheckResult": "success",
