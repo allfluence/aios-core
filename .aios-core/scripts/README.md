@@ -41,6 +41,7 @@ OLD PATH                                      NEW PATH
 -----------------------------------------     ------------------------------------------
 .aios-core/scripts/context-detector.js      → .aios-core/core/session/context-detector.js
 .aios-core/scripts/elicitation-engine.js    → .aios-core/core/elicitation/elicitation-engine.js
+.aios-core/scripts/elicitation-session-manager.js → .aios-core/core/elicitation/session-manager.js
 .aios-core/scripts/greeting-builder.js      → .aios-core/development/scripts/greeting-builder.js
 .aios-core/scripts/workflow-navigator.js    → .aios-core/development/scripts/workflow-navigator.js
 .aios-core/scripts/agent-exit-hooks.js      → .aios-core/development/scripts/agent-exit-hooks.js
