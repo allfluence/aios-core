@@ -1,0 +1,897 @@
+/**
+ * Squad Generator
+ *
+ * Generates squad structure following task-first architecture.
+ * Used by the *create-squad task of the squad-creator agent.
+ *
+ * @module squad-generator
+ * @version 1.0.0
+ * @see Story SQS-4: Squad Creator Agent + Tasks
+ */
+
+const fs = require('fs').promises;
+const path = require('path');
+const { execSync } = require('child_process');
+
+/**
+ * Default path for squads directory
+ * @constant {string}
+ */
+const DEFAULT_SQUADS_PATH = './squads';
+
+/**
+ * Default AIOS minimum version
+ * @constant {string}
+ */
+const DEFAULT_AIOS_MIN_VERSION = '2.1.0';
+
+/**
+ * Available templates
+ * @constant {string[]}
+ */
+const AVAILABLE_TEMPLATES = ['basic', 'etl', 'agent-only'];
+
+/**
+ * Available config modes
+ * @constant {string[]}
+ */
+const CONFIG_MODES = ['extend', 'override', 'none'];
+
+/**
+ * Available licenses
+ * @constant {string[]}
+ */
+const AVAILABLE_LICENSES = ['MIT', 'Apache-2.0', 'ISC', 'UNLICENSED'];
+
+/**
+ * Directories to create in squad structure
+ * @constant {string[]}
+ */
+const SQUAD_DIRECTORIES = [
+  '',
+  'config',
+  'agents',
+  'tasks',
+  'workflows',
+  'checklists',
+  'templates',
+  'tools',
+  'scripts',
+  'data',
+];
+
+/**
+ * Error codes for SquadGeneratorError
+ * @enum {string}
+ */
+const GeneratorErrorCodes = {
+  INVALID_NAME: 'INVALID_NAME',
+  SQUAD_EXISTS: 'SQUAD_EXISTS',
+  PERMISSION_DENIED: 'PERMISSION_DENIED',
+  TEMPLATE_NOT_FOUND: 'TEMPLATE_NOT_FOUND',
+  INVALID_CONFIG_MODE: 'INVALID_CONFIG_MODE',
+};
+
+/**
+ * Custom error class for Squad Generator operations
+ * @extends Error
+ */
+class SquadGeneratorError extends Error {
+  /**
+   * Create a SquadGeneratorError
+   * @param {string} code - Error code from GeneratorErrorCodes enum
+   * @param {string} message - Human-readable error message
+   * @param {string} [suggestion] - Suggested fix for the error
+   */
+  constructor(code, message, suggestion) {
+    super(message);
+    this.name = 'SquadGeneratorError';
+    this.code = code;
+    this.suggestion = suggestion || '';
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, SquadGeneratorError);
+    }
+  }
+
+  /**
+   * Create error for invalid squad name
+   * @param {string} name - Invalid name provided
+   * @returns {SquadGeneratorError}
+   */
+  static invalidName(name) {
+    return new SquadGeneratorError(
+      GeneratorErrorCodes.INVALID_NAME,
+      `Invalid squad name "${name}": must be kebab-case (lowercase letters, numbers, hyphens)`,
+      'Use format: my-squad-name (lowercase, hyphens only)',
+    );
+  }
+
+  /**
+   * Create error for existing squad
+   * @param {string} name - Squad name that exists
+   * @param {string} squadPath - Path where squad exists
+   * @returns {SquadGeneratorError}
+   */
+  static squadExists(name, squadPath) {
+    return new SquadGeneratorError(
+      GeneratorErrorCodes.SQUAD_EXISTS,
+      `Squad "${name}" already exists at ${squadPath}`,
+      `Choose a different name or delete existing squad: rm -rf ${squadPath}`,
+    );
+  }
+
+  /**
+   * Create error for invalid template
+   * @param {string} template - Invalid template name
+   * @returns {SquadGeneratorError}
+   */
+  static templateNotFound(template) {
+    return new SquadGeneratorError(
+      GeneratorErrorCodes.TEMPLATE_NOT_FOUND,
+      `Template "${template}" not found`,
+      `Available templates: ${AVAILABLE_TEMPLATES.join(', ')}`,
+    );
+  }
+
+  /**
+   * Create error for invalid config mode
+   * @param {string} mode - Invalid config mode
+   * @returns {SquadGeneratorError}
+   */
+  static invalidConfigMode(mode) {
+    return new SquadGeneratorError(
+      GeneratorErrorCodes.INVALID_CONFIG_MODE,
+      `Invalid config mode "${mode}"`,
+      `Available modes: ${CONFIG_MODES.join(', ')}`,
+    );
+  }
+}
+
+/**
+ * Get git user name
+ * @returns {string} Git user name or 'Unknown'
+ */
+function getGitUserName() {
+  try {
+    const name = execSync('git config user.name', { encoding: 'utf-8' }).trim();
+    return name || 'Unknown';
+  } catch {
+    return 'Unknown';
+  }
+}
+
+/**
+ * Validate squad name (kebab-case)
+ * @param {string} name - Name to validate
+ * @returns {boolean} True if valid
+ */
+function isValidSquadName(name) {
+  // Must be kebab-case: lowercase letters, numbers, and hyphens
+  // Must start with letter, end with letter or number
+  // Minimum 2 characters
+  return /^[a-z][a-z0-9-]*[a-z0-9]$/.test(name) && name.length >= 2;
+}
+
+/**
+ * Extract slash prefix from squad name
+ * @param {string} name - Squad name
+ * @returns {string} Slash prefix
+ */
+function extractSlashPrefix(name) {
+  // Remove -squad suffix if present
+  return name.replace(/-squad$/, '');
+}
+
+// =============================================================================
+// TEMPLATES
+// =============================================================================
+
+/**
+ * Generate squad.yaml content
+ * @param {Object} config - Squad configuration
+ * @returns {string} YAML content
+ */
+function generateSquadYaml(config) {
+  const components = {
+    tasks: config.includeTask ? ['example-agent-task.md'] : [],
+    agents: config.includeAgent ? ['example-agent.md'] : [],
+    workflows: [],
+    checklists: [],
+    templates: [],
+    tools: [],
+    scripts: [],
+  };
+
+  // For etl template, add more components
+  if (config.template === 'etl') {
+    components.agents = ['data-extractor.md', 'data-transformer.md'];
+    components.tasks = [
+      'extract-data.md',
+      'transform-data.md',
+      'load-data.md',
+    ];
+    components.scripts = ['utils.js'];
+  }
+
+  // For agent-only template
+  if (config.template === 'agent-only') {
+    components.agents = ['primary-agent.md', 'helper-agent.md'];
+    components.tasks = [];
+  }
+
+  const configSection =
+    config.configMode === 'none'
+      ? {}
+      : {
+          extends: config.configMode,
+          'coding-standards': 'config/coding-standards.md',
+          'tech-stack': 'config/tech-stack.md',
+          'source-tree': 'config/source-tree.md',
+        };
+
+  const yaml = `name: ${config.name}
+version: 1.0.0
+description: ${config.description || 'Custom squad'}
+author: ${config.author || 'Unknown'}
+license: ${config.license || 'MIT'}
+slashPrefix: ${extractSlashPrefix(config.name)}
+
+aios:
+  minVersion: "${config.aiosMinVersion || DEFAULT_AIOS_MIN_VERSION}"
+  type: squad
+
+components:
+  tasks:${components.tasks.length ? '\n    - ' + components.tasks.join('\n    - ') : ' []'}
+  agents:${components.agents.length ? '\n    - ' + components.agents.join('\n    - ') : ' []'}
+  workflows: []
+  checklists: []
+  templates: []
+  tools: []
+  scripts:${components.scripts.length ? '\n    - ' + components.scripts.join('\n    - ') : ' []'}
+
+config:${
+    config.configMode === 'none'
+      ? ' {}'
+      : `
+  extends: ${configSection.extends}
+  coding-standards: ${configSection['coding-standards']}
+  tech-stack: ${configSection['tech-stack']}
+  source-tree: ${configSection['source-tree']}`
+  }
+
+dependencies:
+  node: []
+  python: []
+  squads: []
+
+tags:
+  - custom
+`;
+
+  return yaml;
+}
+
+/**
+ * Generate README.md content
+ * @param {Object} config - Squad configuration
+ * @returns {string} Markdown content
+ */
+function generateReadme(config) {
+  return `# ${config.name}
+
+${config.description || 'Custom AIOS squad.'}
+
+## Installation
+
+This squad is installed locally in your project:
+
+\`\`\`
+./squads/${config.name}/
+\`\`\`
+
+## Usage
+
+Activate agents from this squad and use their commands.
+
+### Available Agents
+
+${config.includeAgent || config.template !== 'basic' ? '- **example-agent** - Example agent (customize or remove)' : '_No agents defined yet_'}
+
+### Available Tasks
+
+${config.includeTask || config.template === 'etl' ? '- **example-agent-task** - Example task (customize or remove)' : '_No tasks defined yet_'}
+
+## Configuration
+
+This squad ${config.configMode === 'extend' ? 'extends' : config.configMode === 'override' ? 'overrides' : 'does not inherit'} the core AIOS configuration.
+
+## Development
+
+1. Add agents in \`agents/\` directory
+2. Add tasks in \`tasks/\` directory (task-first architecture!)
+3. Update \`squad.yaml\` components section
+4. Validate: \`@squad-creator *validate-squad ${config.name}\`
+
+## License
+
+${config.license || 'MIT'}
+`;
+}
+
+/**
+ * Generate coding-standards.md content
+ * @param {Object} config - Squad configuration
+ * @returns {string} Markdown content
+ */
+function generateCodingStandards(config) {
+  return `# Coding Standards - ${config.name}
+
+> This file ${config.configMode === 'extend' ? 'extends' : config.configMode === 'override' ? 'overrides' : 'is independent of'} the core AIOS coding standards.
+
+## Code Style
+
+- Follow consistent naming conventions
+- Use meaningful variable and function names
+- Keep functions small and focused
+- Document complex logic with comments
+
+## File Organization
+
+- Place agents in \`agents/\` directory
+- Place tasks in \`tasks/\` directory
+- Place utilities in \`scripts/\` directory
+
+## Testing
+
+- Write tests for all new functionality
+- Maintain test coverage above 80%
+- Use descriptive test names
+
+## Documentation
+
+- Document all public APIs
+- Include examples in documentation
+- Keep README.md up to date
+`;
+}
+
+/**
+ * Generate tech-stack.md content
+ * @param {Object} config - Squad configuration
+ * @returns {string} Markdown content
+ */
+function generateTechStack(config) {
+  return `# Tech Stack - ${config.name}
+
+## Runtime
+
+- Node.js >= 18.x
+- AIOS >= ${config.aiosMinVersion || DEFAULT_AIOS_MIN_VERSION}
+
+## Dependencies
+
+_Add your squad's dependencies here_
+
+## Development Tools
+
+- ESLint for code quality
+- Jest for testing
+- Prettier for formatting
+`;
+}
+
+/**
+ * Generate source-tree.md content
+ * @param {Object} config - Squad configuration
+ * @returns {string} Markdown content
+ */
+function generateSourceTree(config) {
+  return `# Source Tree - ${config.name}
+
+\`\`\`
+${config.name}/
+├── squad.yaml              # Squad manifest
+├── README.md               # Documentation
+├── config/                 # Configuration files
+│   ├── coding-standards.md
+│   ├── tech-stack.md
+│   └── source-tree.md
+├── agents/                 # Agent definitions
+├── tasks/                  # Task definitions
+├── workflows/              # Multi-step workflows
+├── checklists/             # Validation checklists
+├── templates/              # Document templates
+├── tools/                  # Custom tools
+├── scripts/                # Utility scripts
+└── data/                   # Static data
+\`\`\`
+
+## Directory Purpose
+
+| Directory | Purpose |
+|-----------|---------|
+| \`agents/\` | Agent persona definitions (.md) |
+| \`tasks/\` | Executable task workflows (.md) |
+| \`workflows/\` | Multi-step workflow definitions |
+| \`checklists/\` | Validation and review checklists |
+| \`templates/\` | Document and code templates |
+| \`tools/\` | Custom tool definitions |
+| \`scripts/\` | JavaScript/Python utilities |
+| \`data/\` | Static data files |
+`;
+}
+
+/**
+ * Generate example agent content
+ * @param {Object} config - Squad configuration
+ * @returns {string} Markdown content
+ */
+function generateExampleAgent(config) {
+  const agentName = config.template === 'etl' ? 'data-extractor' : 'example-agent';
+  const title = config.template === 'etl' ? 'Data Extractor' : 'Example Agent';
+
+  return `# ${agentName}
+
+## Agent Definition
+
+\`\`\`yaml
+agent:
+  name: ${title.replace(/ /g, '')}
+  id: ${agentName}
+  title: ${title}
+  icon: "🤖"
+  whenToUse: "Use for ${config.template === 'etl' ? 'extracting data from sources' : 'example purposes - customize this'}"
+
+persona:
+  role: ${config.template === 'etl' ? 'Data Extraction Specialist' : 'Example Specialist'}
+  style: Systematic, thorough
+  focus: ${config.template === 'etl' ? 'Extracting data efficiently' : 'Demonstrating squad structure'}
+
+commands:
+  - name: help
+    description: "Show available commands"
+  - name: run
+    description: "${config.template === 'etl' ? 'Extract data from source' : 'Run example task'}"
+    task: ${config.template === 'etl' ? 'extract-data.md' : 'example-agent-task.md'}
+\`\`\`
+
+## Usage
+
+\`\`\`
+@${agentName}
+*help
+*run
+\`\`\`
+`;
+}
+
+/**
+ * Generate example task content
+ * @param {Object} config - Squad configuration
+ * @returns {string} Markdown content
+ */
+function generateExampleTask(config) {
+  const taskName = config.template === 'etl' ? 'extract-data' : 'example-agent-task';
+  const title = config.template === 'etl' ? 'Extract Data' : 'Example Task';
+
+  return `---
+task: ${title}
+responsavel: "@${config.template === 'etl' ? 'data-extractor' : 'example-agent'}"
+responsavel_type: agent
+atomic_layer: task
+Entrada: |
+  - source: Data source path or URL
+  - format: Output format (json, csv, yaml)
+Saida: |
+  - data: Extracted data
+  - status: Success or error message
+Checklist:
+  - "[ ] Validate input parameters"
+  - "[ ] Connect to source"
+  - "[ ] Extract data"
+  - "[ ] Format output"
+  - "[ ] Return result"
+---
+
+# *${taskName.replace(/-/g, '-')}
+
+${config.template === 'etl' ? 'Extracts data from the specified source.' : 'Example task demonstrating task-first architecture.'}
+
+## Usage
+
+\`\`\`
+@${config.template === 'etl' ? 'data-extractor' : 'example-agent'}
+*${taskName.replace('example-agent-', '')} --source ./data/input.json --format json
+\`\`\`
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| \`--source\` | string | Yes | Data source path or URL |
+| \`--format\` | string | No | Output format (default: json) |
+
+## Example
+
+\`\`\`javascript
+// This is a placeholder - implement your logic here
+async function execute(options) {
+  const { source, format } = options;
+
+  // TODO: Implement extraction logic
+  console.log(\`Extracting from \${source} as \${format}\`);
+
+  return { status: 'success', data: {} };
+}
+\`\`\`
+`;
+}
+
+// =============================================================================
+// SQUAD GENERATOR CLASS
+// =============================================================================
+
+/**
+ * Squad Generator class
+ * Generates complete squad structure with all necessary files
+ */
+class SquadGenerator {
+  /**
+   * Create a SquadGenerator
+   * @param {Object} options - Generator options
+   * @param {string} [options.squadsPath] - Path to squads directory
+   */
+  constructor(options = {}) {
+    this.squadsPath = options.squadsPath || DEFAULT_SQUADS_PATH;
+  }
+
+  /**
+   * Check if a path exists
+   * @param {string} filePath - Path to check
+   * @returns {Promise<boolean>} True if exists
+   */
+  async pathExists(filePath) {
+    try {
+      await fs.access(filePath);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Validate generation configuration
+   * @param {Object} config - Configuration to validate
+   * @throws {SquadGeneratorError} If validation fails
+   */
+  validateConfig(config) {
+    // Validate name
+    if (!config.name) {
+      throw new SquadGeneratorError(
+        GeneratorErrorCodes.INVALID_NAME,
+        'Squad name is required',
+        'Provide a name: *create-squad my-squad-name',
+      );
+    }
+
+    if (!isValidSquadName(config.name)) {
+      throw SquadGeneratorError.invalidName(config.name);
+    }
+
+    // Validate template
+    if (config.template && !AVAILABLE_TEMPLATES.includes(config.template)) {
+      throw SquadGeneratorError.templateNotFound(config.template);
+    }
+
+    // Validate config mode
+    if (config.configMode && !CONFIG_MODES.includes(config.configMode)) {
+      throw SquadGeneratorError.invalidConfigMode(config.configMode);
+    }
+  }
+
+  /**
+   * Generate a new squad
+   * @param {Object} config - Squad configuration
+   * @param {string} config.name - Squad name (kebab-case)
+   * @param {string} [config.description] - Squad description
+   * @param {string} [config.author] - Author name
+   * @param {string} [config.license] - License type
+   * @param {string} [config.template='basic'] - Template type
+   * @param {string} [config.configMode='extend'] - Config inheritance mode
+   * @param {boolean} [config.includeAgent=true] - Include example agent
+   * @param {boolean} [config.includeTask=true] - Include example task
+   * @param {string} [config.aiosMinVersion] - Minimum AIOS version
+   * @returns {Promise<Object>} Generation result with path and files
+   * @throws {SquadGeneratorError} If generation fails
+   */
+  async generate(config) {
+    // Set defaults
+    const fullConfig = {
+      name: config.name,
+      description: config.description || 'Custom squad',
+      author: config.author || getGitUserName(),
+      license: config.license || 'MIT',
+      template: config.template || 'basic',
+      configMode: config.configMode || 'extend',
+      includeAgent: config.includeAgent !== false,
+      includeTask: config.includeTask !== false,
+      aiosMinVersion: config.aiosMinVersion || DEFAULT_AIOS_MIN_VERSION,
+    };
+
+    // Validate configuration
+    this.validateConfig(fullConfig);
+
+    const squadPath = path.join(this.squadsPath, fullConfig.name);
+
+    // Check if squad already exists
+    if (await this.pathExists(squadPath)) {
+      throw SquadGeneratorError.squadExists(fullConfig.name, squadPath);
+    }
+
+    // Create directories
+    for (const dir of SQUAD_DIRECTORIES) {
+      const dirPath = path.join(squadPath, dir);
+      await fs.mkdir(dirPath, { recursive: true });
+    }
+
+    // Track generated files
+    const files = [];
+
+    // Generate main files
+    const mainFiles = {
+      'squad.yaml': generateSquadYaml(fullConfig),
+      'README.md': generateReadme(fullConfig),
+    };
+
+    for (const [filename, content] of Object.entries(mainFiles)) {
+      const filePath = path.join(squadPath, filename);
+      await fs.writeFile(filePath, content, 'utf-8');
+      files.push(filePath);
+    }
+
+    // Generate config files
+    const configFiles = {
+      'config/coding-standards.md': generateCodingStandards(fullConfig),
+      'config/tech-stack.md': generateTechStack(fullConfig),
+      'config/source-tree.md': generateSourceTree(fullConfig),
+    };
+
+    for (const [filename, content] of Object.entries(configFiles)) {
+      const filePath = path.join(squadPath, filename);
+      await fs.writeFile(filePath, content, 'utf-8');
+      files.push(filePath);
+    }
+
+    // Generate example agent if requested
+    if (fullConfig.includeAgent) {
+      const agentContent = generateExampleAgent(fullConfig);
+      const agentName =
+        fullConfig.template === 'etl' ? 'data-extractor.md' : 'example-agent.md';
+      const agentPath = path.join(squadPath, 'agents', agentName);
+      await fs.writeFile(agentPath, agentContent, 'utf-8');
+      files.push(agentPath);
+
+      // For ETL template, add second agent
+      if (fullConfig.template === 'etl') {
+        const transformerConfig = { ...fullConfig, template: 'basic' };
+        const transformerContent = generateExampleAgent(transformerConfig)
+          .replace(/data-extractor/g, 'data-transformer')
+          .replace(/Data Extractor/g, 'Data Transformer')
+          .replace(/extracting data/g, 'transforming data')
+          .replace(/extract-data/g, 'transform-data');
+        const transformerPath = path.join(squadPath, 'agents', 'data-transformer.md');
+        await fs.writeFile(transformerPath, transformerContent, 'utf-8');
+        files.push(transformerPath);
+      }
+
+      // For agent-only template, add agents
+      if (fullConfig.template === 'agent-only') {
+        const primaryContent = generateExampleAgent({ ...fullConfig, template: 'basic' })
+          .replace(/example-agent/g, 'primary-agent')
+          .replace(/Example Agent/g, 'Primary Agent');
+        const primaryPath = path.join(squadPath, 'agents', 'primary-agent.md');
+        await fs.writeFile(primaryPath, primaryContent, 'utf-8');
+        files.push(primaryPath);
+
+        const helperContent = generateExampleAgent({ ...fullConfig, template: 'basic' })
+          .replace(/example-agent/g, 'helper-agent')
+          .replace(/Example Agent/g, 'Helper Agent');
+        const helperPath = path.join(squadPath, 'agents', 'helper-agent.md');
+        await fs.writeFile(helperPath, helperContent, 'utf-8');
+        files.push(helperPath);
+      }
+    }
+
+    // Generate example task if requested
+    if (fullConfig.includeTask && fullConfig.template !== 'agent-only') {
+      const taskContent = generateExampleTask(fullConfig);
+      const taskName =
+        fullConfig.template === 'etl' ? 'extract-data.md' : 'example-agent-task.md';
+      const taskPath = path.join(squadPath, 'tasks', taskName);
+      await fs.writeFile(taskPath, taskContent, 'utf-8');
+      files.push(taskPath);
+
+      // For ETL template, add more tasks
+      if (fullConfig.template === 'etl') {
+        const transformTask = generateExampleTask(fullConfig)
+          .replace(/extract-data/g, 'transform-data')
+          .replace(/Extract Data/g, 'Transform Data')
+          .replace(/data-extractor/g, 'data-transformer')
+          .replace(/Extracts data/g, 'Transforms data');
+        const transformPath = path.join(squadPath, 'tasks', 'transform-data.md');
+        await fs.writeFile(transformPath, transformTask, 'utf-8');
+        files.push(transformPath);
+
+        const loadTask = generateExampleTask(fullConfig)
+          .replace(/extract-data/g, 'load-data')
+          .replace(/Extract Data/g, 'Load Data')
+          .replace(/data-extractor/g, 'data-loader')
+          .replace(/Extracts data/g, 'Loads data');
+        const loadPath = path.join(squadPath, 'tasks', 'load-data.md');
+        await fs.writeFile(loadPath, loadTask, 'utf-8');
+        files.push(loadPath);
+      }
+    }
+
+    // For ETL template, create utils.js script
+    if (fullConfig.template === 'etl') {
+      const utilsContent = `/**
+ * ETL Utilities
+ *
+ * Utility functions for ETL operations.
+ */
+
+/**
+ * Format data for output
+ * @param {Object} data - Data to format
+ * @param {string} format - Output format (json, csv, yaml)
+ * @returns {string} Formatted data
+ */
+function formatData(data, format = 'json') {
+  switch (format) {
+    case 'json':
+      return JSON.stringify(data, null, 2);
+    case 'csv':
+      // Simple CSV conversion
+      if (Array.isArray(data) && data.length > 0) {
+        const headers = Object.keys(data[0]);
+        const rows = data.map(row => headers.map(h => row[h]).join(','));
+        return [headers.join(','), ...rows].join('\\n');
+      }
+      return '';
+    case 'yaml':
+      // Simple YAML conversion
+      return Object.entries(data)
+        .map(([k, v]) => \`\${k}: \${JSON.stringify(v)}\`)
+        .join('\\n');
+    default:
+      return JSON.stringify(data);
+  }
+}
+
+module.exports = { formatData };
+`;
+      const utilsPath = path.join(squadPath, 'scripts', 'utils.js');
+      await fs.writeFile(utilsPath, utilsContent, 'utf-8');
+      files.push(utilsPath);
+    }
+
+    // Add .gitkeep to empty directories
+    const emptyDirs = ['workflows', 'checklists', 'templates', 'tools', 'data'];
+    if (!fullConfig.includeAgent || fullConfig.template === 'basic') {
+      // Only add .gitkeep if no agents were created
+    }
+    if (!fullConfig.includeTask || fullConfig.template === 'agent-only') {
+      emptyDirs.push('tasks');
+    }
+    if (fullConfig.template !== 'etl') {
+      emptyDirs.push('scripts');
+    }
+
+    for (const dir of emptyDirs) {
+      const gitkeepPath = path.join(squadPath, dir, '.gitkeep');
+      // Only create .gitkeep if directory is empty
+      try {
+        const dirContents = await fs.readdir(path.join(squadPath, dir));
+        if (dirContents.length === 0) {
+          await fs.writeFile(gitkeepPath, '', 'utf-8');
+          files.push(gitkeepPath);
+        }
+      } catch {
+        // Directory might not exist, create .gitkeep anyway
+        await fs.writeFile(gitkeepPath, '', 'utf-8');
+        files.push(gitkeepPath);
+      }
+    }
+
+    return {
+      path: squadPath,
+      files,
+      config: fullConfig,
+    };
+  }
+
+  /**
+   * List local squads
+   * @returns {Promise<Array>} List of squad info objects
+   */
+  async listLocal() {
+    const squads = [];
+
+    try {
+      const entries = await fs.readdir(this.squadsPath, { withFileTypes: true });
+
+      for (const entry of entries) {
+        if (!entry.isDirectory()) continue;
+
+        const squadPath = path.join(this.squadsPath, entry.name);
+
+        // Try to load manifest
+        try {
+          const manifestPath = path.join(squadPath, 'squad.yaml');
+          const manifestContent = await fs.readFile(manifestPath, 'utf-8');
+
+          // Basic YAML parsing for key fields
+          const nameMatch = manifestContent.match(/^name:\s*(.+)$/m);
+          const versionMatch = manifestContent.match(/^version:\s*(.+)$/m);
+          const descriptionMatch = manifestContent.match(/^description:\s*(.+)$/m);
+
+          squads.push({
+            name: nameMatch ? nameMatch[1].trim() : entry.name,
+            version: versionMatch ? versionMatch[1].trim() : 'unknown',
+            description: descriptionMatch ? descriptionMatch[1].trim() : '',
+            path: squadPath,
+          });
+        } catch {
+          // Try config.yaml fallback
+          try {
+            const configPath = path.join(squadPath, 'config.yaml');
+            const configContent = await fs.readFile(configPath, 'utf-8');
+
+            const nameMatch = configContent.match(/^name:\s*(.+)$/m);
+            const versionMatch = configContent.match(/^version:\s*(.+)$/m);
+            const descriptionMatch = configContent.match(/^description:\s*(.+)$/m);
+
+            squads.push({
+              name: nameMatch ? nameMatch[1].trim() : entry.name,
+              version: versionMatch ? versionMatch[1].trim() : 'unknown',
+              description: descriptionMatch ? descriptionMatch[1].trim() : '',
+              path: squadPath,
+              deprecated: true, // Using config.yaml
+            });
+          } catch {
+            // No manifest found, still list but mark as invalid
+            squads.push({
+              name: entry.name,
+              version: 'unknown',
+              description: 'No manifest found',
+              path: squadPath,
+              invalid: true,
+            });
+          }
+        }
+      }
+    } catch (err) {
+      // Squads directory doesn't exist
+      if (err.code !== 'ENOENT') {
+        throw err;
+      }
+    }
+
+    return squads;
+  }
+}
+
+module.exports = {
+  SquadGenerator,
+  SquadGeneratorError,
+  GeneratorErrorCodes,
+  AVAILABLE_TEMPLATES,
+  AVAILABLE_LICENSES,
+  CONFIG_MODES,
+  DEFAULT_SQUADS_PATH,
+  DEFAULT_AIOS_MIN_VERSION,
+  isValidSquadName,
+  getGitUserName,
+};

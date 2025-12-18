@@ -23,6 +23,17 @@ const {
   TASK_REQUIRED_FIELDS,
 } = require('./squad-validator');
 
+const {
+  SquadGenerator,
+  SquadGeneratorError,
+  GeneratorErrorCodes,
+  AVAILABLE_TEMPLATES,
+  AVAILABLE_LICENSES,
+  CONFIG_MODES,
+  isValidSquadName,
+  getGitUserName,
+} = require('./squad-generator');
+
 module.exports = {
   // Squad Loader (SQS-2)
   SquadLoader,
@@ -36,6 +47,13 @@ module.exports = {
   ValidationErrorCodes,
   TASK_REQUIRED_FIELDS,
 
-  // Squad Generator (SQS-4) - TODO: Implement in Story SQS-4
-  // SquadGenerator,
+  // Squad Generator (SQS-4)
+  SquadGenerator,
+  SquadGeneratorError,
+  GeneratorErrorCodes,
+  AVAILABLE_TEMPLATES,
+  AVAILABLE_LICENSES,
+  CONFIG_MODES,
+  isValidSquadName,
+  getGitUserName,
 };
