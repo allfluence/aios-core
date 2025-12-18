@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-18T18:38:32.837Z",
+  "lastUpdated": "2025-12-18T18:54:20.867Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-15T00:53:18.237Z"
     },
     "layer2": {
-      "passRate": 0.8360655737704918,
-      "avgTimeMs": 154918,
-      "totalRuns": 61,
-      "lastRun": "2025-12-18T18:38:32.836Z",
+      "passRate": 0.8225806451612904,
+      "avgTimeMs": 155323,
+      "totalRuns": 62,
+      "lastRun": "2025-12-18T18:54:20.866Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -1993,6 +1993,23 @@
     },
     {
       "timestamp": "2025-12-18T18:38:32.836Z",
+      "layer": 2,
+      "passed": false,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 7,
+        "branchName": "fix/story-6.16-scripts-path-consolidation",
+        "author": "Pedrovaleriolopez",
+        "lintResult": "failure",
+        "typecheckResult": "success",
+        "testResult": "success",
+        "storyResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-18T18:54:20.866Z",
       "layer": 2,
       "passed": false,
       "durationMs": 180000,
