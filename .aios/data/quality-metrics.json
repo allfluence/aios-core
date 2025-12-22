@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-22T21:39:00.616Z",
+  "lastUpdated": "2025-12-22T21:45:38.111Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-18T18:35:33.357Z"
     },
     "layer2": {
-      "passRate": 0.9017857142857143,
-      "avgTimeMs": 154286,
-      "totalRuns": 112,
-      "lastRun": "2025-12-22T21:39:00.614Z",
+      "passRate": 0.9026548672566371,
+      "avgTimeMs": 154513,
+      "totalRuns": 113,
+      "lastRun": "2025-12-22T21:45:38.109Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -3663,6 +3663,23 @@
     },
     {
       "timestamp": "2025-12-22T21:39:00.614Z",
+      "layer": 2,
+      "passed": true,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 12,
+        "branchName": "feature/story-6.19-ide-command-auto-sync",
+        "author": "Pedrovaleriolopez",
+        "lintResult": "success",
+        "typecheckResult": "success",
+        "testResult": "success",
+        "storyResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-22T21:45:38.109Z",
       "layer": 2,
       "passed": true,
       "durationMs": 180000,
