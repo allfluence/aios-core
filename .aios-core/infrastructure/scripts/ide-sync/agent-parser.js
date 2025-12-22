@@ -103,8 +103,11 @@ function extractAgentInfoFallback(content) {
   const iconMatch = content.match(/icon:\s*([^\n]+)/);
   if (iconMatch) agent.icon = iconMatch[1].trim();
 
-  // Try to extract whenToUse
-  const whenMatch = content.match(/whenToUse:\s*["']?([^"'\n]+)["']?/);
+  // Try to extract whenToUse - handle apostrophes within text (e.g., "don't")
+  // First try quoted string, then unquoted to end of line
+  const whenMatchQuoted = content.match(/whenToUse:\s*["'](.+?)["'](?:\n|$)/);
+  const whenMatchUnquoted = content.match(/whenToUse:\s*([^\n]+)/);
+  const whenMatch = whenMatchQuoted || whenMatchUnquoted;
   if (whenMatch) agent.whenToUse = whenMatch[1].trim();
 
   return Object.keys(agent).length > 0 ? agent : null;

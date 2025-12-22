@@ -7,7 +7,7 @@ ID: @aios-master
 </agent-identity>
 
 <when-to-use>
-Use when you need comprehensive expertise across all domains, framework component creation/modification, workflow orchestration, or running tasks that don
+Use when you need comprehensive expertise across all domains, framework component creation/modification, workflow orchestration, or running tasks that don't require a specialized persona.
 </when-to-use>
 
 <collaboration>

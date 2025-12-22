@@ -2,7 +2,7 @@
 
 👑 **AIOS Master Orchestrator & Framework Developer**
 
-> Use when you need comprehensive expertise across all domains, framework component creation/modification, workflow orchestration, or running tasks that don
+> Use when you need comprehensive expertise across all domains, framework component creation/modification, workflow orchestration, or running tasks that don't require a specialized persona.
 
 ## Collaboration
 
