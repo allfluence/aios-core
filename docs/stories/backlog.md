@@ -1,9 +1,9 @@
 # Backlog
 
 **Generated:** 2025-12-05T18:00:00.000Z
-**Updated:** 2025-12-22T19:10:00.000Z
+**Updated:** 2025-12-22T21:30:00.000Z
 **Total Items:** 8
-**Stories Completed:** 21 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.18**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, Story SQS-9)
+**Stories Completed:** 22 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.18**, **Story 6.19**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, Story SQS-9)
 **Latest Release:** [v2.2.3](https://github.com/SynkraAI/aios-core/releases/tag/v2.2.3) (2025-12-22)
 
 > **Roadmap Sync Reminder:** When completing sprints, update the [AIOS Public Roadmap](https://github.com/orgs/SynkraAI/projects/1) and [ROADMAP.md](../../ROADMAP.md). See sync checklist in ROADMAP.md.
@@ -16,7 +16,7 @@
 - 🔧 **Technical Debt**: 11 (+3 from Story 6.19 QA)
 - ✨ **Enhancement**: 2
 - 🔴 **Critical**: 0
-- ✅ **Resolved**: 22 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.18**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, Story SQS-9, Tech Debt 1734220200001)
+- ✅ **Resolved**: 23 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.18**, **Story 6.19**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, Story SQS-9, Tech Debt 1734220200001)
 - ❌ **Obsolete**: 1 (removed from active backlog)
 
 ---
@@ -662,6 +662,7 @@ Esta inconsistência pode causar:
 
 | ID | Type | Title | Priority | Related Story | Resolved | PR |
 |----|------|-------|----------|---------------|----------|-----|
+| 1734920000001 | ✅ Resolved | IDE Command Auto-Sync System | 🔴 High | [6.19](v2.1/sprint-6/story-6.19-ide-command-auto-sync.md) ✅ Done | 2025-12-22 | [PR #12](https://github.com/SynkraAI/aios-core/pull/12) |
 | 1734912000003 | ✅ Resolved | Dynamic Manifest & Brownfield Upgrade System | 🟠 High | [6.18](v2.1/sprint-6/story-6.18-dynamic-manifest-brownfield-upgrade.md) ✅ Done | 2025-12-22 | [PR #11](https://github.com/SynkraAI/aios-core/pull/11) |
 | 1734540000001 | ✅ Resolved | Squad Designer - Guided Squad Creation | 🟠 High | [SQS-9](v2.1/sprint-8/story-sqs-9-squad-designer.md) ✅ Done | 2025-12-18 | [PR #10](https://github.com/SynkraAI/aios-core/pull/10) |
 | 1734230000001 | ✅ Resolved | Systematic Documentation Audit for OSR | 🔴 Critical | [6.13](v2.1/sprint-6/story-6.13-systematic-documentation-audit.md) ✅ Done | 2025-12-15 | [PR #5](https://github.com/SynkraAI/aios-core/pull/5) |

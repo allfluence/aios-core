@@ -3,7 +3,7 @@
 **ID:** 6.19 | **Epic:** Installer Improvements
 **Sprint:** 6 | **Points:** 8 | **Priority:** 🔴 High | **Created:** 2025-12-22
 **Updated:** 2025-12-22
-**Status:** ✅ QA Approved
+**Status:** ✅ Done (Merged PR #12 - 2025-12-22)
 
 **Related:** Story 6.18 (Dynamic Manifest & Brownfield Upgrade)
 
