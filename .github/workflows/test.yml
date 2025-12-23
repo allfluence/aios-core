@@ -231,7 +231,8 @@ jobs:
           # Overall status
           if [ "${{ needs.security-audit.result }}" = "success" ] && \
              [ "${{ needs.build-test.result }}" = "success" ] && \
-             [ "${{ needs.integration-test.result }}" = "success" ]; then
+             [ "${{ needs.integration-test.result }}" = "success" ] && \
+             [ "${{ needs.performance-test.result }}" = "success" ]; then
             echo "🎉 All critical tests passed!"
             echo "✅ Ready for deployment"
           else
