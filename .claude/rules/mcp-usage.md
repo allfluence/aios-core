@@ -31,6 +31,7 @@ AIOS uses Docker MCP Toolkit as the primary MCP infrastructure:
 | **desktop-commander** | Docker container operations via docker-gateway |
 
 ### Inside Docker Desktop (via docker-gateway)
+
 | MCP | Purpose |
 |-----|---------|
 | **EXA** | Web search, research, company/competitor analysis |
@@ -117,7 +118,8 @@ mcp__docker-gateway__get-library-docs
 5. RAG-enabled web browsing for AI context
 
 ### Access pattern (7 tools available):
-```
+
+```text
 mcp__docker-gateway__apify-slash-rag-web-browser  # RAG-enabled web browsing
 mcp__docker-gateway__search-actors                 # Search for Actors
 mcp__docker-gateway__call-actor                    # Run an Actor

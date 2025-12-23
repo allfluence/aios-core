@@ -268,7 +268,7 @@ Also update the table in "Inside Docker Desktop (via docker-gateway)" section.
 
 ⚠️ **The user MUST restart their Claude Code session** for new MCP tools to be available.
 
-```
+```text
 IMPORTANT: New MCP tools will NOT be available until you:
 1. Close this Claude Code session
 2. Open a new Claude Code session: `claude`
@@ -336,7 +336,7 @@ Resolution:
 
 ### Error: Credentials Missing / Tools Not Loading
 
-```
+```text
 Resolution (Due to Known Bug):
 1. Edit catalog directly: ~/.docker/mcp/catalogs/docker-mcp.yaml
 2. Add hardcoded env values in the MCP's env section
