@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-23T14:28:46.314Z",
+  "lastUpdated": "2025-12-23T14:31:05.811Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-22T19:57:38.772Z"
     },
     "layer2": {
-      "passRate": 0.907563025210084,
-      "avgTimeMs": 155042,
-      "totalRuns": 119,
-      "lastRun": "2025-12-23T14:28:46.312Z",
+      "passRate": 0.9083333333333333,
+      "avgTimeMs": 155250,
+      "totalRuns": 120,
+      "lastRun": "2025-12-23T14:31:05.809Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -3830,6 +3830,20 @@
     },
     {
       "timestamp": "2025-12-23T14:28:46.312Z",
+      "layer": 2,
+      "passed": true,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 14,
+        "branchName": "fix/docker-mcp-secrets-workaround",
+        "author": "Pedrovaleriolopez",
+        "coverageResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-23T14:31:05.809Z",
       "layer": 2,
       "passed": true,
       "durationMs": 180000,
