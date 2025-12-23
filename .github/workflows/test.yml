@@ -1,11 +1,27 @@
 name: Test
+# Story 6.1: Specialized testing (security, build, integration, performance)
+# Cross-platform compatibility testing moved to ci.yml
 
 on:
   push:
-    branches: [ main, develop, feature/* ]
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.aios/**'
+      - 'squads/**'
   pull_request:
-    branches: [ main, develop ]
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.aios/**'
+      - 'squads/**'
   workflow_dispatch:
+
+concurrency:
+  group: test-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 env:
   NODE_VERSION: '20'
@@ -221,48 +237,8 @@ jobs:
             echo "Performance analysis not found, skipping"
           fi
 
-  compatibility-test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['18', '20', '22']
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Test basic functionality
-        run: |
-          node -e "
-            console.log('Node.js version:', process.version);
-            console.log('Platform:', process.platform);
-            console.log('Architecture:', process.arch);
-            
-            // Test basic module loading
-            try {
-              const fs = require('fs');
-              const path = require('path');
-              
-              if (fs.existsSync('package.json')) {
-                const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-                console.log('✅ Package loaded:', pkg.name, pkg.version);
-              }
-              
-              console.log('✅ Basic compatibility test passed');
-            } catch (error) {
-              console.error('❌ Compatibility test failed:', error.message);
-              process.exit(1);
-            }
-          "
+  # NOTE: Cross-platform compatibility testing removed (Story 6.1)
+  # Now handled by ci.yml cross-platform job (only on main branch push)
 
   summary:
     runs-on: ubuntu-latest

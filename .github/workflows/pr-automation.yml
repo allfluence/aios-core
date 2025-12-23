@@ -1,69 +1,32 @@
 name: PR Automation
-# Story: 3.3-3.4 PR Automation Layer 2
-# Purpose: Automated PR validation, coverage reporting, and quality summary
+# Story 6.1: Simplified to metrics-only (validation moved to ci.yml)
+# Purpose: Coverage reporting, quality summary, and metrics recording
 
 on:
   pull_request:
     branches:
       - main
-      - develop
     types: [opened, synchronize, reopened]
 
+concurrency:
+  group: pr-automation-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 permissions:
-  contents: write  # Required for git push (Story 3.11c metrics recording)
+  contents: write
   pull-requests: write
   checks: write
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
 
 jobs:
   # ============================================================================
-  # REQUIRED STATUS CHECKS (Blocking)
+  # COVERAGE EXTRACTION & REPORTING
   # ============================================================================
 
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run ESLint
-        run: npm run lint
-
-  typecheck:
-    name: TypeCheck
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run TypeScript type checking
-        run: npm run typecheck
-
-  test:
-    name: Test
+  coverage-report:
+    name: Coverage Report
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
@@ -82,17 +45,8 @@ jobs:
         run: npm ci
 
       - name: Run tests with coverage
-        id: test-run
-        run: npm run test:coverage -- --json --outputFile=test-results.json
-        continue-on-error: false
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./coverage/lcov.info
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+        run: npm run test:coverage
+        continue-on-error: true
 
       - name: Extract coverage summary
         id: coverage
@@ -107,84 +61,40 @@ jobs:
             echo "summary=Coverage report not available" >> $GITHUB_OUTPUT
           fi
 
-      - name: Upload coverage artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          name: coverage-report
-          path: coverage/
-          retention-days: 7
-
-  story-validation:
-    name: Story Validation
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Validate story checkboxes
-        run: |
-          if [ -f ".aios-core/utils/aios-validator.js" ]; then
-            node .aios-core/utils/aios-validator.js stories
-          else
-            echo "Story validator not found, skipping"
-          fi
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
 
   # ============================================================================
-  # COVERAGE COMMENT (Task 3.4.1)
+  # PR COMMENTS (Coverage + Quality Summary)
   # ============================================================================
 
-  coverage-comment:
-    name: Coverage Comment
+  post-comments:
+    name: Post PR Comments
     runs-on: ubuntu-latest
-    needs: [test]
-    if: always() && needs.test.result != 'cancelled'
+    needs: [coverage-report]
+    if: always()
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage-report
-          path: coverage/
-        continue-on-error: true
-
       - name: Post coverage comment
         uses: actions/github-script@v7
         with:
           script: |
-            const coverageSummary = '${{ needs.test.outputs.coverage-summary }}' || 'Coverage data not available';
+            const coverageSummary = '${{ needs.coverage-report.outputs.coverage-summary }}' || 'Coverage data not available';
 
             const body = `## 📊 Coverage Report
 
             ${coverageSummary}
 
-            <details>
-            <summary>Coverage Details</summary>
-
-            | Metric | Coverage |
-            |--------|----------|
-            | Lines | See Codecov |
-            | Branches | See Codecov |
-            | Functions | See Codecov |
-            | Statements | See Codecov |
-
-            </details>
-
             > 📈 Full coverage report available in [Codecov](https://codecov.io/gh/${{ github.repository }}/pull/${{ github.event.pull_request.number }})
+
+            ---
+            *Generated by PR Automation (Story 6.1)*
             `;
 
-            // Find existing comment
             const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -213,142 +123,14 @@ jobs:
             }
 
   # ============================================================================
-  # QUALITY SUMMARY (Task 3.4.2)
-  # ============================================================================
-
-  quality-summary:
-    name: Quality Summary
-    runs-on: ubuntu-latest
-    needs: [lint, typecheck, test, story-validation]
-    if: always()
-    steps:
-      - name: Generate quality summary
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const lintResult = '${{ needs.lint.result }}';
-            const typecheckResult = '${{ needs.typecheck.result }}';
-            const testResult = '${{ needs.test.result }}';
-            const storyResult = '${{ needs.story-validation.result }}';
-
-            const getEmoji = (result) => {
-              switch(result) {
-                case 'success': return '✅';
-                case 'failure': return '❌';
-                case 'cancelled': return '⏹️';
-                case 'skipped': return '⏭️';
-                default: return '⏳';
-              }
-            };
-
-            const allPassed = lintResult === 'success' &&
-                              typecheckResult === 'success' &&
-                              testResult === 'success' &&
-                              storyResult === 'success';
-
-            const overallStatus = allPassed ? '✅ All checks passed' : '❌ Some checks failed';
-
-            const body = `## 📋 Quality Gate Summary
-
-            **Overall Status:** ${overallStatus}
-
-            | Check | Status | Result |
-            |-------|--------|--------|
-            | Lint | ${getEmoji(lintResult)} | ${lintResult} |
-            | TypeCheck | ${getEmoji(typecheckResult)} | ${typecheckResult} |
-            | Tests | ${getEmoji(testResult)} | ${testResult} |
-            | Story Validation | ${getEmoji(storyResult)} | ${storyResult} |
-
-            ### Required for Merge
-            - ${getEmoji(lintResult)} ESLint validation
-            - ${getEmoji(typecheckResult)} TypeScript type checking
-            - ${getEmoji(testResult)} Test suite passing
-            - ${getEmoji(storyResult)} Story checkboxes valid
-
-            ### CodeRabbit Review
-            🐰 CodeRabbit will provide automated code review comments separately.
-            - **CRITICAL** issues must be resolved before merge
-            - **HIGH** issues should be addressed or documented
-
-            ---
-            *Generated by PR Automation - Story 3.3-3.4*
-            `;
-
-            // Find existing comment
-            const { data: comments } = await github.rest.issues.listComments({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-            });
-
-            const botComment = comments.find(comment =>
-              comment.user.type === 'Bot' &&
-              comment.body.includes('📋 Quality Gate Summary')
-            );
-
-            if (botComment) {
-              await github.rest.issues.updateComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                comment_id: botComment.id,
-                body: body
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: body
-              });
-            }
-
-      - name: Set final status
-        if: always()
-        run: |
-          LINT="${{ needs.lint.result }}"
-          TYPE="${{ needs.typecheck.result }}"
-          TEST="${{ needs.test.result }}"
-          STORY="${{ needs.story-validation.result }}"
-
-          echo "=== PR Quality Gate Summary ==="
-          echo "Lint: $LINT"
-          echo "TypeCheck: $TYPE"
-          echo "Tests: $TEST"
-          echo "Story: $STORY"
-
-          if [ "$LINT" != "success" ] || [ "$TYPE" != "success" ] || [ "$TEST" != "success" ] || [ "$STORY" != "success" ]; then
-            echo "❌ Quality gate failed - merge will be blocked"
-            exit 1
-          fi
-
-          echo "✅ All quality gates passed - ready for review"
-
-  # ============================================================================
-  # CODERABBIT STATUS CHECK (Task 3.4.3)
+  # CODERABBIT STATUS CHECK
   # ============================================================================
 
   coderabbit-check:
     name: CodeRabbit Status
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, test]
-    if: always()
+    timeout-minutes: 2
     steps:
-      - name: Check CodeRabbit configuration
-        run: |
-          echo "🐰 CodeRabbit Integration Status"
-          echo "================================"
-          echo ""
-          echo "CodeRabbit is configured via .coderabbit.yaml"
-          echo "Review will be posted as PR comments automatically"
-          echo ""
-          echo "Severity Handling:"
-          echo "  - CRITICAL: Must fix before merge"
-          echo "  - HIGH: Should address or document"
-          echo "  - MEDIUM/LOW: Optional"
-          echo ""
-          echo "Note: CodeRabbit reviews are handled by the GitHub App"
-          echo "This check confirms integration is active"
-
       - name: Verify CodeRabbit config exists
         uses: actions/checkout@v4
         with:
@@ -357,13 +139,15 @@ jobs:
 
       - name: Validate config
         run: |
+          echo "🐰 CodeRabbit Integration Status"
+          echo "================================"
           if [ -f ".coderabbit.yaml" ]; then
             echo "✅ CodeRabbit configuration found"
-            echo "Profile: $(grep 'profile:' .coderabbit.yaml || echo 'default')"
           else
             echo "⚠️ CodeRabbit configuration not found"
-            echo "Create .coderabbit.yaml to customize review behavior"
           fi
+          echo ""
+          echo "Note: CodeRabbit reviews are handled by the GitHub App"
 
   # ============================================================================
   # METRICS RECORDING (Story 3.11c)
@@ -372,14 +156,14 @@ jobs:
   record-metrics:
     name: Record Quality Metrics
     runs-on: ubuntu-latest
-    needs: [lint, typecheck, test, story-validation]
-    if: always() && github.event_name == 'pull_request'
+    needs: [coverage-report]
+    if: always()
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0  # Full history for git operations
+          fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
@@ -391,74 +175,47 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Record Layer 2 metrics
+      - name: Record PR metrics
         env:
-          LINT_RESULT: ${{ needs.lint.result }}
-          TYPE_RESULT: ${{ needs.typecheck.result }}
-          TEST_RESULT: ${{ needs.test.result }}
-          STORY_RESULT: ${{ needs.story-validation.result }}
+          COVERAGE_RESULT: ${{ needs.coverage-report.result }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           BRANCH_NAME: ${{ github.head_ref }}
           AUTHOR: ${{ github.actor }}
         run: |
-          # Determine if all checks passed and export for Node.js
-          ALL_PASSED="true"
-          if [ "$LINT_RESULT" != "success" ] || [ "$TYPE_RESULT" != "success" ] || [ "$TEST_RESULT" != "success" ]; then
-            ALL_PASSED="false"
-          fi
-          export ALL_PASSED
-
-          # Record metrics using Node.js script
           node -e "
             const { recordPRReviewMetrics } = require('./.aios-core/quality/metrics-hook');
             (async () => {
-              const passed = process.env.ALL_PASSED === 'true';
+              const passed = process.env.COVERAGE_RESULT === 'success';
               await recordPRReviewMetrics({
                 passed,
-                durationMs: 180000,  // ~3 minutes average
+                durationMs: 180000,
                 findingsCount: 0,
                 metadata: {
                   prNumber: parseInt(process.env.PR_NUMBER, 10),
                   branchName: process.env.BRANCH_NAME,
                   author: process.env.AUTHOR,
-                  lintResult: process.env.LINT_RESULT,
-                  typecheckResult: process.env.TYPE_RESULT,
-                  testResult: process.env.TEST_RESULT,
-                  storyResult: process.env.STORY_RESULT
+                  coverageResult: process.env.COVERAGE_RESULT
                 }
               });
-              console.log('✅ Layer 2 metrics recorded');
+              console.log('✅ PR metrics recorded');
             })().catch(err => {
               console.warn('⚠️ Failed to record metrics:', err.message);
-              process.exit(0);  // Don't fail the workflow
+              process.exit(0);
             });
           "
 
-      - name: Commit and push metrics update
+      - name: Commit metrics update
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
 
-          # Stage metrics file if it exists and has changes
           if [ -f .aios/data/quality-metrics.json ]; then
             git add .aios/data/quality-metrics.json
           fi
 
-          # Only commit if there are staged changes
           if ! git diff --staged --quiet; then
             git commit -m "chore(metrics): update quality metrics [skip ci]"
-
-            # Push with retry (3 attempts)
-            for i in 1 2 3; do
-              if git push; then
-                echo "✅ Metrics pushed successfully"
-                break
-              else
-                echo "⚠️ Push attempt $i failed, retrying..."
-                git pull --rebase
-                sleep 2
-              fi
-            done
+            git push || echo "Push skipped (may conflict with parallel runs)"
           else
             echo "ℹ️ No metrics changes to commit"
           fi

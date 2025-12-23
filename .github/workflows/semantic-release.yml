@@ -1,9 +1,18 @@
 name: Semantic Release
+# Story 6.1: Simplified - CI validation handled by ci.yml via branch protection
+# This workflow only handles release after CI passes
 
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.aios/**'
+      - 'squads/**'
+      - 'LICENSE'
+      - '.gitignore'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -12,6 +21,10 @@ on:
         default: 'false'
         type: boolean
 
+concurrency:
+  group: semantic-release-${{ github.ref }}
+  cancel-in-progress: false  # Never cancel releases in progress
+
 permissions:
   contents: write
   issues: write
@@ -19,73 +32,11 @@ permissions:
   id-token: write
 
 jobs:
-  # CI validation before release
-  lint:
-    name: ESLint
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run ESLint
-        run: npm run lint
-
-  typecheck:
-    name: TypeScript Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run TypeCheck
-        run: npm run typecheck
-
-  test:
-    name: Jest Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run Tests
-        run: npm test
-
-  # Release job - only runs after all CI checks pass
+  # Release job - CI validation handled by branch protection rules
   release:
     name: Semantic Release
-    needs: [lint, typecheck, test]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4

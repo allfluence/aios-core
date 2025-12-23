@@ -1,4 +1,5 @@
 name: Publish to NPM
+# Story 6.1 - Added concurrency
 
 on:
   release:
@@ -18,6 +19,10 @@ on:
         description: 'Packages to publish (comma-separated, or "all")'
         required: false
         default: 'all'
+
+concurrency:
+  group: npm-publish-${{ github.ref }}
+  cancel-in-progress: false  # Never cancel publishing in progress
 
 env:
   NODE_VERSION: '20'

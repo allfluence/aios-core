@@ -1,4 +1,5 @@
 name: Release
+# Story 6.1 - Added concurrency
 
 on:
   push:
@@ -10,6 +11,10 @@ on:
         description: 'Release tag'
         required: true
         default: 'v4.31.0'
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false  # Never cancel releases in progress
 
 env:
   NODE_VERSION: '20'

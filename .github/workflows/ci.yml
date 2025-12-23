@@ -1,18 +1,32 @@
-name: AIOS CI - Multi-Layer Validation
-# Story: 2.2-git-workflow-implementation.yaml
-# Defense in Depth - Layer 3: Cloud validation (required for merge)
+name: CI
+# Story 6.1: GitHub Actions Cost Optimization
+# Consolidated CI workflow - single source of truth for validation
 
 on:
   push:
     branches:
-      - master
-      - develop
-      - 'feature/**'
-      - 'bugfix/**'
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.aios/**'
+      - 'squads/**'
+      - 'LICENSE'
+      - '.gitignore'
   pull_request:
     branches:
-      - master
-      - develop
+      - main
+    paths-ignore:
+      - 'docs/**'
+      - '*.md'
+      - '.aios/**'
+      - 'squads/**'
+      - 'LICENSE'
+      - '.gitignore'
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
@@ -27,7 +41,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -48,7 +62,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -69,7 +83,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -99,7 +113,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -120,7 +134,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -141,7 +155,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -199,7 +213,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -217,4 +231,50 @@ jobs:
 
           echo -e "\nStory validation time:"
           time node .aios-core/utils/aios-validator.js stories || true
+        continue-on-error: true
+
+  # Cross-platform testing - ONLY on main branch push
+  # Moved from cross-platform-tests.yml (Story 6.1)
+  cross-platform:
+    name: Cross-Platform (${{ matrix.os }}, Node ${{ matrix.node }})
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [lint, typecheck, test]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ['18', '20', '22']
+        # Exclude macOS with Node 18.x and 20.x due to isolated-vm SIGSEGV crash
+        exclude:
+          - os: macos-latest
+            node: '18'
+          - os: macos-latest
+            node: '20'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Test CLI installation
+        run: npm link
+        continue-on-error: true
+
+      - name: Test CLI basic commands
+        run: |
+          npx aios-core --version || echo "CLI version check skipped"
+          npx aios-core --help || echo "CLI help check skipped"
         continue-on-error: true

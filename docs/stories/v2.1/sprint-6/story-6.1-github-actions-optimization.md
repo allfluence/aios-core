@@ -3,7 +3,7 @@
 **ID:** 6.1 | **Epic:** Technical Debt
 **Sprint:** 6 | **Points:** 8 | **Priority:** 🟡 Medium | **Created:** 2025-12-08
 **Updated:** 2025-12-22
-**Status:** 📋 Ready for Development
+**Status:** 🔄 In Progress
 
 **Backlog Reference:** ID 1733679600001
 
@@ -126,33 +126,33 @@ GitHub Actions está consumindo minutos excessivamente devido a workflows redund
 ### AC6.1.1: Workflow Audit Documentado
 - [x] Tabela com todos os 11 workflows e seus propósitos
 - [x] Identificação de redundâncias específicas
-- [ ] Decision log de quais manter/remover/consolidar
+- [x] Decision log de quais manter/remover/consolidar
 
 ### AC6.1.2: Lint/TypeCheck Consolidados
-- [ ] Single source of truth para lint (apenas em `ci.yml`)
-- [ ] Single source of truth para typecheck (apenas em `ci.yml`)
-- [ ] Outros workflows removem lint/typecheck ou usam `workflow_call`
+- [x] Single source of truth para lint (apenas em `ci.yml`)
+- [x] Single source of truth para typecheck (apenas em `ci.yml`)
+- [x] Outros workflows removem lint/typecheck ou usam `workflow_call`
 
 ### AC6.1.3: Path Filters Implementados
-- [ ] Docs-only changes não triggeram tests
-- [ ] Config-only changes têm CI reduzido
-- [ ] Code changes triggeram CI completo
+- [x] Docs-only changes não triggeram tests
+- [x] Config-only changes têm CI reduzido
+- [x] Code changes triggeram CI completo
 
 ### AC6.1.4: Matrix Otimizada
-- [ ] PRs: Apenas ubuntu-latest + Node 20.x
-- [ ] Main branch: Full cross-platform matrix (7 jobs)
-- [ ] Remover `test.yml` compatibility-test (duplicado)
-- [ ] Total matrix jobs: 16 → 7
+- [x] PRs: Apenas ubuntu-latest + Node 20.x
+- [x] Main branch: Full cross-platform matrix (7 jobs)
+- [x] Remover `test.yml` compatibility-test (duplicado)
+- [x] Total matrix jobs: 16 → 7
 
 ### AC6.1.5: Concurrency Configurada
-- [ ] `concurrency` com `cancel-in-progress: true` em todos workflows
-- [ ] Group by PR number para não cancelar main
-- [ ] Template padrão para todos workflows
+- [x] `concurrency` com `cancel-in-progress: true` em todos workflows
+- [x] Group by PR number para não cancelar main
+- [x] Template padrão para todos workflows
 
 ### AC6.1.6: Branch Normalization
-- [ ] `ci.yml` atualizado de `master` para `main`
-- [ ] Todos workflows usando `main` como branch principal
-- [ ] Remover referências a `develop` se não usado
+- [x] `ci.yml` atualizado de `master` para `main`
+- [x] Todos workflows usando `main` como branch principal
+- [x] Remover referências a `develop` se não usado
 
 ### AC6.1.7: Métricas de Sucesso
 - [ ] Jobs por PR: 38 → 12-15 (60% redução)
@@ -354,31 +354,31 @@ jobs:
 ## Implementation Tasks
 
 ### Phase 1: Branch Normalization & Concurrency (1h)
-- [ ] Update `ci.yml` branches: `master/develop` → `main`
-- [ ] Add `concurrency` block to all active workflows
+- [x] Update `ci.yml` branches: `master/develop` → `main`
+- [x] Add `concurrency` block to all active workflows
 - [ ] Test concurrency with multiple pushes
 
 ### Phase 2: Path Filters (0.5h)
-- [ ] Add `paths-ignore` to `ci.yml`
+- [x] Add `paths-ignore` to `ci.yml`
 - [ ] Test with docs-only PR
 - [ ] Test with code PR
 
 ### Phase 3: Consolidation (2h)
-- [ ] Merge `test.yml` jobs into `ci.yml`
-- [ ] Merge `cross-platform-tests.yml` as conditional job
-- [ ] Update `pr-automation.yml` to metrics-only
-- [ ] Update `semantic-release.yml` to skip redundant jobs
+- [x] Merge `test.yml` jobs into `ci.yml` (cross-platform job moved)
+- [x] Merge `cross-platform-tests.yml` as conditional job (DELETED)
+- [x] Update `pr-automation.yml` to metrics-only
+- [x] Update `semantic-release.yml` to skip redundant jobs
 
 ### Phase 4: Matrix Optimization (1h)
-- [ ] Implement conditional cross-platform (main only)
-- [ ] Remove redundant matrix from `test.yml`
-- [ ] Verify macOS exclusions are preserved
+- [x] Implement conditional cross-platform (main only)
+- [x] Remove redundant matrix from `test.yml`
+- [x] Verify macOS exclusions are preserved
 
 ### Phase 5: Cleanup & Documentation (1h)
-- [ ] Remove deprecated workflow files
-- [ ] Create `docs/architecture/ci-cd.md`
+- [x] Remove deprecated workflow files (`cross-platform-tests.yml`)
+- [x] Create `docs/architecture/ci-cd.md`
 - [ ] Update README with CI section
-- [ ] Document decision log
+- [x] Document decision log
 
 ### Phase 6: Validation (0.5h)
 - [ ] Test PR workflow (should be ~12 jobs)
@@ -533,7 +533,18 @@ Story 6.2 (Test Coverage)
 
 ## File List
 
-*To be updated during implementation*
+| File | Action | Description |
+|------|--------|-------------|
+| `.github/workflows/ci.yml` | Modified | Consolidated CI, added concurrency, path filters, cross-platform |
+| `.github/workflows/pr-automation.yml` | Modified | Simplified to metrics-only (removed lint/typecheck/test) |
+| `.github/workflows/semantic-release.yml` | Modified | Removed redundant lint/typecheck/test, added concurrency |
+| `.github/workflows/test.yml` | Modified | Removed redundant compatibility-test job, added concurrency |
+| `.github/workflows/cross-platform-tests.yml` | Deleted | Fully redundant with ci.yml cross-platform job |
+| `.github/workflows/macos-testing.yml` | Modified | Added concurrency, normalized to main branch |
+| `.github/workflows/pr-labeling.yml` | Modified | Added concurrency |
+| `.github/workflows/release.yml` | Modified | Added concurrency |
+| `.github/workflows/npm-publish.yml` | Modified | Added concurrency |
+| `docs/architecture/ci-cd.md` | Created | CI/CD architecture documentation |
 
 ---
 
@@ -548,9 +559,14 @@ Story 6.2 (Test Coverage)
 | 2025-12-22 | Added CodeRabbit Integration section | @po (Pax) |
 | 2025-12-22 | Added Related Stories section | @po (Pax) |
 | 2025-12-22 | Updated Points: 5 → 8 (complexity increased) | @po (Pax) |
+| 2025-12-22 | Implementation started - Phase 1-5 complete | @devops (Gage) |
+| 2025-12-22 | Deleted cross-platform-tests.yml (redundant) | @devops (Gage) |
+| 2025-12-22 | Simplified semantic-release.yml, test.yml, pr-automation.yml | @devops (Gage) |
+| 2025-12-22 | Added concurrency to all 10 remaining workflows | @devops (Gage) |
+| 2025-12-22 | Created docs/architecture/ci-cd.md | @devops (Gage) |
 
 ---
 
-*Story updated by @po (Pax) - 2025-12-22*
+*Implementation in progress by @devops (Gage) - 2025-12-22*
 *Backlog item: 1733679600001*
 *Agent Model Used: claude-opus-4-5-20251101*

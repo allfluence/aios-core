@@ -1,8 +1,13 @@
 name: PR Labeling
+# Story 6.1 - Added concurrency
 
 on:
   pull_request:
     types: [opened, synchronize]
+
+concurrency:
+  group: pr-labeling-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   label:

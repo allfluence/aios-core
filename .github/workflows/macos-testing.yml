@@ -1,16 +1,16 @@
 name: macOS Testing & Validation
-
 # Story 1.10b - Automated macOS testing across Intel and Apple Silicon
+# Story 6.1 - Added concurrency, normalized branches
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
     paths:
       - 'installer/**'
       - 'tests/macos/**'
       - '.github/workflows/macos-testing.yml'
   pull_request:
-    branches: [main, develop]
+    branches: [main]
     paths:
       - 'installer/**'
       - 'tests/macos/**'
@@ -27,6 +27,10 @@ on:
           - compatibility
           - performance
           - security
+
+concurrency:
+  group: macos-testing-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   # Job 1: Intel Mac Testing
