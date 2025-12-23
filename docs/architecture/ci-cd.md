@@ -14,9 +14,12 @@ AIOS-Core uses GitHub Actions for continuous integration and deployment. This do
 ├─────────────────────────────────────────────────────────────────┤
 │  Pull Request → ci.yml (required) + pr-automation.yml (metrics) │
 │  Push to main → ci.yml + semantic-release.yml + test.yml        │
+│                 + cross-platform (conditional in ci.yml)        │
 │  Tag v*       → release.yml → npm-publish.yml                   │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+**Note:** PRs only run ci.yml and pr-automation.yml (~12 jobs). Extended testing (test.yml) runs only on push to main.
 
 ## Active Workflows
 
@@ -25,7 +28,7 @@ AIOS-Core uses GitHub Actions for continuous integration and deployment. This do
 | `ci.yml` | Main CI validation (lint, typecheck, test) | PR, push to main | Yes |
 | `pr-automation.yml` | Coverage report & metrics | PR only | No |
 | `semantic-release.yml` | Automated versioning & changelog | Push to main | Yes |
-| `test.yml` | Extended testing (security, build, integration) | Push to main | No |
+| `test.yml` | Extended testing (security, build, integration) | Push to main only | No |
 | `macos-testing.yml` | macOS-specific testing (Intel + ARM) | Path-filtered | No |
 | `release.yml` | GitHub Release creation | Tag v* | Yes |
 | `npm-publish.yml` | NPM package publishing | Release published | Yes |

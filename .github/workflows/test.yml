@@ -1,6 +1,7 @@
 name: Test
 # Story 6.1: Specialized testing (security, build, integration, performance)
 # Cross-platform compatibility testing moved to ci.yml
+# NOTE: Only runs on push to main (PRs use ci.yml for validation)
 
 on:
   push:
@@ -10,49 +11,17 @@ on:
       - '*.md'
       - '.aios/**'
       - 'squads/**'
-  pull_request:
-    branches: [main]
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
-      - '.aios/**'
-      - 'squads/**'
   workflow_dispatch:
 
 concurrency:
-  group: test-${{ github.event.pull_request.number || github.ref }}
+  group: test-${{ github.ref }}
   cancel-in-progress: true
 
 env:
   NODE_VERSION: '20'
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run linting
-        run: |
-          # Use available linting tools
-          if [ -f "package.json" ] && grep -q "eslint" package.json; then
-            npm run lint || echo "Linting not configured"
-          fi
-          
-          # Format check
-          if [ -f "package.json" ] && grep -q "prettier" package.json; then
-            npm run format -- --check || echo "Format check completed"
-          fi
+  # NOTE: Lint job removed (Story 6.1) - handled by ci.yml
 
   security-audit:
     runs-on: ubuntu-latest
@@ -152,7 +121,7 @@ jobs:
 
   integration-test:
     runs-on: ubuntu-latest
-    needs: [lint, security-audit, build-test]
+    needs: [security-audit, build-test]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -242,7 +211,7 @@ jobs:
 
   summary:
     runs-on: ubuntu-latest
-    needs: [lint, security-audit, build-test, integration-test, performance-test]
+    needs: [security-audit, build-test, integration-test, performance-test]
     if: always()
     steps:
       - name: Test Summary
@@ -251,16 +220,16 @@ jobs:
           echo ""
           echo "| Test Suite | Status |"
           echo "|------------|--------|"
-          echo "| Linting | ${{ needs.lint.result == 'success' && '✅ Passed' || '❌ Failed' }} |"
           echo "| Security Audit | ${{ needs.security-audit.result == 'success' && '✅ Passed' || '❌ Failed' }} |"
           echo "| Build Test | ${{ needs.build-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |"
           echo "| Integration Test | ${{ needs.integration-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |"
           echo "| Performance Test | ${{ needs.performance-test.result == 'success' && '✅ Passed' || '❌ Failed' }} |"
           echo ""
-          
+          echo "Note: Linting handled by ci.yml (Story 6.1)"
+          echo ""
+
           # Overall status
-          if [ "${{ needs.lint.result }}" = "success" ] && \
-             [ "${{ needs.security-audit.result }}" = "success" ] && \
+          if [ "${{ needs.security-audit.result }}" = "success" ] && \
              [ "${{ needs.build-test.result }}" = "success" ] && \
              [ "${{ needs.integration-test.result }}" = "success" ]; then
             echo "🎉 All critical tests passed!"
