@@ -8,7 +8,7 @@ AIOS-Core uses GitHub Actions for continuous integration and deployment. This do
 
 ## Workflow Hierarchy
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        TRIGGER EVENTS                           │
 ├─────────────────────────────────────────────────────────────────┤
