@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-23T15:12:15.780Z",
+  "lastUpdated": "2025-12-23T16:03:56.094Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-22T19:57:38.772Z"
     },
     "layer2": {
-      "passRate": 0.9083333333333333,
-      "avgTimeMs": 155250,
-      "totalRuns": 120,
-      "lastRun": "2025-12-23T15:12:15.778Z",
+      "passRate": 0.9090909090909091,
+      "avgTimeMs": 155455,
+      "totalRuns": 121,
+      "lastRun": "2025-12-23T16:03:56.092Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -3852,6 +3852,20 @@
         "triggeredBy": "pr",
         "prNumber": 15,
         "branchName": "feat/sqs-5-synkra-sync-service",
+        "author": "Pedrovaleriolopez",
+        "coverageResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-23T16:03:56.092Z",
+      "layer": 2,
+      "passed": true,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 16,
+        "branchName": "feat/sqs-7-squad-migration-tool",
         "author": "Pedrovaleriolopez",
         "coverageResult": "success"
       }
