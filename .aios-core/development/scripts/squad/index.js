@@ -8,6 +8,7 @@
  * @see {@link ./squad-validator.js} - Validate squad structure (SQS-3)
  * @see {@link ./squad-generator.js} - Generate new squads (SQS-4)
  * @see {@link ./squad-designer.js} - Design squads from documentation (SQS-9)
+ * @see {@link ./squad-migrator.js} - Migrate legacy squads to AIOS 2.1 (SQS-7)
  */
 
 const {
@@ -43,6 +44,12 @@ const {
   DesignerErrorCodes,
 } = require('./squad-designer');
 
+const {
+  SquadMigrator,
+  SquadMigratorError,
+  MigratorErrorCodes,
+} = require('./squad-migrator');
+
 module.exports = {
   // Squad Loader (SQS-2)
   SquadLoader,
@@ -72,4 +79,9 @@ module.exports = {
   SquadDesigner,
   SquadDesignerError,
   DesignerErrorCodes,
+
+  // Squad Migrator (SQS-7)
+  SquadMigrator,
+  SquadMigratorError,
+  MigratorErrorCodes,
 };

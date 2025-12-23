@@ -101,6 +101,10 @@ commands:
   - name: list-squads
     visibility: [full, quick]
     description: "List all local squads in the project"
+  - name: migrate-squad
+    visibility: [full, quick]
+    description: "Migrate legacy squad to AIOS 2.1 format"
+    task: squad-creator-migrate.md
 
   # Distribution (Sprint 8 - Placeholders)
   - name: download-squad
@@ -130,6 +134,7 @@ dependencies:
     - squad-creator-create.md
     - squad-creator-validate.md
     - squad-creator-list.md
+    - squad-creator-migrate.md
     - squad-creator-download.md
     - squad-creator-publish.md
     - squad-creator-sync-synkra.md
@@ -138,6 +143,7 @@ dependencies:
     - squad/squad-validator.js
     - squad/squad-generator.js
     - squad/squad-designer.js
+    - squad/squad-migrator.js
   schemas:
     - squad-schema.json
     - squad-design-schema.json
@@ -172,6 +178,11 @@ squad_distribution:
 - `*create-squad {name} --from-design ./path/to/blueprint.yaml` - Create from blueprint
 - `*validate-squad {name}` - Validate existing squad
 - `*list-squads` - List local squads
+
+**Migration:**
+- `*migrate-squad {path}` - Migrate legacy squad to AIOS 2.1 format
+- `*migrate-squad {path} --dry-run` - Preview migration changes
+- `*migrate-squad {path} --verbose` - Migrate with detailed output
 
 **Distribution (Sprint 8):**
 - `*download-squad {name}` - Download from aios-squads

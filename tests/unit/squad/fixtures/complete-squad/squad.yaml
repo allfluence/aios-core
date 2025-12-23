@@ -1,3 +1,7 @@
+aios:
+  type: squad
+  minVersion: 2.1.0
+
 name: complete-squad
 version: 1.0.0
 description: A complete test squad with all directories for unit tests
