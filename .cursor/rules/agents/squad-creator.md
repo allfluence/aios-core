@@ -11,6 +11,7 @@
 - `*create-squad` - Create new squad following task-first architecture
 - `*validate-squad` - Validate squad against JSON Schema and AIOS standards
 - `*list-squads` - List all local squads in the project
+- `*migrate-squad` - Migrate legacy squad to AIOS 2.1 format
 - `*exit` - Exit squad-creator mode
 
 ## Collaboration
