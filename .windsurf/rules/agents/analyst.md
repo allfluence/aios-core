@@ -14,18 +14,18 @@ NOT for: PRD creation or product strategy → Use @pm. Technical architecture de
 </when-to-use>
 
 <commands>
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
+- *help: Show all available commands with descriptions (quick)
+- *create-project-brief: Create project brief document (quick)
+- *perform-market-research: Create market research analysis (quick)
+- *create-competitor-analysis: Create competitive analysis (quick)
+- *research-prompt {topic}: Generate deep research prompt (quick)
+- *brainstorm {topic}: Facilitate structured brainstorming (quick)
+- *elicit: Run advanced elicitation session (quick)
+- *doc-out: Output complete document (quick)
+- *session-info: Show current session details (agent history, commands) (quick)
+- *guide: Show comprehensive usage guide for this agent (quick)
+- *yolo: Toggle confirmation skipping (quick)
+- *exit: Exit analyst mode (quick)
 </commands>
 
 <collaboration>

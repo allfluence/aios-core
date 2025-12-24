@@ -16,13 +16,13 @@ NOT for: PRD creation or epic structure → Use @pm. Market research or competit
 </when-to-use>
 
 <commands>
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
+- *help: Show all available commands with descriptions (quick)
+- *draft: Create next user story (quick)
+- *story-checklist: Run story draft checklist (quick)
+- *correct-course: Analyze and correct deviations (quick)
+- *session-info: Show current session details (agent history, commands) (quick)
+- *guide: Show comprehensive usage guide for this agent (quick)
+- *exit: Exit Scrum Master mode (quick)
 </commands>
 
 <collaboration>

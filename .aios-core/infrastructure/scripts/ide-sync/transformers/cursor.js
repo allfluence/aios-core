@@ -6,7 +6,7 @@
  * Target: .cursor/rules/agents/*.md
  */
 
-const { getVisibleCommands } = require('../agent-parser');
+const { getVisibleCommands, normalizeCommands } = require('../agent-parser');
 
 /**
  * Transform agent data to Cursor format
@@ -23,9 +23,10 @@ function transform(agentData) {
   const whenToUse = agent.whenToUse || 'Use this agent for specific tasks';
   const archetype = persona.archetype || '';
 
-  // Get quick visibility commands
-  const quickCommands = getVisibleCommands(agentData.commands, 'quick');
-  const keyCommands = getVisibleCommands(agentData.commands, 'key');
+  // Get quick visibility commands (normalized to consistent format)
+  const allCommands = normalizeCommands(agentData.commands || []);
+  const quickCommands = getVisibleCommands(allCommands, 'quick');
+  const keyCommands = getVisibleCommands(allCommands, 'key');
 
   // Build content
   let content = `# ${name} (@${agentData.id})

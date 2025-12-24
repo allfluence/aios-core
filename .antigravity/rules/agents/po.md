@@ -14,13 +14,13 @@
 - `*create-story` - Create user story from requirements
 - `*validate-story-draft` - Validate story quality and completeness
 - `*execute-checklist-po` - Run PO master checklist
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
+- `*correct-course` - Analyze and correct process deviations
+- `*shard-doc {document} {destination}` - Break document into smaller parts
+- `*doc-out` - Output complete document to file
+- `*session-info` - Show current session details (agent history, commands)
+- `*guide` - Show comprehensive usage guide for this agent
+- `*yolo` - Toggle confirmation skipping (on/off)
+- `*exit` - Exit PO mode
 
 ## All Commands
 
@@ -37,13 +37,13 @@
 - `*sync-story` - Sync story to PM tool (ClickUp, GitHub, Jira, local)
 - `*pull-story` - Pull story updates from PM tool
 - `*execute-checklist-po` - Run PO master checklist
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
-- `*undefined` - No description
+- `*correct-course` - Analyze and correct process deviations
+- `*shard-doc {document} {destination}` - Break document into smaller parts
+- `*doc-out` - Output complete document to file
+- `*session-info` - Show current session details (agent history, commands)
+- `*guide` - Show comprehensive usage guide for this agent
+- `*yolo` - Toggle confirmation skipping (on/off)
+- `*exit` - Exit PO mode
 
 ## Collaboration
 

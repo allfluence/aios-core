@@ -24,13 +24,13 @@ Use for backlog management, story refinement, acceptance criteria, sprint planni
 - *sync-story: Sync story to PM tool (ClickUp, GitHub, Jira, local)
 - *pull-story: Pull story updates from PM tool
 - *execute-checklist-po: Run PO master checklist (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
+- *correct-course: Analyze and correct process deviations (quick)
+- *shard-doc {document} {destination}: Break document into smaller parts (quick)
+- *doc-out: Output complete document to file (quick)
+- *session-info: Show current session details (agent history, commands) (quick)
+- *guide: Show comprehensive usage guide for this agent (quick)
+- *yolo: Toggle confirmation skipping (on/off) (quick)
+- *exit: Exit PO mode (quick)
 </commands>
 
 <collaboration>

@@ -16,19 +16,19 @@ NOT for: Market research or competitive analysis → Use @analyst. Technical arc
 </when-to-use>
 
 <commands>
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
-- *undefined: No description (quick)
+- *help: Show all available commands with descriptions (quick)
+- *create-prd: Create product requirements document (quick)
+- *create-brownfield-prd: Create PRD for existing projects (quick)
+- *create-epic: Create epic for brownfield (quick)
+- *create-story: Create user story (quick)
+- *doc-out: Output complete document (quick)
+- *shard-prd: Break PRD into smaller parts (quick)
+- *research {topic}: Generate deep research prompt (quick)
+- *correct-course: Analyze and correct deviations (quick)
+- *session-info: Show current session details (agent history, commands) (quick)
+- *guide: Show comprehensive usage guide for this agent (quick)
+- *yolo: Toggle confirmation skipping (quick)
+- *exit: Exit PM mode (quick)
 </commands>
 
 <collaboration>

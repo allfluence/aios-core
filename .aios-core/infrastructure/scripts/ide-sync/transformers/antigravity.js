@@ -6,7 +6,7 @@
  * Target: .antigravity/rules/agents/*.md
  */
 
-const { getVisibleCommands } = require('../agent-parser');
+const { getVisibleCommands, normalizeCommands } = require('../agent-parser');
 
 /**
  * Transform agent data to Antigravity format
@@ -23,9 +23,10 @@ function transform(agentData) {
   const whenToUse = agent.whenToUse || 'Use this agent for specific tasks';
   const archetype = persona.archetype || '';
 
-  // Get quick visibility commands
-  const quickCommands = getVisibleCommands(agentData.commands, 'quick');
-  const keyCommands = getVisibleCommands(agentData.commands, 'key');
+  // Get quick visibility commands (normalized to consistent format)
+  const allCommands = normalizeCommands(agentData.commands || []);
+  const quickCommands = getVisibleCommands(allCommands, 'quick');
+  const keyCommands = getVisibleCommands(allCommands, 'key');
 
   // Build content (similar to Cursor)
   let content = `# ${name} (@${agentData.id})
@@ -61,8 +62,7 @@ ${icon} **${title}**${archetype ? ` | ${archetype}` : ''}
     content += '\n';
   }
 
-  // Add all commands for reference
-  const allCommands = agentData.commands || [];
+  // Add all commands for reference (allCommands already normalized above)
   if (allCommands.length > quickCommands.length + keyOnlyCommands.length) {
     content += `## All Commands
 
