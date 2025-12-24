@@ -41,38 +41,48 @@ workflows:
     # Workflow transitions (Story 6.1.2.5 - Workflow Navigation)
     transitions:
       validated:
-        trigger: "validate-story-draft completed successfully"
+        trigger: "validate-story-draft completed"
+        confidence: 0.90
         greeting_message: "Story validated! Ready to implement."
         next_steps:
           - command: develop-yolo
             args_template: "${story_path}"
             description: "Autonomous YOLO mode (no interruptions)"
+            priority: 1
           - command: develop-interactive
             args_template: "${story_path}"
             description: "Interactive mode with checkpoints (default)"
+            priority: 2
           - command: develop-preflight
             args_template: "${story_path}"
             description: "Plan everything upfront, then execute"
+            priority: 3
       in_development:
-        trigger: "develop completed successfully"
+        trigger: "develop completed"
+        confidence: 0.85
         greeting_message: "Development complete! Ready for QA review."
         next_steps:
           - command: review-qa
             args_template: "${story_path}"
             description: "Run QA review and tests"
+            priority: 1
           - command: run-tests
             args_template: ""
             description: "Execute test suite manually"
+            priority: 2
       qa_reviewed:
-        trigger: "review-qa completed successfully"
+        trigger: "review-qa completed"
+        confidence: 0.80
         greeting_message: "QA review complete!"
         next_steps:
           - command: apply-qa-fixes
             args_template: ""
             description: "Apply QA feedback and fixes"
+            priority: 1
           - command: pre-push-quality-gate
             args_template: ""
             description: "Run final quality checks before push"
+            priority: 2
 
   # Epic Creation Workflow
   epic_creation:
@@ -95,6 +105,43 @@ workflows:
       - "Epic documented"
       - "Initial stories created"
       - "Stories validated"
+    transitions:
+      epic_drafted:
+        trigger: "create-epic completed"
+        confidence: 0.90
+        next_steps:
+          - command: analyze-epic
+            args_template: "${epic_path}"
+            description: "Analyze epic for completeness"
+            priority: 1
+          - command: create-story
+            args_template: "${epic_path}"
+            description: "Create first story from epic"
+            priority: 2
+      stories_created:
+        trigger: "create-story completed"
+        confidence: 0.85
+        next_steps:
+          - command: validate-story-draft
+            args_template: "${story_path}"
+            description: "Validate story structure"
+            priority: 1
+          - command: create-next-story
+            args_template: "${epic_path}"
+            description: "Create additional stories"
+            priority: 2
+      validated:
+        trigger: "validate-story-draft completed"
+        confidence: 0.80
+        next_steps:
+          - command: analyze-impact
+            args_template: "${story_path}"
+            description: "Analyze technical impact"
+            priority: 1
+          - command: develop
+            args_template: "${story_path}"
+            description: "Begin story development"
+            priority: 2
 
   # Backlog Management Workflow
   backlog_management:
@@ -116,6 +163,43 @@ workflows:
     success_indicators:
       - "Backlog items prioritized"
       - "Sprint planned"
+    transitions:
+      reviewed:
+        trigger: "backlog-review completed"
+        confidence: 0.85
+        next_steps:
+          - command: backlog-prioritize
+            args_template: ""
+            description: "Prioritize reviewed items"
+            priority: 1
+          - command: backlog-debt
+            args_template: ""
+            description: "Review technical debt items"
+            priority: 2
+      prioritized:
+        trigger: "backlog-prioritize completed"
+        confidence: 0.90
+        next_steps:
+          - command: backlog-schedule
+            args_template: ""
+            description: "Schedule prioritized items to sprints"
+            priority: 1
+          - command: backlog-summary
+            args_template: ""
+            description: "Generate backlog summary report"
+            priority: 2
+      scheduled:
+        trigger: "backlog-schedule completed"
+        confidence: 0.80
+        next_steps:
+          - command: backlog-summary
+            args_template: ""
+            description: "Generate sprint planning summary"
+            priority: 1
+          - command: create-story
+            args_template: ""
+            description: "Create stories for scheduled items"
+            priority: 2
 
   # Architecture Review Workflow
   architecture_review:
@@ -138,6 +222,43 @@ workflows:
       - "Architecture documented"
       - "Decision reviewed"
       - "Implementation plan approved"
+    transitions:
+      analyzed:
+        trigger: "analyze-impact completed"
+        confidence: 0.85
+        next_steps:
+          - command: create-doc
+            args_template: "adr ${feature_name}"
+            description: "Create Architecture Decision Record"
+            priority: 1
+          - command: review-proposal
+            args_template: "${doc_path}"
+            description: "Review architectural proposal"
+            priority: 2
+      documented:
+        trigger: "create-doc completed"
+        confidence: 0.90
+        next_steps:
+          - command: review-story
+            args_template: "${story_path}"
+            description: "Review story for architectural alignment"
+            priority: 1
+          - command: shard-doc
+            args_template: "${doc_path}"
+            description: "Split large documentation into sections"
+            priority: 2
+      approved:
+        trigger: "review-proposal completed"
+        confidence: 0.80
+        next_steps:
+          - command: create-story
+            args_template: ""
+            description: "Create implementation stories"
+            priority: 1
+          - command: develop
+            args_template: "${story_path}"
+            description: "Begin implementation"
+            priority: 2
 
   # Git Workflow (DevOps)
   git_workflow:
@@ -156,6 +277,43 @@ workflows:
       - "Changes committed"
       - "PR created"
       - "Code merged"
+    transitions:
+      staged:
+        trigger: "git add completed"
+        confidence: 0.90
+        next_steps:
+          - command: pre-push-quality-gate
+            args_template: ""
+            description: "Run quality checks before commit"
+            priority: 1
+          - command: git-commit
+            args_template: ""
+            description: "Commit staged changes"
+            priority: 2
+      committed:
+        trigger: "git commit completed"
+        confidence: 0.85
+        next_steps:
+          - command: github-pr-automation
+            args_template: ""
+            description: "Create pull request"
+            priority: 1
+          - command: git-push
+            args_template: ""
+            description: "Push to remote"
+            priority: 2
+      pushed:
+        trigger: "git push completed"
+        confidence: 0.80
+        next_steps:
+          - command: github-pr-automation
+            args_template: ""
+            description: "Create or update PR"
+            priority: 1
+          - command: repository-cleanup
+            args_template: ""
+            description: "Clean up merged branches"
+            priority: 2
 
   # Database Development Workflow
   database_workflow:
@@ -179,6 +337,43 @@ workflows:
       - "Schema designed"
       - "Migrations tested"
       - "RLS policies validated"
+    transitions:
+      designed:
+        trigger: "db-domain-modeling completed"
+        confidence: 0.90
+        next_steps:
+          - command: db-schema-audit
+            args_template: ""
+            description: "Audit schema for best practices"
+            priority: 1
+          - command: db-dry-run
+            args_template: ""
+            description: "Test migration in dry-run mode"
+            priority: 2
+      migrated:
+        trigger: "db-apply-migration completed"
+        confidence: 0.85
+        next_steps:
+          - command: db-smoke-test
+            args_template: ""
+            description: "Run smoke tests on migrated schema"
+            priority: 1
+          - command: db-rls-audit
+            args_template: ""
+            description: "Audit Row Level Security policies"
+            priority: 2
+      validated:
+        trigger: "db-smoke-test completed"
+        confidence: 0.80
+        next_steps:
+          - command: db-verify-order
+            args_template: ""
+            description: "Verify migration order consistency"
+            priority: 1
+          - command: develop
+            args_template: "${story_path}"
+            description: "Continue with application development"
+            priority: 2
 
   # Code Quality Improvement Workflow
   code_quality_workflow:
@@ -199,6 +394,43 @@ workflows:
       - "Code refactored"
       - "Tests added"
       - "Quality metrics improved"
+    transitions:
+      assessed:
+        trigger: "nfr-assess completed"
+        confidence: 0.85
+        next_steps:
+          - command: suggest-refactoring
+            args_template: "${file_path}"
+            description: "Get refactoring suggestions"
+            priority: 1
+          - command: security-scan
+            args_template: ""
+            description: "Run security scan"
+            priority: 2
+      refactored:
+        trigger: "improve-code-quality completed"
+        confidence: 0.90
+        next_steps:
+          - command: generate-tests
+            args_template: "${file_path}"
+            description: "Generate tests for refactored code"
+            priority: 1
+          - command: optimize-performance
+            args_template: ""
+            description: "Optimize performance"
+            priority: 2
+      tested:
+        trigger: "generate-tests completed"
+        confidence: 0.80
+        next_steps:
+          - command: nfr-assess
+            args_template: ""
+            description: "Re-assess NFR compliance"
+            priority: 1
+          - command: pre-push-quality-gate
+            args_template: ""
+            description: "Run quality gate before push"
+            priority: 2
 
   # Documentation Workflow
   documentation_workflow:
@@ -220,6 +452,43 @@ workflows:
       - "Documentation created"
       - "Documentation synchronized"
       - "Documentation indexed"
+    transitions:
+      drafted:
+        trigger: "create-doc completed"
+        confidence: 0.85
+        next_steps:
+          - command: shard-doc
+            args_template: "${doc_path}"
+            description: "Split large documentation"
+            priority: 1
+          - command: index-docs
+            args_template: ""
+            description: "Index documentation for search"
+            priority: 2
+      reviewed:
+        trigger: "review-doc completed"
+        confidence: 0.90
+        next_steps:
+          - command: sync-documentation
+            args_template: ""
+            description: "Synchronize documentation"
+            priority: 1
+          - command: generate-documentation
+            args_template: ""
+            description: "Generate API documentation"
+            priority: 2
+      published:
+        trigger: "sync-documentation completed"
+        confidence: 0.80
+        next_steps:
+          - command: index-docs
+            args_template: ""
+            description: "Re-index documentation"
+            priority: 1
+          - command: document-project
+            args_template: ""
+            description: "Update project overview"
+            priority: 2
 
   # UX Design Workflow
   ux_workflow:
@@ -240,6 +509,43 @@ workflows:
       - "Wireframes created"
       - "Components implemented"
       - "UX validated"
+    transitions:
+      designed:
+        trigger: "ux-create-wireframe completed"
+        confidence: 0.90
+        next_steps:
+          - command: ux-user-research
+            args_template: ""
+            description: "Validate design with user research"
+            priority: 1
+          - command: ux-ds-scan-artifact
+            args_template: "${wireframe_path}"
+            description: "Scan for design system compliance"
+            priority: 2
+      implemented:
+        trigger: "build-component completed"
+        confidence: 0.85
+        next_steps:
+          - command: audit-codebase
+            args_template: ""
+            description: "Audit component implementation"
+            priority: 1
+          - command: ux-ds-scan-artifact
+            args_template: "${component_path}"
+            description: "Validate design system compliance"
+            priority: 2
+      validated:
+        trigger: "ux-user-research completed"
+        confidence: 0.80
+        next_steps:
+          - command: build-component
+            args_template: ""
+            description: "Implement validated designs"
+            priority: 1
+          - command: develop
+            args_template: "${story_path}"
+            description: "Continue with development"
+            priority: 2
 
   # Brainstorming and Research Workflow
   research_workflow:
@@ -259,9 +565,47 @@ workflows:
       - "Research completed"
       - "Ideas documented"
       - "Action items created"
+    transitions:
+      researched:
+        trigger: "create-deep-research-prompt completed"
+        confidence: 0.85
+        next_steps:
+          - command: analyst-facilitate-brainstorming
+            args_template: "${topic}"
+            description: "Facilitate brainstorming session"
+            priority: 1
+          - command: kb-mode-interaction
+            args_template: ""
+            description: "Interact with knowledge base"
+            priority: 2
+      analyzed:
+        trigger: "analyst-facilitate-brainstorming completed"
+        confidence: 0.90
+        next_steps:
+          - command: create-doc
+            args_template: "research-findings"
+            description: "Document research findings"
+            priority: 1
+          - command: advanced-elicitation
+            args_template: ""
+            description: "Deep dive on specific topics"
+            priority: 2
+      documented:
+        trigger: "create-doc completed"
+        confidence: 0.80
+        next_steps:
+          - command: create-epic
+            args_template: ""
+            description: "Create epic from research"
+            priority: 1
+          - command: create-story
+            args_template: ""
+            description: "Create actionable stories"
+            priority: 2
 
 # Validation Notes:
 # - Patterns cross-referenced with Epic 6.1 workflow analysis
 # - Commands verified against actual project usage in .aios-core/agents/*.md
 # - Agent sequences match actual workflow patterns from recent stories
 # - Threshold of 2 ensures workflow detection is accurate but not overly sensitive
+# - All 10 workflows now have transition definitions (Story WIS-2)

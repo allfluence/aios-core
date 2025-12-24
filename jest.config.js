@@ -6,6 +6,7 @@ module.exports = {
   testMatch: [
     '**/tests/**/*.test.js',
     '**/tests/**/*.spec.js',
+    '**/.aios-core/**/__tests__/**/*.test.js',
   ],
 
   // Ignore patterns - exclude incompatible test frameworks
