@@ -6,7 +6,7 @@
  * Target: .windsurf/rules/agents/*.md
  */
 
-const { getVisibleCommands } = require('../agent-parser');
+const { getVisibleCommands, normalizeCommands } = require('../agent-parser');
 
 /**
  * Transform agent data to Windsurf format
@@ -23,8 +23,8 @@ function transform(agentData) {
   const whenToUse = agent.whenToUse || 'Use this agent for specific tasks';
   const archetype = persona.archetype || '';
 
-  // Get all commands
-  const allCommands = agentData.commands || [];
+  // Get all commands (normalized to consistent format)
+  const allCommands = normalizeCommands(agentData.commands || []);
   const quickCommands = getVisibleCommands(allCommands, 'quick');
 
   // Build content with XML tags

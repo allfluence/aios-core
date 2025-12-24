@@ -6,7 +6,7 @@
  * Target: .trae/rules/agents/*.md
  */
 
-const { getVisibleCommands } = require('../agent-parser');
+const { getVisibleCommands, normalizeCommands } = require('../agent-parser');
 
 /**
  * Transform agent data to Trae format
@@ -23,8 +23,8 @@ function transform(agentData) {
   const whenToUse = agent.whenToUse || 'Use this agent for specific tasks';
   const archetype = persona.archetype || '';
 
-  // Get commands by visibility
-  const allCommands = agentData.commands || [];
+  // Get commands by visibility (normalized to consistent format)
+  const allCommands = normalizeCommands(agentData.commands || []);
   const keyCommands = getVisibleCommands(allCommands, 'key');
   const quickCommands = getVisibleCommands(allCommands, 'quick');
 
