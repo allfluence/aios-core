@@ -5,7 +5,7 @@
  * @version 1.0.0
  *
  * @example
- * const wis = require('.aios-core/workflow-intelligence');
+ * const wis = require('./.aios-core/workflow-intelligence');
  *
  * // Get workflow suggestions
  * const suggestions = wis.getSuggestions({

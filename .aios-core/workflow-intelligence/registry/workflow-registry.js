@@ -131,7 +131,7 @@ class WorkflowRegistry {
     for (const [name, workflow] of Object.entries(workflows)) {
       const score = this.calculateWorkflowMatch(workflow, normalizedCommands);
 
-      if (score > bestScore && score >= (workflow.trigger_threshold || 2)) {
+      if (score > bestScore && score >= (workflow.trigger_threshold ?? 2)) {
         bestScore = score;
         bestMatch = {
           name,
