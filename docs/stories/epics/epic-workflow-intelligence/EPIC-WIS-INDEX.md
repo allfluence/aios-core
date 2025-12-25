@@ -74,9 +74,9 @@ Criar um sistema inteligente que guia desenvolvedores através dos workflows AIO
 | **WIS-10** | Service Template Implementation | Template Handlebars para scaffolding de serviços | 10 | 8-10h | ✅ Done | [#18](https://github.com/SynkraAI/aios-core/pull/18) |
 | **WIS-15** | `*analyze-project-structure` Task | Análise de estrutura para novas features | 10 | 2h | ✅ Done | [#17](https://github.com/SynkraAI/aios-core/pull/17) |
 | **WIS-11** | `*create-service` Task | Task para gerar serviços via template | 10 | 6-8h | ✅ Done | - |
-| **WIS-2** | Workflow Registry | Biblioteca editável de workflows validados | 10 | 12h | Ready |
-| **WIS-3** | `*next` Task Universal | Detecta contexto e sugere próxima task | 11 | 12h | Blocked by WIS-2 |
-| **WIS-4** | Wave Analysis Engine | Detecta wave atual, sugere paralelização | 11 | 8h | Blocked by WIS-2 |
+| **WIS-2** | Workflow Registry | Biblioteca editável de workflows validados | 10 | 12h | ✅ Done | - |
+| **WIS-3** | `*next` Task Universal | Detecta contexto e sugere próxima task | 11 | 12h | Ready | |
+| **WIS-4** | Wave Analysis Engine | Detecta wave atual, sugere paralelização | 11 | 8h | Ready | |
 | **WIS-5** | Pattern Capture (Internal) | Captura padrões AllFluence | 12 | 8h | Blocked by WIS-3 |
 | **WIS-6** | Community Pattern Opt-in | Telemetria anônima da comunidade | Future | 8h | Blocked by WIS-5, OSR |
 | **WIS-7** | Agent Lightning Unification | Integrar com Story 1.10 (RL optimization) | Future | TBD | Blocked by WIS-5 |

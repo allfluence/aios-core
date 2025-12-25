@@ -3,7 +3,7 @@
 **Generated:** 2025-12-05T18:00:00.000Z
 **Updated:** 2025-12-23T14:00:00.000Z
 **Total Items:** 8
-**Stories Completed:** 29 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.16**, **Story 6.18**, **Story 6.19**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, **Story SQS-6**, **Story SQS-7**, Story SQS-9, **Story WIS-9**, **Story WIS-10**, **Story WIS-11**, **Story WIS-15**)
+**Stories Completed:** 30 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.16**, **Story 6.18**, **Story 6.19**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, **Story SQS-6**, **Story SQS-7**, Story SQS-9, **Story WIS-2**, **Story WIS-9**, **Story WIS-10**, **Story WIS-11**, **Story WIS-15**)
 **Latest Release:** [v2.2.3](https://github.com/SynkraAI/aios-core/releases/tag/v2.2.3) (2025-12-22)
 
 > **Roadmap Sync Reminder:** When completing sprints, update the [AIOS Public Roadmap](https://github.com/orgs/SynkraAI/projects/1) and [ROADMAP.md](../../ROADMAP.md). See sync checklist in ROADMAP.md.
@@ -16,7 +16,7 @@
 - 🔧 **Technical Debt**: 10 (+3 from Story 6.19 QA, -1 Story 6.16 resolved)
 - ✨ **Enhancement**: 2
 - 🔴 **Critical**: 0
-- ✅ **Resolved**: 30 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.16**, **Story 6.18**, **Story 6.19**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, **Story SQS-6**, **Story SQS-7**, Story SQS-9, **Story WIS-9**, **Story WIS-10**, **Story WIS-11**, **Story WIS-15**, Tech Debt 1734220200001)
+- ✅ **Resolved**: 31 (Story 3.11c, Story 5.10, Story OSR-2, Story OSR-3, Story OSR-6, Story OSR-7, Story OSR-8, Story OSR-9, **Story OSR-10**, Story 6.9, Story 6.10, Story 6.11, Story 6.12, Story 6.13, **Story 6.16**, **Story 6.18**, **Story 6.19**, Story SQS-0, Story SQS-1, Story SQS-2, Story SQS-3, Story SQS-4, **Story SQS-6**, **Story SQS-7**, Story SQS-9, **Story WIS-2**, **Story WIS-9**, **Story WIS-10**, **Story WIS-11**, **Story WIS-15**, Tech Debt 1734220200001)
 - ❌ **Obsolete**: 1 (removed from active backlog)
 
 ---
@@ -607,12 +607,14 @@ Esta inconsistência pode causar:
 
 | Sprint 9-10 - Foundation | Sprint 11+ - Learning |
 |--------------------------|------------------------|
-| ✅ WIS-9: Investigation (17-25h) **DONE** | WIS-4: Wave Analysis (8h) |
-| ✅ WIS-10: Service Template (8-10h) **DONE** | WIS-5: Pattern Capture (8h) |
-| ✅ WIS-15: `*analyze-project-structure` (2h) **DONE** | WIS-6: Community Opt-in (8h) |
+| ✅ WIS-2: Workflow Registry (12h) **DONE** | WIS-4: Wave Analysis (8h) |
+| ✅ WIS-9: Investigation (17-25h) **DONE** | WIS-5: Pattern Capture (8h) |
+| ✅ WIS-10: Service Template (8-10h) **DONE** | WIS-6: Community Opt-in (8h) |
 | ✅ WIS-11: `*create-service` Task **DONE** | |
+| ✅ WIS-15: `*analyze-project-structure` (2h) **DONE** | |
 
 **Completed Stories:**
+- ✅ **WIS-2:** Workflow Registry (Sprint 10, 2025-12-25)
 - ✅ **WIS-9:** Incremental Feature Investigation (Sprint 9)
 - ✅ **WIS-10:** Service Template Implementation (Sprint 10)
 - ✅ **WIS-11:** `*create-service` Task (Sprint 10, 2025-12-24)
@@ -626,7 +628,7 @@ Esta inconsistência pode causar:
 
 📄 **[Ver Epic Completo](epic-workflow-intelligence/EPIC-WIS-INDEX.md)**
 
-**Status:** 🚧 IN PROGRESS - 4/8 stories complete (WIS-9 ✅, WIS-10 ✅, WIS-11 ✅, WIS-15 ✅)
+**Status:** 🚧 IN PROGRESS - 5/8 stories complete (WIS-2 ✅, WIS-9 ✅, WIS-10 ✅, WIS-11 ✅, WIS-15 ✅)
 
 ---
 
