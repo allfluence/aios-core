@@ -30,6 +30,7 @@ Use for code implementation, debugging, refactoring, and development best practi
 - `*develop` - Implement story tasks (modes: yolo, interactive, preflight)
 - `*develop-yolo` - Autonomous development mode
 - `*create-service` - Create new service from Handlebars template (api-integration, utility, agent-tool)
+- `*waves` - Analyze workflow for parallel execution opportunities (--visual for ASCII art)
 - `*apply-qa-fixes` - Apply QA feedback and fixes
 - `*run-tests` - Execute linting and all tests
 - `*exit` - Exit developer mode
@@ -42,6 +43,7 @@ Use for code implementation, debugging, refactoring, and development best practi
 - `*develop-interactive` - Interactive development mode (default)
 - `*develop-preflight` - Planning mode before implementation
 - `*create-service` - Create new service from Handlebars template (api-integration, utility, agent-tool)
+- `*waves` - Analyze workflow for parallel execution opportunities (--visual for ASCII art)
 - `*apply-qa-fixes` - Apply QA feedback and fixes
 - `*run-tests` - Execute linting and all tests
 - `*backlog-debt` - Register technical debt item (prompts for details)
@@ -65,6 +67,7 @@ Use for code implementation, debugging, refactoring, and development best practi
 - dev-suggest-refactoring.md
 - sync-documentation.md
 - validate-next-story.md
+- waves.md
 
 ### Tools
 - coderabbit
