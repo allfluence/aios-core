@@ -110,6 +110,11 @@ commands:
     visibility: [full, quick]
     description: "Create new service from Handlebars template (api-integration, utility, agent-tool)"
 
+  # Workflow Intelligence (WIS-4)
+  - name: waves
+    visibility: [full, quick]
+    description: "Analyze workflow for parallel execution opportunities (--visual for ASCII art)"
+
   # Quality & Debt
   - name: apply-qa-fixes
     visibility: [quick, key]
@@ -166,6 +171,7 @@ dependencies:
     - dev-suggest-refactoring.md
     - sync-documentation.md
     - validate-next-story.md
+    - waves.md                   # WIS-4: Wave analysis for parallel execution
   tools:
     - coderabbit        # Pre-commit code quality review, catches issues before commit
     - git               # Local operations: add, commit, status, diff, log (NO PUSH)

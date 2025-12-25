@@ -184,8 +184,11 @@ class ContextDetector {
         startTime: state.startTime || Date.now(),
         lastActivity: Date.now(),
         workflowActive: state.workflowActive || null,
+        workflowState: state.workflowState || null,
         lastCommands: state.lastCommands || [],
         agentSequence: state.agentSequence || [],
+        taskHistory: state.taskHistory || [],
+        currentStory: state.currentStory || null,
       };
 
       fs.writeFileSync(sessionFilePath, JSON.stringify(sessionData, null, 2), 'utf8');
