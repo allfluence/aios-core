@@ -2,7 +2,8 @@
  * @module workflow-intelligence
  * @description Workflow Intelligence System (WIS) public API
  * @story WIS-2 - Workflow Registry Enhancement
- * @version 1.0.0
+ * @story WIS-4 - Wave Analysis Engine
+ * @version 1.1.0
  *
  * @example
  * const wis = require('./.aios-core/workflow-intelligence');
@@ -19,6 +20,11 @@
  *
  * // Get next steps for a state
  * const nextSteps = wis.getNextSteps('epic_creation', 'stories_created');
+ *
+ * // Analyze waves for parallel execution (WIS-4)
+ * const waves = wis.analyzeWaves('story_development');
+ * console.log(waves.waves); // Wave groupings
+ * console.log(waves.criticalPath); // Critical path
  */
 
 'use strict';
@@ -35,6 +41,23 @@ const {
   createConfidenceScorer,
   SCORING_WEIGHTS
 } = require('./engine/confidence-scorer');
+
+const {
+  SuggestionEngine,
+  createSuggestionEngine,
+  SUGGESTION_CACHE_TTL,
+  LOW_CONFIDENCE_THRESHOLD
+} = require('./engine/suggestion-engine');
+
+const {
+  WaveAnalyzer,
+  CircularDependencyError,
+  createWaveAnalyzer,
+  analyzeWaves,
+  DEFAULT_TASK_DURATIONS
+} = require('./engine/wave-analyzer');
+
+const outputFormatter = require('./engine/output-formatter');
 
 /**
  * Singleton instances for default usage
@@ -263,16 +286,30 @@ module.exports = {
   invalidateCache,
   reset,
 
+  // Wave Analysis API (WIS-4)
+  analyzeWaves,
+  createWaveAnalyzer,
+
   // Factory functions
   createWorkflowRegistry,
   createConfidenceScorer,
+  createSuggestionEngine,
 
   // Classes (for advanced usage)
   WorkflowRegistry,
   ConfidenceScorer,
+  SuggestionEngine,
+  WaveAnalyzer,
+  CircularDependencyError,
+
+  // Output formatting (for *next task)
+  outputFormatter,
 
   // Constants
   SCORING_WEIGHTS,
   DEFAULT_CACHE_TTL,
-  DEFAULT_PATTERNS_PATH
+  DEFAULT_PATTERNS_PATH,
+  SUGGESTION_CACHE_TTL,
+  LOW_CONFIDENCE_THRESHOLD,
+  DEFAULT_TASK_DURATIONS
 };
