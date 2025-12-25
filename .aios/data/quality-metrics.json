@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-25T12:11:26.981Z",
+  "lastUpdated": "2025-12-25T12:16:11.615Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-22T19:57:38.772Z"
     },
     "layer2": {
-      "passRate": 0.9126984126984127,
-      "avgTimeMs": 156429,
-      "totalRuns": 126,
-      "lastRun": "2025-12-25T12:11:26.979Z",
+      "passRate": 0.9133858267716536,
+      "avgTimeMs": 156614,
+      "totalRuns": 127,
+      "lastRun": "2025-12-25T12:16:11.613Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -3936,6 +3936,20 @@
     },
     {
       "timestamp": "2025-12-25T12:11:26.979Z",
+      "layer": 2,
+      "passed": true,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 19,
+        "branchName": "feature/wis-2-workflow-registry",
+        "author": "Pedrovaleriolopez",
+        "coverageResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-25T12:16:11.613Z",
       "layer": 2,
       "passed": true,
       "durationMs": 180000,
