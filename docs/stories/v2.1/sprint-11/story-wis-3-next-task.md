@@ -4,7 +4,7 @@
 <!-- Context: Core WIS functionality - suggest next commands -->
 <!-- Created: 2025-12-23 by @sm (River) -->
 
-## Status: Ready
+## Status: Done
 
 **Priority:** 🟡 MEDIUM
 **Sprint:** 11
@@ -94,12 +94,12 @@ After:  User runs *next, gets context-aware suggestions with confidence scores
 
 ### AC 3.1: `*next` Task Definition
 
-- [ ] Create task file at `.aios-core/development/tasks/next.md`
-- [ ] Task accepts optional arguments:
+- [x] Create task file at `.aios-core/development/tasks/next.md`
+- [x] Task accepts optional arguments:
   - `--story <path>`: Explicit story context
   - `--all`: Show all suggestions (not just top 3)
   - `--help`: Show usage documentation
-- [ ] Task integrates with SuggestionEngine from WIS-2
+- [x] Task integrates with SuggestionEngine from WIS-2
 
 **Task Definition Structure:**
 ```yaml
@@ -122,12 +122,12 @@ args:
 
 ### AC 3.2: Suggestion Engine Integration
 
-- [ ] Create `suggestion-engine.js` in `.aios-core/workflow-intelligence/engine/`
-- [ ] Integrate with:
+- [x] Create `suggestion-engine.js` in `.aios-core/workflow-intelligence/engine/`
+- [x] Integrate with:
   - WorkflowRegistry (from WIS-2)
   - ConfidenceScorer (from WIS-2)
   - ContextDetector (existing)
-- [ ] Implement `suggestNext(context)` method returning scored suggestions
+- [x] Implement `suggestNext(context)` method returning scored suggestions
 
 **API Contract:**
 ```javascript
@@ -154,17 +154,17 @@ const result = {
 
 ### AC 3.3: Task Completion Hook
 
-- [ ] Enhance `context-loader.js` with task completion tracking
-- [ ] Implement `onTaskComplete(taskName, result)` method
-- [ ] Update session state with:
+- [x] Enhance `context-loader.js` with task completion tracking
+- [x] Implement `onTaskComplete(taskName, result)` method
+- [x] Update session state with:
   - Last command executed
   - Workflow state transition
   - Timestamp
-- [ ] Hook integrates with existing task execution flow
+- [x] Hook integrates with existing task execution flow
 
 ### AC 3.4: Formatted CLI Output
 
-- [ ] Suggestions displayed with clear formatting:
+- [x] Suggestions displayed with clear formatting:
   ```
   🧭 Workflow: story_development
   📍 State: in_development (confidence: 92%)
@@ -176,20 +176,20 @@ const result = {
 
   Type a number to execute, or press Enter to continue manually.
   ```
-- [ ] Low-confidence suggestions (<50%) marked as "uncertain"
-- [ ] Colors used for visual hierarchy (if terminal supports)
+- [x] Low-confidence suggestions (<50%) marked as "uncertain"
+- [x] Colors used for visual hierarchy (if terminal supports)
 
 ### AC 3.5: Context Override
 
-- [ ] `--story` flag sets explicit story context
-- [ ] Story path validated before use
-- [ ] Override context merged with auto-detected context
-- [ ] Clear feedback when using override
+- [x] `--story` flag sets explicit story context
+- [x] Story path validated before use
+- [x] Override context merged with auto-detected context
+- [x] Clear feedback when using override
 
 ### AC 3.6: Help Integration
 
-- [ ] `*next --help` displays usage documentation
-- [ ] Help includes examples:
+- [x] `*next --help` displays usage documentation
+- [x] Help includes examples:
   ```
   Usage: *next [options]
 
@@ -208,21 +208,21 @@ const result = {
 
 ### AC 3.7: Performance
 
-- [ ] Suggestion latency <100ms (measured)
-- [ ] Caching utilized for workflow patterns (5-minute TTL)
-- [ ] Lazy loading of WIS modules
-- [ ] Performance test included
+- [x] Suggestion latency <100ms (measured)
+- [x] Caching utilized for workflow patterns (5-minute TTL)
+- [x] Lazy loading of WIS modules
+- [x] Performance test included
 
 ### AC 3.8: Testing
 
-- [ ] Unit tests for SuggestionEngine
-- [ ] Integration tests for full flow
-- [ ] Test scenarios:
+- [x] Unit tests for SuggestionEngine
+- [x] Integration tests for full flow
+- [x] Test scenarios:
   - New session (no history)
   - Mid-workflow (clear context)
   - Ambiguous context (multiple matches)
   - No matching workflow
-- [ ] Performance test: measure latency
+- [x] Performance test: measure latency
 
 ---
 
@@ -309,19 +309,19 @@ sequenceDiagram
 | Memory footprint | <10MB additional |
 
 ### Reliability
-- [ ] Graceful degradation if registry unavailable
-- [ ] Fallback to generic suggestions when context unclear
-- [ ] No crashes on malformed input
+- [x] Graceful degradation if registry unavailable
+- [x] Fallback to generic suggestions when context unclear
+- [x] No crashes on malformed input
 
 ### Maintainability
-- [ ] Modular engine architecture (SuggestionEngine, ConfidenceScorer)
-- [ ] Clear API contracts with JSDoc
-- [ ] Extensible for future workflow types
+- [x] Modular engine architecture (SuggestionEngine, ConfidenceScorer)
+- [x] Clear API contracts with JSDoc
+- [x] Extensible for future workflow types
 
 ### Security
-- [ ] No sensitive data in suggestions output
-- [ ] Story paths validated before use
-- [ ] No command injection vectors
+- [x] No sensitive data in suggestions output
+- [x] Story paths validated before use
+- [x] No command injection vectors
 
 ---
 
@@ -360,70 +360,181 @@ sequenceDiagram
 
 | File | Status | Description |
 |------|--------|-------------|
-| `docs/stories/v2.1/sprint-11/story-wis-3-next-task.md` | Ready | This story |
-| `.aios-core/development/tasks/next.md` | To Create | Task definition |
-| `.aios-core/workflow-intelligence/engine/suggestion-engine.js` | To Create | Core suggestion engine |
-| `.aios-core/core/session/context-loader.js` | To Modify | Add task completion hook |
-| `tests/unit/workflow-intelligence/suggestion-engine.test.js` | To Create | Unit tests |
-| `tests/integration/workflow-intelligence/wis-integration.test.js` | To Create | Integration tests |
+| `docs/stories/v2.1/sprint-11/story-wis-3-next-task.md` | Ready for Review | This story |
+| `.aios-core/development/tasks/next.md` | Created | Task definition |
+| `.aios-core/workflow-intelligence/engine/suggestion-engine.js` | Created | Core suggestion engine |
+| `.aios-core/workflow-intelligence/engine/output-formatter.js` | Created | CLI output formatting |
+| `.aios-core/workflow-intelligence/index.js` | Modified | Added exports for new modules |
+| `.aios-core/core/session/context-loader.js` | Modified | Added task completion hook |
+| `.aios-core/core/session/context-detector.js` | Modified | Added taskHistory, workflowState fields |
+| `.aios-core/scripts/session-context-loader.js` | Modified | Added task completion hook (duplicate) |
+| `.aios-core/workflow-intelligence/__tests__/suggestion-engine.test.js` | Created | Unit tests (33 tests) |
+| `tests/unit/workflow-intelligence/suggestion-engine.test.js` | Created | Unit tests (8 tests) |
+| `tests/unit/session-context-loader.test.js` | Modified | Added WIS-3 tests (41 total) |
+| `tests/integration/workflow-intelligence/wis-integration.test.js` | Created | Integration tests (23 tests) |
 
 ---
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1: Create Task Definition** (AC: 3.1)
-  - [ ] Create `.aios-core/development/tasks/next.md`
-  - [ ] Define arguments (--story, --all, --help)
-  - [ ] Document integration with SuggestionEngine
+- [x] **Task 1: Create Task Definition** (AC: 3.1)
+  - [x] Create `.aios-core/development/tasks/next.md`
+  - [x] Define arguments (--story, --all, --help)
+  - [x] Document integration with SuggestionEngine
 
-- [ ] **Task 2: Implement Suggestion Engine** (AC: 3.2)
-  - [ ] Create `suggestion-engine.js`
-  - [ ] Integrate with WorkflowRegistry
-  - [ ] Integrate with ConfidenceScorer
-  - [ ] Implement `suggestNext(context)` method
+- [x] **Task 2: Implement Suggestion Engine** (AC: 3.2)
+  - [x] Create `suggestion-engine.js`
+  - [x] Integrate with WorkflowRegistry
+  - [x] Integrate with ConfidenceScorer
+  - [x] Implement `suggestNext(context)` method
 
-- [ ] **Task 3: Task Completion Hook** (AC: 3.3)
-  - [ ] Enhance `context-loader.js`
-  - [ ] Implement `onTaskComplete(taskName, result)`
-  - [ ] Update session state tracking
+- [x] **Task 3: Task Completion Hook** (AC: 3.3)
+  - [x] Enhance `context-loader.js`
+  - [x] Implement `onTaskComplete(taskName, result)`
+  - [x] Update session state tracking
 
-- [ ] **Task 4: CLI Output Formatting** (AC: 3.4)
-  - [ ] Implement formatted suggestion display
-  - [ ] Add confidence indicators
-  - [ ] Add color support (optional)
+- [x] **Task 4: CLI Output Formatting** (AC: 3.4)
+  - [x] Implement formatted suggestion display
+  - [x] Add confidence indicators
+  - [x] Add color support (optional)
 
-- [ ] **Task 5: Context Override** (AC: 3.5)
-  - [ ] Implement `--story` flag
-  - [ ] Validate story paths
-  - [ ] Merge with auto-detected context
+- [x] **Task 5: Context Override** (AC: 3.5)
+  - [x] Implement `--story` flag
+  - [x] Validate story paths
+  - [x] Merge with auto-detected context
 
-- [ ] **Task 6: Help Integration** (AC: 3.6)
-  - [ ] Implement `--help` flag
-  - [ ] Write usage documentation
+- [x] **Task 6: Help Integration** (AC: 3.6)
+  - [x] Implement `--help` flag
+  - [x] Write usage documentation
 
-- [ ] **Task 7: Performance Optimization** (AC: 3.7)
-  - [ ] Implement caching (5-min TTL)
-  - [ ] Lazy loading of WIS modules
-  - [ ] Verify <100ms latency
+- [x] **Task 7: Performance Optimization** (AC: 3.7)
+  - [x] Implement caching (5-min TTL)
+  - [x] Lazy loading of WIS modules
+  - [x] Verify <100ms latency
 
-- [ ] **Task 8: Testing** (AC: 3.8)
-  - [ ] Write unit tests for SuggestionEngine
-  - [ ] Write integration tests
-  - [ ] Write performance tests
-  - [ ] Verify all scenarios pass
+- [x] **Task 8: Testing** (AC: 3.8)
+  - [x] Write unit tests for SuggestionEngine
+  - [x] Write integration tests
+  - [x] Write performance tests
+  - [x] Verify all scenarios pass
 
 ---
 
 ## Dev Agent Record
 
 ### Agent Model Used
-*(To be filled by @dev)*
+Claude Opus 4.5 (claude-opus-4-5-20251101)
 
 ### Debug Log References
-*(To be filled during development)*
+- Session context loader test failures due to missing fields in ContextDetector.updateSessionState()
+- Fixed by adding `taskHistory`, `workflowState`, and `currentStory` fields to context-detector.js
 
 ### Completion Notes
-*(To be filled after implementation)*
+- Implemented `*next` task with full SuggestionEngine integration
+- Created output-formatter.js for CLI formatting with ANSI colors
+- Added task completion hook with workflow state inference
+- All 105 tests passing:
+  - 41 session-context-loader tests
+  - 41 suggestion-engine tests
+  - 23 WIS integration tests
+- Performance targets met (<100ms latency)
+- Lazy loading and 5-min cache TTL implemented
+
+---
+
+## QA Results
+
+### Gate Decision: ✅ PASS
+
+**Review Date:** 2025-12-25
+**Reviewer:** @qa (Quinn)
+**Gate Type:** Pre-PR
+
+---
+
+### Acceptance Criteria Verification
+
+| AC | Description | Status | Notes |
+|----|-------------|--------|-------|
+| 3.1 | Task Definition | ✅ PASS | `next.md` created with all required arguments |
+| 3.2 | Suggestion Engine | ✅ PASS | Full integration with WorkflowRegistry, ConfidenceScorer, ContextDetector |
+| 3.3 | Task Completion Hook | ✅ PASS | `onTaskComplete()` implemented with workflow state inference |
+| 3.4 | CLI Output Formatting | ✅ PASS | ANSI colors, confidence indicators, proper formatting |
+| 3.5 | Context Override | ✅ PASS | `--story` flag with path validation |
+| 3.6 | Help Integration | ✅ PASS | `--help` displays comprehensive usage |
+| 3.7 | Performance | ✅ PASS | <100ms latency, 5-min cache TTL, lazy loading |
+| 3.8 | Testing | ✅ PASS | 105 tests passing (unit, integration, performance) |
+
+---
+
+### Test Results
+
+```
+Test Suites: 4 passed, 4 total
+Tests:       105 passed, 105 total
+
+Breakdown:
+- session-context-loader: 41 tests ✓
+- suggestion-engine (unit): 33 tests ✓
+- suggestion-engine (scenarios): 8 tests ✓
+- wis-integration: 23 tests ✓
+```
+
+---
+
+### Performance Verification
+
+| Metric | Target | Actual | Status |
+|--------|--------|--------|--------|
+| getSuggestions | <100ms | 6ms | ✅ PASS |
+| matchWorkflow | <50ms | 1ms | ✅ PASS |
+| Registry cold load | <200ms | 2ms | ✅ PASS |
+| Full flow | <100ms | 4ms | ✅ PASS |
+
+---
+
+### NFR Compliance
+
+| Category | Requirement | Status | Notes |
+|----------|-------------|--------|-------|
+| **Performance** | <100ms latency | ✅ PASS | All targets exceeded |
+| **Performance** | 5-min cache TTL | ✅ PASS | Implemented in SuggestionEngine |
+| **Performance** | Lazy loading | ✅ PASS | WIS modules load on demand |
+| **Security** | No eval/exec | ✅ PASS | No dangerous dynamic code |
+| **Security** | Path validation | ✅ PASS | `_resolveStoryPath()` validates |
+| **Security** | No injection vectors | ✅ PASS | Template interpolation is safe |
+| **Reliability** | Error handling | ✅ PASS | 7 try-catch blocks in engine |
+| **Reliability** | Graceful degradation | ✅ PASS | Fallback suggestions available |
+| **Maintainability** | JSDoc coverage | ✅ PASS | All public methods documented |
+| **Maintainability** | Modular architecture | ✅ PASS | Clear separation of concerns |
+
+---
+
+### Code Quality
+
+- **Linting:** No new warnings in WIS-3 files
+- **Type Safety:** TypeCheck passes
+- **Documentation:** Comprehensive JSDoc on all public APIs
+- **Error Handling:** Proper try-catch with graceful fallbacks
+- **Code Duplication:** Minor concern - `session-context-loader.js` exists in two locations
+
+---
+
+### Concerns (Resolved)
+
+1. **Code Duplication:** ✅ RESOLVED
+   - `.aios-core/scripts/session-context-loader.js` now re-exports from canonical location
+   - Canonical location: `.aios-core/core/session/context-loader.js`
+   - All 41 tests still passing after consolidation
+
+2. **NFR Checkboxes:** ✅ RESOLVED
+   - All NFR checkboxes updated to reflect implementation status
+
+---
+
+### Final Verdict
+
+**PASS** - Story WIS-3 meets all acceptance criteria. All concerns resolved. Implementation is solid, well-tested (105 tests), and exceeds performance targets. Ready for merge.
 
 ---
 
@@ -433,3 +544,5 @@ sequenceDiagram
 |---------|------|--------|---------|
 | 1.0 | 2025-12-23 | @sm (River) | Initial draft from MVP scope |
 | 1.1 | 2025-12-25 | @po (Pax) | PO Validation: APPROVED - Added NFR, Testing sections, Tasks breakdown, updated dependencies |
+| 2.0 | 2025-12-25 | @dev (Dex) | Implementation complete - All 8 tasks done, 105 tests passing, Ready for Review |
+| 2.1 | 2025-12-25 | @qa (Quinn) | QA Review: PASS - All ACs verified, 105 tests, performance validated, NFRs met |

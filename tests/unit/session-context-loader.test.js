@@ -290,4 +290,201 @@ describe('SessionContextLoader', () => {
       expect(context.sessionType).toBe('new');
     });
   });
+
+  describe('onTaskComplete() - Task Completion Hook (WIS-3)', () => {
+    test('records task completion in session state', () => {
+      const result = loader.onTaskComplete('develop', {
+        success: true,
+        agentId: 'dev',
+        storyPath: 'docs/stories/test.md',
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.sessionId).toBeTruthy();
+    });
+
+    test('adds command to history', () => {
+      loader.onTaskComplete('develop', { success: true });
+
+      const context = loader.loadContext('qa');
+
+      expect(context.lastCommands).toContain('*develop');
+    });
+
+    test('normalizes command with * prefix', () => {
+      loader.onTaskComplete('run-tests', { success: true });
+      loader.onTaskComplete('*review-qa', { success: true });
+
+      const sessionState = loader.loadSessionState();
+
+      expect(sessionState.lastCommands).toContain('*run-tests');
+      expect(sessionState.lastCommands).toContain('*review-qa');
+    });
+
+    test('updates task history', () => {
+      loader.onTaskComplete('develop', {
+        success: true,
+        agentId: 'dev',
+        storyPath: 'docs/stories/test.md',
+      });
+
+      const sessionState = loader.loadSessionState();
+
+      expect(sessionState.taskHistory).toBeTruthy();
+      expect(sessionState.taskHistory.length).toBe(1);
+      expect(sessionState.taskHistory[0].task).toBe('develop');
+      expect(sessionState.taskHistory[0].success).toBe(true);
+    });
+
+    test('limits task history to 20 entries', () => {
+      for (let i = 1; i <= 25; i++) {
+        loader.onTaskComplete(`task-${i}`, { success: true });
+      }
+
+      const sessionState = loader.loadSessionState();
+
+      expect(sessionState.taskHistory.length).toBe(20);
+      expect(sessionState.taskHistory[0].task).toBe('task-6');
+      expect(sessionState.taskHistory[19].task).toBe('task-25');
+    });
+
+    test('updates current story if provided', () => {
+      loader.onTaskComplete('develop', {
+        success: true,
+        storyPath: 'docs/stories/v2.1/sprint-10/story-wis-3.md',
+      });
+
+      const sessionState = loader.loadSessionState();
+
+      expect(sessionState.currentStory).toBe('docs/stories/v2.1/sprint-10/story-wis-3.md');
+    });
+
+    test('infers workflow state from task name', () => {
+      loader.onTaskComplete('develop', { success: true });
+
+      const sessionState = loader.loadSessionState();
+
+      expect(sessionState.workflowActive).toBe('story_development');
+      expect(sessionState.workflowState).toBe('in_development');
+    });
+
+    test('infers different workflow states', () => {
+      // Test validate-story-draft
+      loader.onTaskComplete('validate-story-draft', { success: true });
+      let state = loader.loadSessionState();
+      expect(state.workflowActive).toBe('story_development');
+      expect(state.workflowState).toBe('validated');
+
+      // Test review-qa
+      loader.onTaskComplete('review-qa', { success: true });
+      state = loader.loadSessionState();
+      expect(state.workflowState).toBe('qa_reviewed');
+
+      // Test create-epic
+      loader.onTaskComplete('create-epic', { success: true });
+      state = loader.loadSessionState();
+      expect(state.workflowActive).toBe('epic_creation');
+      expect(state.workflowState).toBe('epic_drafted');
+    });
+
+    test('handles failed task result', () => {
+      loader.onTaskComplete('develop', { success: false });
+
+      const sessionState = loader.loadSessionState();
+
+      expect(sessionState.taskHistory[0].success).toBe(false);
+    });
+  });
+
+  describe('getWorkflowState() - Workflow State Access (WIS-3)', () => {
+    test('returns null when no workflow active', () => {
+      loader.clearSession();
+
+      const state = loader.getWorkflowState();
+
+      expect(state).toBeNull();
+    });
+
+    test('returns workflow state after task completion', () => {
+      loader.onTaskComplete('develop', { success: true });
+
+      const state = loader.getWorkflowState();
+
+      expect(state).toBeTruthy();
+      expect(state.workflow).toBe('story_development');
+      expect(state.state).toBe('in_development');
+      expect(state.lastActivity).toBeTruthy();
+    });
+  });
+
+  describe('getTaskHistory() - Task History Access (WIS-3)', () => {
+    test('returns empty array when no history', () => {
+      loader.clearSession();
+
+      const history = loader.getTaskHistory();
+
+      expect(history).toEqual([]);
+    });
+
+    test('returns task history entries', () => {
+      loader.onTaskComplete('develop', { success: true });
+      loader.onTaskComplete('run-tests', { success: true });
+
+      const history = loader.getTaskHistory();
+
+      expect(history.length).toBe(2);
+      expect(history[0].task).toBe('develop');
+      expect(history[1].task).toBe('run-tests');
+    });
+
+    test('limits returned entries based on limit parameter', () => {
+      for (let i = 1; i <= 10; i++) {
+        loader.onTaskComplete(`task-${i}`, { success: true });
+      }
+
+      const history = loader.getTaskHistory(5);
+
+      expect(history.length).toBe(5);
+      expect(history[0].task).toBe('task-6');
+      expect(history[4].task).toBe('task-10');
+    });
+  });
+
+  describe('_inferWorkflowState() - Workflow State Inference (WIS-3)', () => {
+    test('infers story_development workflow states', () => {
+      const states = [
+        { task: 'validate-story-draft', expected: { workflow: 'story_development', state: 'validated' } },
+        { task: 'develop', expected: { workflow: 'story_development', state: 'in_development' } },
+        { task: 'develop-yolo', expected: { workflow: 'story_development', state: 'in_development' } },
+        { task: 'review-qa', expected: { workflow: 'story_development', state: 'qa_reviewed' } },
+      ];
+
+      states.forEach(({ task, expected }) => {
+        const result = loader._inferWorkflowState(task, {});
+        expect(result).toEqual(expected);
+      });
+    });
+
+    test('infers epic_creation workflow states', () => {
+      const states = [
+        { task: 'create-epic', expected: { workflow: 'epic_creation', state: 'epic_drafted' } },
+        { task: 'create-story', expected: { workflow: 'epic_creation', state: 'stories_created' } },
+      ];
+
+      states.forEach(({ task, expected }) => {
+        const result = loader._inferWorkflowState(task, {});
+        expect(result).toEqual(expected);
+      });
+    });
+
+    test('returns null for unknown tasks', () => {
+      const result = loader._inferWorkflowState('unknown-task', {});
+      expect(result).toBeNull();
+    });
+
+    test('normalizes task name by removing * prefix', () => {
+      const result = loader._inferWorkflowState('*develop', {});
+      expect(result).toEqual({ workflow: 'story_development', state: 'in_development' });
+    });
+  });
 });
