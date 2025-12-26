@@ -140,6 +140,9 @@ jobs:
         run: |
           VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
 
+          # Create output directory
+          mkdir -p @synkra
+
           # Use tar with || true to ignore "file changed" warnings
           tar -czf @synkra/aios-core-${VERSION}.tar.gz \
             --exclude=node_modules \
