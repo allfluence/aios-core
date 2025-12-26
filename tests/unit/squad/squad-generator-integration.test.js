@@ -154,12 +154,15 @@ describe('SquadGenerator Integration Tests', () => {
       const result = await generator.generate({
         name: 'extend-config-test',
         configMode: 'extend',
+        // Use tempDir as projectRoot to ensure local config files are created
+        // (prevents detection of aios-core's docs/framework/ configs)
+        projectRoot: tempDir,
       });
 
       const manifest = await loader.loadManifest(result.path);
       expect(manifest.config.extends).toBe('extend');
 
-      // Config files should exist
+      // Config files should exist (created locally since no project configs in tempDir)
       const codingStandards = await fs.readFile(
         path.join(result.path, 'config', 'coding-standards.md'),
         'utf-8',
@@ -171,6 +174,7 @@ describe('SquadGenerator Integration Tests', () => {
       const result = await generator.generate({
         name: 'override-config-test',
         configMode: 'override',
+        projectRoot: tempDir,
       });
 
       const manifest = await loader.loadManifest(result.path);
@@ -283,6 +287,8 @@ describe('SquadGenerator Integration Tests', () => {
       const result = await generator.generate({
         name: 'structure-test',
         template: 'basic',
+        // Use tempDir as projectRoot to ensure local config files are created
+        projectRoot: tempDir,
       });
 
       const expectedFiles = [
@@ -309,6 +315,7 @@ describe('SquadGenerator Integration Tests', () => {
       const result = await generator.generate({
         name: 'gitkeep-structure-test',
         template: 'basic',
+        projectRoot: tempDir,
       });
 
       const emptyDirs = ['workflows', 'checklists', 'templates', 'tools', 'data'];
