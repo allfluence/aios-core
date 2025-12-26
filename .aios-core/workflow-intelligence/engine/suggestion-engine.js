@@ -2,7 +2,8 @@
  * @module SuggestionEngine
  * @description High-level suggestion engine for the *next task
  * @story WIS-3 - *next Task Implementation
- * @version 1.0.0
+ * @story WIS-5 - Pattern Capture Integration
+ * @version 1.1.0
  *
  * @example
  * const { SuggestionEngine } = require('./suggestion-engine');
@@ -20,6 +21,7 @@ const path = require('path');
 // Lazy-loaded dependencies for performance
 let wis = null;
 let SessionContextLoader = null;
+let learning = null;
 
 /**
  * Default cache TTL for suggestions (5 minutes)
@@ -42,10 +44,14 @@ class SuggestionEngine {
    * @param {Object} options - Configuration options
    * @param {number} options.cacheTTL - Cache time-to-live in milliseconds
    * @param {boolean} options.lazyLoad - Whether to lazy-load dependencies
+   * @param {boolean} options.useLearnedPatterns - Whether to use learned patterns (default: true)
+   * @param {number} options.learnedPatternBoost - Confidence boost for learned patterns (default: 0.15)
    */
   constructor(options = {}) {
     this.cacheTTL = options.cacheTTL || SUGGESTION_CACHE_TTL;
     this.lazyLoad = options.lazyLoad !== false;
+    this.useLearnedPatterns = options.useLearnedPatterns !== false;
+    this.learnedPatternBoost = options.learnedPatternBoost || 0.15;
     this.suggestionCache = null;
     this.cacheTimestamp = null;
     this.cacheKey = null;
@@ -76,6 +82,15 @@ class SuggestionEngine {
       } catch (error) {
         console.warn('[SuggestionEngine] Failed to load SessionContextLoader:', error.message);
         SessionContextLoader = null;
+      }
+    }
+
+    if (!learning && this.useLearnedPatterns) {
+      try {
+        learning = require('../learning');
+      } catch (error) {
+        console.warn('[SuggestionEngine] Failed to load learning module:', error.message);
+        learning = null;
       }
     }
   }
@@ -180,19 +195,39 @@ class SuggestionEngine {
         ? suggestions.reduce((sum, s) => sum + (s.confidence || 0), 0) / suggestions.length
         : 0;
 
+      // Format base suggestions
+      let formattedSuggestions = suggestions.map((s, index) => ({
+        command: `*${s.command}`,
+        args: this._interpolateArgs(s.args_template, context),
+        description: s.description || '',
+        confidence: Math.round((s.confidence || 0) * 100) / 100,
+        priority: s.priority || index + 1,
+        source: 'workflow'
+      }));
+
+      // Apply learned pattern boost (WIS-5)
+      if (this.useLearnedPatterns && learning) {
+        formattedSuggestions = this._applyLearnedPatternBoost(
+          formattedSuggestions,
+          context
+        );
+      }
+
+      // Re-sort after boost
+      formattedSuggestions.sort((a, b) => b.confidence - a.confidence);
+
+      // Recalculate average confidence
+      const finalAvgConfidence = formattedSuggestions.length > 0
+        ? formattedSuggestions.reduce((sum, s) => sum + s.confidence, 0) / formattedSuggestions.length
+        : 0;
+
       // Build result
       const result = {
         workflow: match?.name || suggestions[0]?.workflow || null,
         currentState: suggestions[0]?.state || null,
-        confidence: Math.round(avgConfidence * 100) / 100,
-        suggestions: suggestions.map((s, index) => ({
-          command: `*${s.command}`,
-          args: this._interpolateArgs(s.args_template, context),
-          description: s.description || '',
-          confidence: Math.round((s.confidence || 0) * 100) / 100,
-          priority: s.priority || index + 1
-        })),
-        isUncertain: avgConfidence < LOW_CONFIDENCE_THRESHOLD,
+        confidence: Math.round(finalAvgConfidence * 100) / 100,
+        suggestions: formattedSuggestions,
+        isUncertain: finalAvgConfidence < LOW_CONFIDENCE_THRESHOLD,
         message: null
       };
 
@@ -378,6 +413,121 @@ class SuggestionEngine {
     this.suggestionCache = result;
     this.cacheTimestamp = Date.now();
     this.cacheKey = key;
+  }
+
+  /**
+   * Apply learned pattern boost to suggestions
+   * @param {Object[]} suggestions - Base suggestions
+   * @param {Object} context - Session context
+   * @returns {Object[]} Boosted suggestions
+   * @private
+   */
+  _applyLearnedPatternBoost(suggestions, context) {
+    if (!learning) {
+      return suggestions;
+    }
+
+    try {
+      // Get commands to match against
+      const lastCommands = context.lastCommands || [];
+      if (lastCommands.length === 0 && context.lastCommand) {
+        lastCommands.push(context.lastCommand);
+      }
+
+      if (lastCommands.length === 0) {
+        return suggestions;
+      }
+
+      // Find matching learned patterns
+      const matchingPatterns = learning.findMatchingPatterns(lastCommands);
+
+      if (!matchingPatterns || matchingPatterns.length === 0) {
+        return suggestions;
+      }
+
+      // Build a map of command -> boost based on learned patterns
+      const boostMap = new Map();
+
+      for (const pattern of matchingPatterns) {
+        // Find the next command in the pattern after the current position
+        const patternSeq = pattern.sequence || [];
+        const matchIndex = this._findSequencePosition(lastCommands, patternSeq);
+
+        if (matchIndex >= 0 && matchIndex < patternSeq.length - 1) {
+          const nextCommand = patternSeq[matchIndex + 1];
+          const currentBoost = boostMap.get(nextCommand) || 0;
+
+          // Calculate boost based on pattern quality
+          const occurrenceBoost = Math.min(pattern.occurrences * 0.02, 0.1);
+          const successBoost = (pattern.successRate || 1) * 0.05;
+          const similarityBoost = (pattern.similarity || 0.5) * 0.05;
+
+          const totalBoost = this.learnedPatternBoost + occurrenceBoost + successBoost + similarityBoost;
+          boostMap.set(nextCommand, Math.max(currentBoost, totalBoost));
+        }
+      }
+
+      // Apply boosts to suggestions
+      return suggestions.map(suggestion => {
+        const cmdNormalized = suggestion.command.replace(/^\*/, '').toLowerCase();
+        const boost = boostMap.get(cmdNormalized) || 0;
+
+        if (boost > 0) {
+          return {
+            ...suggestion,
+            confidence: Math.min(1.0, suggestion.confidence + boost),
+            source: 'learned_pattern',
+            learnedBoost: Math.round(boost * 100) / 100
+          };
+        }
+
+        return suggestion;
+      });
+    } catch (error) {
+      console.warn('[SuggestionEngine] Failed to apply learned pattern boost:', error.message);
+      return suggestions;
+    }
+  }
+
+  /**
+   * Find position of a subsequence in a pattern sequence
+   * @param {string[]} subseq - Subsequence to find
+   * @param {string[]} pattern - Full pattern sequence
+   * @returns {number} End index of match, or -1 if not found
+   * @private
+   */
+  _findSequencePosition(subseq, pattern) {
+    if (!subseq || !pattern || subseq.length === 0) {
+      return -1;
+    }
+
+    // Normalize for comparison
+    const normalizedSubseq = subseq.map(c => c.toLowerCase().replace(/^\*/, ''));
+    const normalizedPattern = pattern.map(c => c.toLowerCase().replace(/^\*/, ''));
+
+    // Find where the subsequence ends in the pattern
+    for (let i = 0; i <= normalizedPattern.length - normalizedSubseq.length; i++) {
+      let matches = true;
+      for (let j = 0; j < normalizedSubseq.length; j++) {
+        if (normalizedPattern[i + j] !== normalizedSubseq[j]) {
+          matches = false;
+          break;
+        }
+      }
+      if (matches) {
+        return i + normalizedSubseq.length - 1;
+      }
+    }
+
+    // Try partial match (last command matches)
+    const lastCmd = normalizedSubseq[normalizedSubseq.length - 1];
+    for (let i = 0; i < normalizedPattern.length; i++) {
+      if (normalizedPattern[i] === lastCmd) {
+        return i;
+      }
+    }
+
+    return -1;
   }
 
   /**

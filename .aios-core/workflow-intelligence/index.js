@@ -59,6 +59,15 @@ const {
 
 const outputFormatter = require('./engine/output-formatter');
 
+// Learning module (WIS-5)
+let learningModule = null;
+try {
+  learningModule = require('./learning');
+} catch (error) {
+  // Learning module not yet available
+  learningModule = null;
+}
+
 /**
  * Singleton instances for default usage
  */
@@ -289,6 +298,9 @@ module.exports = {
   // Wave Analysis API (WIS-4)
   analyzeWaves,
   createWaveAnalyzer,
+
+  // Pattern Learning API (WIS-5)
+  learning: learningModule,
 
   // Factory functions
   createWorkflowRegistry,
