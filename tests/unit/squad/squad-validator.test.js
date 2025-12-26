@@ -477,4 +477,227 @@ describe('SquadValidator', () => {
       expect(result).toBeDefined();
     });
   });
+
+  /**
+   * SQS-10: Project Config Reference Tests
+   * Tests for config path resolution and validation
+   */
+  describe('validateConfigReferences() [SQS-10]', () => {
+    let tempDir;
+    let squadPath;
+
+    beforeEach(async () => {
+      // Create temp directory for testing
+      tempDir = path.join(__dirname, 'temp-sqs10-validator-' + Date.now());
+      squadPath = path.join(tempDir, 'squads', 'test-squad');
+      await fs.mkdir(squadPath, { recursive: true });
+    });
+
+    afterEach(async () => {
+      // Clean up temp directory
+      try {
+        await fs.rm(tempDir, { recursive: true, force: true });
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+    });
+
+    it('should pass when no config section exists in manifest', async () => {
+      // Create minimal squad.yaml without config section
+      const manifestContent = `
+name: test-squad
+version: 1.0.0
+`;
+      await fs.writeFile(path.join(squadPath, 'squad.yaml'), manifestContent);
+
+      const result = await validator.validateConfigReferences(squadPath);
+
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+      expect(result.warnings).toHaveLength(0);
+    });
+
+    it('should pass when local config files exist', async () => {
+      // Create squad.yaml with local config references
+      const manifestContent = `
+name: test-squad
+version: 1.0.0
+config:
+  coding-standards: config/coding-standards.md
+  tech-stack: config/tech-stack.md
+`;
+      await fs.writeFile(path.join(squadPath, 'squad.yaml'), manifestContent);
+
+      // Create local config files
+      const configDir = path.join(squadPath, 'config');
+      await fs.mkdir(configDir, { recursive: true });
+      await fs.writeFile(path.join(configDir, 'coding-standards.md'), '# Coding Standards');
+      await fs.writeFile(path.join(configDir, 'tech-stack.md'), '# Tech Stack');
+
+      const result = await validator.validateConfigReferences(squadPath);
+
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should pass when project-level config files exist (AC10.4)', async () => {
+      // Create project-level framework directory
+      const frameworkDir = path.join(tempDir, 'docs', 'framework');
+      await fs.mkdir(frameworkDir, { recursive: true });
+      await fs.writeFile(path.join(frameworkDir, 'CODING-STANDARDS.md'), '# Project Coding Standards');
+      await fs.writeFile(path.join(frameworkDir, 'TECH-STACK.md'), '# Project Tech Stack');
+
+      // Create squad.yaml with project-level config references
+      const manifestContent = `
+name: test-squad
+version: 1.0.0
+config:
+  coding-standards: ../../docs/framework/CODING-STANDARDS.md
+  tech-stack: ../../docs/framework/TECH-STACK.md
+`;
+      await fs.writeFile(path.join(squadPath, 'squad.yaml'), manifestContent);
+
+      const result = await validator.validateConfigReferences(squadPath);
+
+      expect(result.valid).toBe(true);
+      expect(result.errors).toHaveLength(0);
+    });
+
+    it('should warn when project-level config is missing', async () => {
+      // Create squad.yaml referencing non-existent project-level configs
+      const manifestContent = `
+name: test-squad
+version: 1.0.0
+config:
+  coding-standards: ../../docs/framework/CODING-STANDARDS.md
+`;
+      await fs.writeFile(path.join(squadPath, 'squad.yaml'), manifestContent);
+
+      const result = await validator.validateConfigReferences(squadPath);
+
+      expect(result.valid).toBe(true); // Warnings don't fail validation
+      expect(result.warnings.length).toBeGreaterThan(0);
+      expect(result.warnings[0].code).toBe(ValidationErrorCodes.FILE_NOT_FOUND);
+    });
+
+    it('should error when local config is missing', async () => {
+      // Create squad.yaml referencing non-existent local configs
+      const manifestContent = `
+name: test-squad
+version: 1.0.0
+config:
+  coding-standards: config/coding-standards.md
+`;
+      await fs.writeFile(path.join(squadPath, 'squad.yaml'), manifestContent);
+
+      const result = await validator.validateConfigReferences(squadPath);
+
+      expect(result.valid).toBe(false);
+      expect(result.errors.length).toBeGreaterThan(0);
+      expect(result.errors[0].code).toBe(ValidationErrorCodes.FILE_NOT_FOUND);
+    });
+  });
+
+  describe('_resolveConfigPath() [SQS-10]', () => {
+    let tempDir;
+    let squadPath;
+
+    beforeEach(async () => {
+      // Create temp directory for testing
+      tempDir = path.join(__dirname, 'temp-sqs10-resolve-' + Date.now());
+      squadPath = path.join(tempDir, 'squads', 'test-squad');
+      await fs.mkdir(squadPath, { recursive: true });
+    });
+
+    afterEach(async () => {
+      // Clean up temp directory
+      try {
+        await fs.rm(tempDir, { recursive: true, force: true });
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+    });
+
+    it('should return null for null/undefined config path', async () => {
+      const result = await validator._resolveConfigPath(squadPath, null);
+      expect(result).toBeNull();
+
+      const result2 = await validator._resolveConfigPath(squadPath, undefined);
+      expect(result2).toBeNull();
+    });
+
+    it('should resolve local config path', async () => {
+      // Create local config file
+      const configDir = path.join(squadPath, 'config');
+      await fs.mkdir(configDir, { recursive: true });
+      await fs.writeFile(path.join(configDir, 'test-config.md'), '# Test Config');
+
+      const result = await validator._resolveConfigPath(squadPath, 'config/test-config.md');
+
+      expect(result).toBeDefined();
+      expect(result).toContain('test-config.md');
+    });
+
+    it('should resolve project-level config path with relative reference', async () => {
+      // Create project-level framework directory
+      const frameworkDir = path.join(tempDir, 'docs', 'framework');
+      await fs.mkdir(frameworkDir, { recursive: true });
+      await fs.writeFile(path.join(frameworkDir, 'CODING-STANDARDS.md'), '# Standards');
+
+      const result = await validator._resolveConfigPath(squadPath, '../../docs/framework/CODING-STANDARDS.md');
+
+      expect(result).toBeDefined();
+      expect(result).toContain('CODING-STANDARDS.md');
+    });
+
+    it('should return null for non-existent path', async () => {
+      const result = await validator._resolveConfigPath(squadPath, 'config/nonexistent.md');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('validate() integration with config references [SQS-10]', () => {
+    let tempDir;
+    let squadPath;
+
+    beforeEach(async () => {
+      // Create temp directory for testing
+      tempDir = path.join(__dirname, 'temp-sqs10-integrate-' + Date.now());
+      squadPath = path.join(tempDir, 'squads', 'test-squad');
+      await fs.mkdir(path.join(squadPath, 'tasks'), { recursive: true });
+      await fs.mkdir(path.join(squadPath, 'agents'), { recursive: true });
+    });
+
+    afterEach(async () => {
+      // Clean up temp directory
+      try {
+        await fs.rm(tempDir, { recursive: true, force: true });
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+    });
+
+    it('should include config validation in full validate() call', async () => {
+      // Create valid squad with project-level configs
+      const frameworkDir = path.join(tempDir, 'docs', 'framework');
+      await fs.mkdir(frameworkDir, { recursive: true });
+      await fs.writeFile(path.join(frameworkDir, 'CODING-STANDARDS.md'), '# Standards');
+
+      const manifestContent = `
+name: test-squad
+version: 1.0.0
+config:
+  coding-standards: ../../docs/framework/CODING-STANDARDS.md
+`;
+      await fs.writeFile(path.join(squadPath, 'squad.yaml'), manifestContent);
+
+      const result = await validator.validate(squadPath);
+
+      // Should complete without config-related errors
+      const configErrors = result.errors.filter(e =>
+        e.message && e.message.includes('config')
+      );
+      expect(configErrors).toHaveLength(0);
+    });
+  });
 });

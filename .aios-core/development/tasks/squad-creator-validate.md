@@ -61,6 +61,12 @@ Validates a squad against the JSON Schema and TASK-FORMAT-SPECIFICATION-V1.
 - Checks for valid agent definition format
 - Validates naming conventions
 
+### 5. Config Reference Validation (SQS-10)
+- Validates config paths in squad.yaml resolve correctly
+- Supports both local (`config/coding-standards.md`) and project-level (`../../docs/framework/CODING-STANDARDS.md`) paths
+- Warns if project-level reference doesn't exist
+- Errors if local reference doesn't exist
+
 ## Flow
 
 ```
@@ -72,7 +78,8 @@ Validates a squad against the JSON Schema and TASK-FORMAT-SPECIFICATION-V1.
    ├── validateManifest() → Schema check
    ├── validateStructure() → Directory check
    ├── validateTasks() → Task format check
-   └── validateAgents() → Agent format check
+   ├── validateAgents() → Agent format check
+   └── validateConfigReferences() → Config path check (SQS-10)
 
 3. Format and display result
    ├── Show errors (if any)
@@ -146,6 +153,7 @@ async function validateSquad(options) {
 ## Related
 
 - **Story:** SQS-3 (Squad Validator + JSON Schema)
+- **Story:** SQS-10 (Project Config Reference) - Config path resolution
 - **Dependencies:** squad-loader.js, squad-validator.js
 - **Schema:** .aios-core/schemas/squad-schema.json
 - **Agent:** @squad-creator (Craft)

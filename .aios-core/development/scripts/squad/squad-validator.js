@@ -172,6 +172,10 @@ class SquadValidator {
     const agentsResult = await this.validateAgents(squadPath);
     this._mergeResults(result, agentsResult);
 
+    // 5. Validate config references (SQS-10)
+    const configResult = await this.validateConfigReferences(squadPath);
+    this._mergeResults(result, configResult);
+
     // In strict mode, warnings become errors
     if (this.strict && result.warnings.length > 0) {
       result.errors.push(...result.warnings);
@@ -382,6 +386,74 @@ class SquadValidator {
   }
 
   /**
+   * Validate config references in squad.yaml
+   * Implements AC10.4: Validates that referenced config files actually exist
+   *
+   * @param {string} squadPath - Path to squad directory
+   * @returns {Promise<ValidationResult>} Validation result for config references
+   * @see Story SQS-10: Project Config Reference for Squads
+   */
+  async validateConfigReferences(squadPath) {
+    this._log(`Validating config references in: ${squadPath}`);
+
+    const result = {
+      valid: true,
+      errors: [],
+      warnings: [],
+      suggestions: [],
+    };
+
+    // Find and parse manifest
+    const manifestPath = await this._findManifest(squadPath);
+    if (!manifestPath) {
+      return result; // Already handled in manifest validation
+    }
+
+    let manifest;
+    try {
+      const content = await fs.readFile(manifestPath, 'utf-8');
+      manifest = yaml.load(content);
+    } catch {
+      return result; // Already handled in manifest validation
+    }
+
+    // Check config section
+    if (!manifest || !manifest.config) {
+      return result; // No config section to validate
+    }
+
+    const configFields = ['coding-standards', 'tech-stack', 'source-tree'];
+
+    for (const field of configFields) {
+      const configPath = manifest.config[field];
+      if (!configPath) continue;
+
+      const resolvedPath = await this._resolveConfigPath(squadPath, configPath);
+      if (!resolvedPath) {
+        // Check if this is a project-level reference that doesn't exist
+        if (configPath.includes('..') || configPath.includes('docs/framework')) {
+          result.warnings.push({
+            code: ValidationErrorCodes.FILE_NOT_FOUND,
+            message: `Config reference not found: ${configPath}`,
+            suggestion: `Create the file at ${configPath} or update squad.yaml to use local config (config/${field}.md)`,
+          });
+        } else {
+          // Local config file missing - this is an error
+          result.errors.push({
+            code: ValidationErrorCodes.FILE_NOT_FOUND,
+            message: `Local config file not found: ${configPath}`,
+            suggestion: `Create ${path.join(squadPath, configPath)} or remove from config section`,
+          });
+          result.valid = false;
+        }
+      }
+    }
+
+    this._log(`Config validation: ${result.errors.length} errors, ${result.warnings.length} warnings`);
+    return result;
+  }
+
+  /**
    * Validate agent definitions
    *
    * @param {string} squadPath - Path to squad directory
@@ -538,6 +610,37 @@ class SquadValidator {
     } catch {
       return false;
     }
+  }
+
+  /**
+   * Resolve config path - check both local and project-level paths
+   * Implements AC10.4: Validator Path Resolution
+   *
+   * @param {string} squadPath - Squad directory
+   * @param {string} configPath - Path from squad.yaml config section
+   * @returns {Promise<string|null>} Resolved absolute path or null if not found
+   * @see Story SQS-10: Project Config Reference for Squads
+   * @private
+   */
+  async _resolveConfigPath(squadPath, configPath) {
+    if (!configPath) return null;
+
+    // Try direct path (may be relative like ../../docs/framework/...)
+    const directPath = path.resolve(squadPath, configPath);
+    if (await this._pathExists(directPath)) {
+      this._log(`Resolved config path: ${configPath} -> ${directPath}`);
+      return directPath;
+    }
+
+    // Try as local path (config/filename.md)
+    const localPath = path.join(squadPath, configPath);
+    if (await this._pathExists(localPath)) {
+      this._log(`Resolved config path (local): ${configPath} -> ${localPath}`);
+      return localPath;
+    }
+
+    this._log(`Config path not found: ${configPath}`);
+    return null;
   }
 
   /**

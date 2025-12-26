@@ -304,15 +304,27 @@ function generateSquadYaml(config) {
     components.tasks = [];
   }
 
-  const configSection =
-    config.configMode === 'none'
-      ? {}
-      : {
-        extends: config.configMode,
-        'coding-standards': 'config/coding-standards.md',
-        'tech-stack': 'config/tech-stack.md',
-        'source-tree': 'config/source-tree.md',
-      };
+  // SQS-10: Use project configs if available, otherwise use local paths
+  let configSection;
+  if (config.configMode === 'none') {
+    configSection = {};
+  } else if (config._useProjectConfigs && config._projectConfigs) {
+    // Reference project-level config files
+    configSection = {
+      extends: config.configMode,
+      'coding-standards': config._projectConfigs['coding-standards'] || 'config/coding-standards.md',
+      'tech-stack': config._projectConfigs['tech-stack'] || 'config/tech-stack.md',
+      'source-tree': config._projectConfigs['source-tree'] || 'config/source-tree.md',
+    };
+  } else {
+    // Fallback to local config files
+    configSection = {
+      extends: config.configMode,
+      'coding-standards': 'config/coding-standards.md',
+      'tech-stack': 'config/tech-stack.md',
+      'source-tree': 'config/source-tree.md',
+    };
+  }
 
   const yaml = `name: ${config.name}
 version: 1.0.0
@@ -645,6 +657,53 @@ class SquadGenerator {
   }
 
   /**
+   * Detect project-level configuration files in docs/framework/
+   * Implements AC10.1: Project Config Detection
+   *
+   * @param {string} projectRoot - Project root directory
+   * @param {string} squadPath - Path to squad being created (for relative paths)
+   * @returns {Promise<Object|null>} Detected config paths (relative to squadPath) or null if not found
+   * @see Story SQS-10: Project Config Reference for Squads
+   */
+  async detectProjectConfigs(projectRoot, squadPath) {
+    const frameworkDir = path.join(projectRoot, 'docs', 'framework');
+
+    // Check if docs/framework/ exists
+    if (!(await this.pathExists(frameworkDir))) {
+      return null;
+    }
+
+    // Config files to detect (case-insensitive variants)
+    const configFiles = {
+      'coding-standards': ['CODING-STANDARDS.md', 'coding-standards.md', 'Coding-Standards.md'],
+      'tech-stack': ['TECH-STACK.md', 'tech-stack.md', 'Tech-Stack.md'],
+      'source-tree': ['SOURCE-TREE.md', 'source-tree.md', 'Source-Tree.md'],
+    };
+
+    const detected = {};
+
+    for (const [key, variants] of Object.entries(configFiles)) {
+      for (const filename of variants) {
+        const fullPath = path.join(frameworkDir, filename);
+        if (await this.pathExists(fullPath)) {
+          // Calculate relative path from squad to project config
+          detected[key] = path.relative(squadPath, fullPath).replace(/\\/g, '/');
+          break;
+        }
+      }
+    }
+
+    // Only return if at least one config file was found
+    const foundCount = Object.keys(detected).length;
+    if (foundCount > 0) {
+      console.log(`[squad-generator] Detected ${foundCount} project config(s) in docs/framework/`);
+      return detected;
+    }
+
+    return null;
+  }
+
+  /**
    * Validate generation configuration
    * @param {Object} config - Configuration to validate
    * @throws {SquadGeneratorError} If validation fails
@@ -686,6 +745,7 @@ class SquadGenerator {
    * @param {boolean} [config.includeAgent=true] - Include example agent
    * @param {boolean} [config.includeTask=true] - Include example task
    * @param {string} [config.aiosMinVersion] - Minimum AIOS version
+   * @param {string} [config.projectRoot] - Project root directory (for detecting project configs)
    * @returns {Promise<Object>} Generation result with path and files
    * @throws {SquadGeneratorError} If generation fails
    */
@@ -701,12 +761,30 @@ class SquadGenerator {
       includeAgent: config.includeAgent !== false,
       includeTask: config.includeTask !== false,
       aiosMinVersion: config.aiosMinVersion || DEFAULT_AIOS_MIN_VERSION,
+      projectRoot: config.projectRoot || process.cwd(),
     };
 
     // Validate configuration
     this.validateConfig(fullConfig);
 
     const squadPath = path.join(this.squadsPath, fullConfig.name);
+
+    // SQS-10: Detect project-level configs when configMode is 'extend'
+    let projectConfigs = null;
+    let useProjectConfigs = false;
+
+    if (fullConfig.configMode === 'extend') {
+      projectConfigs = await this.detectProjectConfigs(fullConfig.projectRoot, squadPath);
+      useProjectConfigs = projectConfigs !== null;
+
+      if (useProjectConfigs) {
+        console.log('[squad-generator] Using project-level configuration from docs/framework/');
+      }
+    }
+
+    // Store for use in squad.yaml generation
+    fullConfig._projectConfigs = projectConfigs;
+    fullConfig._useProjectConfigs = useProjectConfigs;
 
     // Check if squad already exists
     if (await this.pathExists(squadPath)) {
@@ -734,17 +812,27 @@ class SquadGenerator {
       files.push(filePath);
     }
 
-    // Generate config files
-    const configFiles = {
-      'config/coding-standards.md': generateCodingStandards(fullConfig),
-      'config/tech-stack.md': generateTechStack(fullConfig),
-      'config/source-tree.md': generateSourceTree(fullConfig),
-    };
+    // Generate config files (SQS-10: skip if using project configs)
+    if (useProjectConfigs) {
+      // Don't create local config files, just add .gitkeep to config directory
+      console.log('[squad-generator] Skipping local config file creation (using project-level configs)');
+      const gitkeepPath = path.join(squadPath, 'config', '.gitkeep');
+      await fs.writeFile(gitkeepPath, '# Config files are referenced from project docs/framework/\n', 'utf-8');
+      files.push(gitkeepPath);
+    } else {
+      // Fallback: Create local config files (AC10.3)
+      console.log('[squad-generator] Creating local configuration files');
+      const configFiles = {
+        'config/coding-standards.md': generateCodingStandards(fullConfig),
+        'config/tech-stack.md': generateTechStack(fullConfig),
+        'config/source-tree.md': generateSourceTree(fullConfig),
+      };
 
-    for (const [filename, content] of Object.entries(configFiles)) {
-      const filePath = path.join(squadPath, filename);
-      await fs.writeFile(filePath, content, 'utf-8');
-      files.push(filePath);
+      for (const [filename, content] of Object.entries(configFiles)) {
+        const filePath = path.join(squadPath, filename);
+        await fs.writeFile(filePath, content, 'utf-8');
+        files.push(filePath);
+      }
     }
 
     // Generate example agent if requested

@@ -92,6 +92,28 @@ Cria um novo squad seguindo a arquitetura task-first do AIOS.
 
 ## Estrutura Gerada
 
+### Com Project Configs (SQS-10)
+
+Quando o projeto tem `docs/framework/` com arquivos de config (CODING-STANDARDS.md, etc.),
+o squad referencia esses arquivos ao invés de criar cópias locais:
+
+```
+./squads/meu-dominio-squad/
+├── squad.yaml                    # Manifest (referencia docs/framework/)
+├── README.md                     # Documentacao
+├── config/
+│   └── .gitkeep                 # Configs em docs/framework/
+├── agents/
+│   └── example-agent.md         # Agente de exemplo
+├── tasks/
+│   └── example-agent-task.md    # Task de exemplo
+...
+```
+
+### Sem Project Configs (Fallback)
+
+Quando o projeto NÃO tem `docs/framework/`, cria arquivos locais:
+
 ```
 ./squads/meu-dominio-squad/
 ├── squad.yaml                    # Manifest
@@ -145,9 +167,10 @@ components:
 
 config:
   extends: extend
-  coding-standards: config/coding-standards.md
-  tech-stack: config/tech-stack.md
-  source-tree: config/source-tree.md
+  # SQS-10: References project-level files when docs/framework/ exists
+  coding-standards: ../../docs/framework/CODING-STANDARDS.md   # or config/coding-standards.md
+  tech-stack: ../../docs/framework/TECH-STACK.md               # or config/tech-stack.md
+  source-tree: ../../docs/framework/SOURCE-TREE.md             # or config/source-tree.md
 
 dependencies:
   node: []
