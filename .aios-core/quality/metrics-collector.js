@@ -279,6 +279,10 @@ class MetricsCollector {
 
     const metrics = await this.load();
 
+    // Enforce retention policy before adding new entries (Story SQS-10 nitpick)
+    // This prevents unbounded growth of history array
+    await this._enforceRetentionPolicy(metrics);
+
     const runRecord = {
       timestamp: new Date().toISOString(),
       layer,
@@ -517,6 +521,29 @@ class MetricsCollector {
     }
 
     return removedCount;
+  }
+
+  /**
+   * Enforce retention policy inline (called before adding new entries)
+   * This prevents unbounded growth of the history array.
+   * @private
+   * @param {Object} metrics - Metrics object to clean
+   * @returns {Promise<void>}
+   * @see CodeRabbit nitpick: Enforce retention policy to prevent unbounded growth
+   */
+  async _enforceRetentionPolicy(metrics) {
+    const retentionMs = (metrics.retentionDays || this.retentionDays) * 24 * 60 * 60 * 1000;
+    const cutoffTimestamp = Date.now() - retentionMs;
+
+    const originalCount = metrics.history.length;
+    metrics.history = metrics.history.filter(
+      (entry) => new Date(entry.timestamp).getTime() > cutoffTimestamp,
+    );
+
+    const removedCount = originalCount - metrics.history.length;
+    if (removedCount > 0) {
+      console.log(`[metrics] Retention policy: removed ${removedCount} old entries (> ${metrics.retentionDays || this.retentionDays} days)`);
+    }
   }
 
   /**

@@ -34,7 +34,7 @@ When creating squads with `@squad-creator *create-squad`, the system:
 
 ### Current Behavior
 
-```
+```text
 # User creates squad in project with existing docs/framework/
 @squad-creator *create-squad proposal-generator
 
@@ -54,7 +54,7 @@ docs/framework/
 
 ### Expected Behavior
 
-```
+```text
 # User creates squad in project with existing docs/framework/
 @squad-creator *create-squad proposal-generator
 
@@ -326,7 +326,7 @@ describe('Squad Creator with Project Configs', () => {
 
 ### Relevant Source Tree
 
-```
+```text
 .aios-core/development/scripts/squad/
 ├── squad-generator.js    # Lines 307-315 (config template), 738-746 (file creation)
 ├── squad-validator.js    # Add _resolveConfigPath() function

@@ -625,18 +625,13 @@ class SquadValidator {
   async _resolveConfigPath(squadPath, configPath) {
     if (!configPath) return null;
 
-    // Try direct path (may be relative like ../../docs/framework/...)
-    const directPath = path.resolve(squadPath, configPath);
-    if (await this._pathExists(directPath)) {
-      this._log(`Resolved config path: ${configPath} -> ${directPath}`);
-      return directPath;
-    }
-
-    // Try as local path (config/filename.md)
-    const localPath = path.join(squadPath, configPath);
-    if (await this._pathExists(localPath)) {
-      this._log(`Resolved config path (local): ${configPath} -> ${localPath}`);
-      return localPath;
+    // Resolve path relative to squad directory
+    // path.resolve handles both local paths (config/file.md) and relative paths (../../docs/framework/...)
+    // Simplified from redundant path.resolve + path.join (CodeRabbit nitpick)
+    const resolvedPath = path.resolve(squadPath, configPath);
+    if (await this._pathExists(resolvedPath)) {
+      this._log(`Resolved config path: ${configPath} -> ${resolvedPath}`);
+      return resolvedPath;
     }
 
     this._log(`Config path not found: ${configPath}`);
