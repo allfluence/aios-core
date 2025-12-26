@@ -232,9 +232,9 @@ class PatternValidator {
       return true;
     }
 
-    // Partial match (e.g., "develop" matches "develop-yolo")
+    // Prefix match (e.g., "develop-yolo" starts with known "develop")
     for (const known of KNOWN_COMMANDS) {
-      if (normalized.includes(known) || known.includes(normalized)) {
+      if (normalized.startsWith(known) || known.startsWith(normalized)) {
         return true;
       }
     }

@@ -59,12 +59,11 @@ async function onTaskComplete(taskName, context = {}) {
   }
 
   try {
-    const { capture: cap } = getInstances();
+    const { capture: cap, validator: val, store: st } = getInstances();
     const result = await cap.onTaskComplete(taskName, context);
 
     if (result.captured && result.pattern) {
       // Validate and store
-      const { validator: val, store: st } = getInstances();
       const validation = val.validate(result.pattern);
 
       if (validation.valid) {

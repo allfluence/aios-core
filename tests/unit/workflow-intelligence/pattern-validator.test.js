@@ -254,9 +254,11 @@ describe('PatternValidator (Unit)', () => {
 
       const result = validator.isDuplicate(pattern, existing);
 
-      // 2 out of 3 commands match = 0.66 Jaccard + order consideration
-      // May or may not be duplicate depending on combined score
-      expect(typeof result.isDuplicate).toBe('boolean');
+      // 2 out of 3 commands match in same order positions
+      // Jaccard: 2/4 = 0.5, Order: 2/3 = 0.67, Combined: 0.5*0.4 + 0.67*0.6 = 0.60
+      // With default 0.85 threshold, this should NOT be a duplicate
+      expect(result.isDuplicate).toBe(false);
+      expect(result.similarity).toBeUndefined(); // No similarity when not duplicate
     });
 
     it('should not flag different patterns as duplicates', () => {

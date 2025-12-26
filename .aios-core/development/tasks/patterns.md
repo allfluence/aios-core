@@ -154,7 +154,7 @@ if (args.subcommand === 'review') {
 
 ## Help Text
 
-```
+```text
 Usage: *patterns [subcommand] [options]
 
 Manage learned workflow patterns.
@@ -189,7 +189,7 @@ Pattern Lifecycle:
 ## Output Formats
 
 ### List Output
-```
+```text
 Learned Patterns (15 total)
 ═══════════════════════════
 
@@ -210,7 +210,7 @@ Showing 3 of 15 patterns. Use --limit to see more.
 ```
 
 ### Stats Output
-```
+```text
 Pattern Learning Statistics
 ═══════════════════════════
 
@@ -234,7 +234,7 @@ Last updated: 2025-12-26T10:30:00Z
 ```
 
 ### Review Output
-```
+```text
 *patterns review
 
 Patterns Pending Review (3)
