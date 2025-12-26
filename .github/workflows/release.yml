@@ -29,6 +29,8 @@ jobs:
     outputs:
       release_id: ${{ steps.create_release.outputs.id }}
       upload_url: ${{ steps.create_release.outputs.upload_url }}
+      version: ${{ steps.version.outputs.version }}
+      tag: ${{ steps.version.outputs.tag }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -138,7 +140,7 @@ jobs:
 
       - name: Create distribution archive
         run: |
-          VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
+          VERSION="${{ needs.create-release.outputs.version }}"
 
           # Create output directory
           mkdir -p @synkra
@@ -168,15 +170,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          VERSION=$(echo "${{ github.ref_name }}" | sed 's/^v//')
-          
+          VERSION="${{ needs.create-release.outputs.version }}"
+          TAG="${{ needs.create-release.outputs.tag }}"
+
           # Upload tar.gz file
-          gh release upload "${{ github.ref_name }}" \
+          gh release upload "${TAG}" \
             "@synkra/aios-core-${VERSION}.tar.gz" \
             --clobber
-          
+
           # Upload source zip file
-          gh release upload "${{ github.ref_name }}" \
+          gh release upload "${TAG}" \
             "@synkra/aios-core-${VERSION}-source.zip" \
             --clobber
 
@@ -235,10 +238,11 @@ jobs:
     steps:
       - name: Notify completion
         run: |
+          TAG="${{ needs.create-release.outputs.tag }}"
           if [ "${{ needs.trigger-npm-publish.result }}" = "success" ]; then
-            echo "🎉 Release ${{ github.ref_name }} created successfully!"
+            echo "🎉 Release ${TAG} created successfully!"
             echo "📦 NPM publication has been triggered"
-            echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
+            echo "🔗 Release URL: https://github.com/${{ github.repository }}/releases/tag/${TAG}"
           else
             echo "❌ Release process encountered issues"
             exit 1
