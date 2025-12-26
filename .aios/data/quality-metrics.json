@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2025-12-26T12:53:27.808Z",
+  "lastUpdated": "2025-12-26T13:12:14.696Z",
   "retentionDays": 30,
   "layers": {
     "layer1": {
@@ -10,10 +10,10 @@
       "lastRun": "2025-12-22T19:57:38.772Z"
     },
     "layer2": {
-      "passRate": 0.9172932330827067,
-      "avgTimeMs": 157669,
-      "totalRuns": 133,
-      "lastRun": "2025-12-26T12:53:27.805Z",
+      "passRate": 0.917910447761194,
+      "avgTimeMs": 157836,
+      "totalRuns": 134,
+      "lastRun": "2025-12-26T13:12:14.694Z",
       "autoCatchRate": 0,
       "coderabbit": {
         "active": true,
@@ -4038,6 +4038,20 @@
     },
     {
       "timestamp": "2025-12-26T12:53:27.805Z",
+      "layer": 2,
+      "passed": true,
+      "durationMs": 180000,
+      "findingsCount": 0,
+      "metadata": {
+        "triggeredBy": "pr",
+        "prNumber": 22,
+        "branchName": "feature/wis-5-pattern-capture",
+        "author": "Pedrovaleriolopez",
+        "coverageResult": "success"
+      }
+    },
+    {
+      "timestamp": "2025-12-26T13:12:14.694Z",
       "layer": 2,
       "passed": true,
       "durationMs": 180000,
