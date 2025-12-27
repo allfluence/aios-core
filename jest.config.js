@@ -55,7 +55,6 @@ module.exports = {
     'src/**/*.js',
     '.aios-core/**/*.js',
     'bin/**/*.js',
-    'common/**/*.js',
     'packages/**/*.js',
     'scripts/**/*.js',
     '!**/node_modules/**',

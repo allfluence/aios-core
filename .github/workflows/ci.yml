@@ -25,12 +25,6 @@ on:
       - 'LICENSE'
       - '.gitignore'
   workflow_dispatch:
-    inputs:
-      skip_cache:
-        description: 'Skip npm cache'
-        required: false
-        default: 'false'
-        type: boolean
 
 concurrency:
   group: ci-${{ github.event.pull_request.number || github.ref }}
@@ -59,7 +53,6 @@ jobs:
               - 'src/**'
               - '.aios-core/**'
               - 'bin/**'
-              - 'common/**'
               - 'packages/**'
               - 'scripts/**'
               - 'tools/**'
