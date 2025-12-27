@@ -1,21 +1,24 @@
 name: Semantic Release
-# DISABLED: Conflicting with manual release workflow (release.yml)
-# This was causing phantom versions (3.9.1-3.9.6) on every push to main
-# Use *release command via @devops agent for controlled releases
-# Re-enable only if switching to fully automated releases
+# HYBRID RELEASE WORKFLOW
+#
+# This workflow is ONLY triggered manually via workflow_dispatch.
+# It uses semantic-release to analyze commits and determine the next version.
+#
+# RELEASE FLOW (Hybrid Approach):
+# 1. @devops *release → triggers this workflow via GitHub API
+# 2. semantic-release analyzes commits (Conventional Commits)
+# 3. Determines version bump (major/minor/patch)
+# 4. Creates git tag, GitHub release, publishes to npm
+#
+# ALTERNATIVE: Manual tag push
+# 1. Create tag locally: git tag v3.10.0
+# 2. Push tag: git push origin v3.10.0
+# 3. release.yml triggers → creates GitHub release
+# 4. npm-publish.yml triggers → publishes to npm
+#
+# DO NOT enable automatic push trigger - it caused phantom versions (3.9.1-3.9.6)
 
 on:
-  # DISABLED: was triggering on every push to main
-  # push:
-  #   branches:
-  #     - main
-  #   paths-ignore:
-  #     - 'docs/**'
-  #     - '*.md'
-  #     - '.aios/**'
-  #     - 'squads/**'
-  #     - 'LICENSE'
-  #     - '.gitignore'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -23,6 +26,16 @@ on:
         required: false
         default: 'false'
         type: boolean
+      release_type:
+        description: 'Release type (auto = analyze commits)'
+        required: false
+        default: 'auto'
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
 
 concurrency:
   group: semantic-release-${{ github.ref }}
