@@ -1,18 +1,21 @@
 name: Semantic Release
-# Story 6.1: Simplified - CI validation handled by ci.yml via branch protection
-# This workflow only handles release after CI passes
+# DISABLED: Conflicting with manual release workflow (release.yml)
+# This was causing phantom versions (3.9.1-3.9.6) on every push to main
+# Use *release command via @devops agent for controlled releases
+# Re-enable only if switching to fully automated releases
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'docs/**'
-      - '*.md'
-      - '.aios/**'
-      - 'squads/**'
-      - 'LICENSE'
-      - '.gitignore'
+  # DISABLED: was triggering on every push to main
+  # push:
+  #   branches:
+  #     - main
+  #   paths-ignore:
+  #     - 'docs/**'
+  #     - '*.md'
+  #     - '.aios/**'
+  #     - 'squads/**'
+  #     - 'LICENSE'
+  #     - '.gitignore'
   workflow_dispatch:
     inputs:
       dry_run:
