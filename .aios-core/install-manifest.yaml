@@ -8,9 +8,9 @@
 # - File types for categorization
 #
 version: 3.10.0
-generated_at: "2026-01-04T15:18:26.565Z"
+generated_at: "2026-01-04T15:23:50.783Z"
 generator: scripts/generate-install-manifest.js
-file_count: 645
+file_count: 624
 files:
   - path: cli/commands/generate/index.js
     hash: sha256:36f8e38ab767fa5478d8dabac548c66dc2c0fc521c216e954ac33fcea0ba597b
@@ -176,26 +176,6 @@ files:
     hash: sha256:998d90c2d40ebbc432e67a4e3a2300644f8805e8c868319ac2feebc64d76289f
     type: core
     size: 8196
-  - path: core/docs/component-creation-guide.md
-    hash: sha256:469cd02b57e13b2e9cf514c88b30aaaaad9e30ba9a778523c217643907b639e8
-    type: documentation
-    size: 9327
-  - path: core/docs/session-update-pattern.md
-    hash: sha256:653b330f6d754214d5f0e9b6dad99da6d1bfe3613f6799a858c0ec474be633c6
-    type: documentation
-    size: 8798
-  - path: core/docs/SHARD-TRANSLATION-GUIDE.md
-    hash: sha256:036ea70ddbe443ab62b91253a3ac3bd496d81f1a03d1d477dc0a25654ea2d3d6
-    type: documentation
-    size: 8661
-  - path: core/docs/template-syntax.md
-    hash: sha256:8526e717be7a6a7607f52834481d25abb46a9a37b04ee405c78756cf5dd43e54
-    type: documentation
-    size: 6243
-  - path: core/docs/troubleshooting-guide.md
-    hash: sha256:19dc1a287a5f8af6bfd812a11f0b6c5db42d4b808864ae34d0c2827c6b5b72ae
-    type: documentation
-    size: 11562
   - path: core/elicitation/agent-elicitation.js
     hash: sha256:ef13ebff1375279e7b8f0f0bbd3699a0d201f9a67127efa64c4142159a26f417
     type: elicitation
@@ -1432,18 +1412,6 @@ files:
     hash: sha256:85d0064b454fd8eefc5312940984d23818da0b0a8cc27ba9e36f3b7ed0f48baa
     type: workflow
     size: 2631
-  - path: docs/component-creation-guide.md
-    hash: sha256:469cd02b57e13b2e9cf514c88b30aaaaad9e30ba9a778523c217643907b639e8
-    type: documentation
-    size: 9327
-  - path: docs/session-update-pattern.md
-    hash: sha256:913802bbab8162e948135759ee03a2711cf3363503df2e331ea4a836aec9221d
-    type: documentation
-    size: 8180
-  - path: docs/SHARD-TRANSLATION-GUIDE.md
-    hash: sha256:036ea70ddbe443ab62b91253a3ac3bd496d81f1a03d1d477dc0a25654ea2d3d6
-    type: documentation
-    size: 8661
   - path: docs/standards/AGENT-PERSONALIZATION-STANDARD-V1.md
     hash: sha256:7b8e7a396590bdf63a42819130c8665594ce254715d56439454e46fc1b3be1b2
     type: documentation
@@ -1456,30 +1424,6 @@ files:
     hash: sha256:11f894b8d3f68ae3e9196cf5c03dfe63e5d6e73ef5372fbcce1d0624eede0b2c
     type: documentation
     size: 9519
-  - path: docs/standards/AIOS-FRAMEWORK-MASTER.md
-    hash: sha256:4dfdfd0cb44ae8bf10890bd7e2f6db8e0c436f7e96494fe611f8701c77bd1d99
-    type: documentation
-    size: 58840
-  - path: docs/standards/AIOS-LIVRO-DE-OURO-V2.1-COMPLETE.md
-    hash: sha256:6a77dd46312072c1d287b9c54ee75f56350b5bf778122a02931bc2dab97d56bd
-    type: documentation
-    size: 28922
-  - path: docs/standards/AIOS-LIVRO-DE-OURO-V2.1-SUMMARY.md
-    hash: sha256:0ec7a14c27c781c007d14b3439aec8aa766c209d2afadcb4dc616563792f2266
-    type: documentation
-    size: 38165
-  - path: docs/standards/AIOS-LIVRO-DE-OURO-V2.1.md
-    hash: sha256:7845488feba70caf9530b5a3e1e0943d382f549977927428d4d88ee0d700402b
-    type: documentation
-    size: 16420
-  - path: docs/standards/AIOS-LIVRO-DE-OURO-V2.2-SUMMARY.md
-    hash: sha256:134ec4ac1d11e1518b495479d20bfa7a59157a85bee67d812127237100296370
-    type: documentation
-    size: 39158
-  - path: docs/standards/AIOS-LIVRO-DE-OURO.md
-    hash: sha256:3537c103a9eb294204ca27c27ce92ab1036b8832a63ee0c76fd1060c5fe27cfb
-    type: documentation
-    size: 149209
   - path: docs/standards/EXECUTOR-DECISION-TREE.md
     hash: sha256:106af2a8bc009c129618fbd501e68c6927862dbbc2e28d1a5b67be9b5fc2bb5b
     type: documentation
@@ -1504,18 +1448,6 @@ files:
     hash: sha256:f46e020f07b11f6409877a1d75c6e29fa2e0310a53ab2677e2c0c42f282c6339
     type: documentation
     size: 34473
-  - path: docs/standards/V3-ARCHITECTURAL-DECISIONS.md
-    hash: sha256:4ec18232d5f8fc5fbe9277a37f8b178a41d2d46436c3b1c57b7e42ce47678912
-    type: documentation
-    size: 13625
-  - path: docs/template-syntax.md
-    hash: sha256:8526e717be7a6a7607f52834481d25abb46a9a37b04ee405c78756cf5dd43e54
-    type: documentation
-    size: 6243
-  - path: docs/troubleshooting-guide.md
-    hash: sha256:19dc1a287a5f8af6bfd812a11f0b6c5db42d4b808864ae34d0c2827c6b5b72ae
-    type: documentation
-    size: 11562
   - path: elicitation/agent-elicitation.js
     hash: sha256:ef13ebff1375279e7b8f0f0bbd3699a0d201f9a67127efa64c4142159a26f417
     type: elicitation
@@ -1960,10 +1892,6 @@ files:
     hash: sha256:3bb5c3e551ba109ffc732e92ec37574f390611c06afb65ee4310273c5164bb0b
     type: infrastructure
     size: 14045
-  - path: infrastructure/tests/utilities-audit-results.json
-    hash: sha256:7f73527d7c151bce1793ae85fd851f3d0f20fdaf14c2104929351f1b29e12f00
-    type: infrastructure
-    size: 14376
   - path: infrastructure/tests/validate-module.js
     hash: sha256:95b48ef84fb38d1d3f9a201629d48fdd99057f3cbece6753d861613708d24e79
     type: infrastructure
@@ -2028,22 +1956,10 @@ files:
     hash: sha256:0839bc90252fba2dafde91d104d8f7e3247a6bf4798f7449df7c9899eb70d755
     type: tool
     size: 5169
-  - path: manifests/agents.csv
-    hash: sha256:b4174b943785bd637f8c114a23bce9c487a73fe6709de4b6706879d7b25daaf1
-    type: manifest
-    size: 59
   - path: manifests/schema/manifest-schema.json
     hash: sha256:39678986089918893f309a2469fa0615beb82b5c6f1e16e2f9b40bcac6465195
     type: manifest
     size: 5481
-  - path: manifests/tasks.csv
-    hash: sha256:96dcdff651304e7d6c4d75784f9d1a306718d953a6fb5f122c49209fc11783d1
-    type: manifest
-    size: 14864
-  - path: manifests/workers.csv
-    hash: sha256:0307a790fcb1f12c5a6d446fb80f0245bdf686e701afeb0d0353e757a05b7e8e
-    type: manifest
-    size: 32640
   - path: package.json
     hash: sha256:cba7ad8c50ab2f0df776019ce2042af92417351123737431696a1c76f829352b
     type: other
