@@ -8,7 +8,7 @@
 # - File types for categorization
 #
 version: 3.10.0
-generated_at: "2026-01-04T15:23:50.783Z"
+generated_at: "2026-01-04T18:32:28.557Z"
 generator: scripts/generate-install-manifest.js
 file_count: 624
 files:
@@ -361,9 +361,9 @@ files:
     type: core
     size: 3370
   - path: core/health-check/engine.js
-    hash: sha256:dfd7170c9c1f742d5ea6ae462df378729074a5fc4895978b697b9cb78af04034
+    hash: sha256:9c4372d7987e672efaf47c34fcb49b34f430ae4d66456f6b7e7c86ff9e436710
     type: core
-    size: 10594
+    size: 11017
   - path: core/health-check/healers/backup-manager.js
     hash: sha256:6fb0e300fb976cce80120055225fcd82390b509c0e0151138649e95563586c8e
     type: core
@@ -661,9 +661,9 @@ files:
     type: script
     size: 5134
   - path: development/scripts/dev-context-loader.js
-    hash: sha256:624918b2fd7343a342ef0d85eaf06d522e58891ed74ad580951d9e2e4d959fde
+    hash: sha256:86073a76dcc11b02cda3fefbb585006d14587cede56f70aa7a58a1ee7efca508
     type: script
-    size: 8157
+    size: 8226
   - path: development/scripts/generate-greeting.js
     hash: sha256:64647adb9b272a3f7f156a4b77edb97a2279799c5ed44413451ede7002528aa4
     type: script
