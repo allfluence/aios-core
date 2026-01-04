@@ -65,6 +65,7 @@ module.exports = {
     '!**/*.spec.js',
     // Exclude templates and generated files
     '!.aios-core/development/templates/**',
+    '!.aios-core/product/templates/**',
     '!**/dist/**',
   ],
 
@@ -85,12 +86,7 @@ module.exports = {
   },
 
   // Coverage ignore patterns from REMOTE
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/coverage/',
-    '/.husky/',
-    '/dist/',
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/coverage/', '/.husky/', '/dist/'],
 
   // Timeout from REMOTE (30s melhor para operações longas)
   testTimeout: 30000,
