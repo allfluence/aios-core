@@ -18,9 +18,10 @@ const {
   DEFAULT_CONFIG,
 } = require('../../.aios-core/core/health-check');
 
-describe('Health Check System', function () {
-  this.timeout(30000); // Allow 30s for tests
+// Set timeout for all tests in this file (Jest compatible)
+jest.setTimeout(30000);
 
+describe('Health Check System', () => {
   describe('Module Loading', () => {
     it('should export all required classes', () => {
       assert.strictEqual(typeof HealthCheck, 'function', 'HealthCheck should be a class');
@@ -146,7 +147,7 @@ describe('Health Check System', function () {
     let healthCheck;
     let results;
 
-    before(async () => {
+    beforeAll(async () => {
       healthCheck = new HealthCheck();
       results = await healthCheck.run({ mode: 'quick', domain: 'project' });
     });
@@ -193,13 +194,3 @@ describe('Health Check System', function () {
     });
   });
 });
-
-// Run tests if executed directly
-if (require.main === module) {
-  const Mocha = require('mocha');
-  const mocha = new Mocha();
-  mocha.addFile(__filename);
-  mocha.run((failures) => {
-    process.exitCode = failures ? 1 : 0;
-  });
-}
