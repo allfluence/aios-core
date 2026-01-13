@@ -82,6 +82,7 @@ class ContextManager {
 
   /**
    * Load state from disk (or cache)
+   * Persists initial state if no state file exists
    * @returns {Promise<Object>} Current state
    */
   async loadState() {
@@ -94,7 +95,11 @@ class ContextManager {
       return this._stateCache;
     }
 
-    return this._createInitialState();
+    // No state file exists - create, cache, and persist initial state
+    await this.ensureStateDir();
+    this._stateCache = this._createInitialState();
+    await fs.writeJson(this.statePath, this._stateCache, { spaces: 2 });
+    return this._stateCache;
   }
 
   /**
@@ -263,18 +268,20 @@ class ContextManager {
 
   /**
    * Export state for external use
-   * @returns {Object} Complete state object
+   * Uses deep copy to prevent external mutation of internal state
+   * @returns {Object} Complete state object (deep copy)
    */
   exportState() {
-    return { ...this._stateCache };
+    return JSON.parse(JSON.stringify(this._stateCache));
   }
 
   /**
    * Import state from external source
+   * Uses deep copy to prevent external mutation after import
    * @param {Object} state - State to import
    */
   async importState(state) {
-    this._stateCache = state;
+    this._stateCache = JSON.parse(JSON.stringify(state));
     await this._saveState();
   }
 }
