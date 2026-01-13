@@ -260,7 +260,8 @@ class ContextManager {
    * @param {boolean} keepMetadata - Whether to preserve metadata
    */
   async reset(keepMetadata = true) {
-    const metadata = keepMetadata ? this._stateCache?.metadata : {};
+    // Guard: ensure metadata is always an object, even if state not loaded yet
+    const metadata = keepMetadata ? this._stateCache?.metadata || {} : {};
     this._stateCache = this._createInitialState();
     this._stateCache.metadata = metadata;
     await this._saveState();

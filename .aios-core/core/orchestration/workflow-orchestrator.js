@@ -149,9 +149,10 @@ class WorkflowOrchestrator {
       }
     }
 
-    // 3. Load checklist if defined (for post-validation)
+    // 3. Include checklist in results for thread-safe parallel execution
+    // (avoid race condition with shared instance field)
     if (phase.checklist) {
-      this._currentChecklist = phase.checklist;
+      results.checklist = phase.checklist;
     }
 
     return results;
@@ -207,10 +208,11 @@ class WorkflowOrchestrator {
    * Validate phase output - runs AFTER subagent completes
    * DETERMINISTIC: File checks and checklist execution via code
    * @param {Object} phase - Phase configuration
-   * @param {Object} result - Subagent execution result
+   * @param {Object} _result - Subagent execution result
+   * @param {Object} prepResult - Result from preparePhase (contains checklist for thread-safety)
    * @returns {Promise<Object>} Validation result
    */
-  async validatePhaseOutput(phase, _result) {
+  async validatePhaseOutput(phase, _result, prepResult = {}) {
     const validation = { passed: true, checks: [], errors: [] };
 
     // 1. Check if output files were created
@@ -248,27 +250,24 @@ class WorkflowOrchestrator {
       }
     }
 
-    // 3. Run checklist if defined
-    if (this._currentChecklist) {
+    // 3. Run checklist if defined (thread-safe: use checklist from prepResult, not instance field)
+    const phaseChecklist = prepResult.checklist || phase.checklist;
+    if (phaseChecklist) {
       try {
-        const checklistResult = await this.checklistRunner.run(
-          this._currentChecklist,
-          phase.creates
-        );
+        const checklistResult = await this.checklistRunner.run(phaseChecklist, phase.creates);
         validation.checks.push({
           type: 'checklist',
-          checklist: this._currentChecklist,
+          checklist: phaseChecklist,
           passed: checklistResult.passed,
           items: checklistResult.items,
         });
         if (!checklistResult.passed) {
           validation.passed = false;
-          validation.errors.push(`Checklist failed: ${this._currentChecklist}`);
+          validation.errors.push(`Checklist failed: ${phaseChecklist}`);
         }
       } catch (error) {
         console.log(chalk.yellow(`   ⚠️ Checklist error: ${error.message}`));
       }
-      this._currentChecklist = null;
     }
 
     return validation;
@@ -451,7 +450,7 @@ class WorkflowOrchestrator {
     try {
       // DETERMINISTIC: Prepare phase (create dirs, check pre-conditions)
       console.log(chalk.gray('   🔧 Preparing phase...'));
-      await this.preparePhase(phase);
+      const prepResult = await this.preparePhase(phase);
 
       // Build subagent prompt with REAL TASK (not generic prompt)
       const context = await this.contextManager.getContextForPhase(phaseNum);
@@ -489,8 +488,9 @@ class WorkflowOrchestrator {
       }
 
       // DETERMINISTIC: Validate phase output (check files, run checklists)
+      // Pass prepResult to thread checklist safely for parallel execution
       console.log(chalk.gray('   🔍 Validating output...'));
-      const validation = await this.validatePhaseOutput(phase, result);
+      const validation = await this.validatePhaseOutput(phase, result, prepResult);
       if (!validation.passed) {
         console.log(chalk.yellow(`   ⚠️ Validation warnings: ${validation.errors.join(', ')}`));
       }
