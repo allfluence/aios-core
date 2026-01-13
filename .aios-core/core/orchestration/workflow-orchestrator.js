@@ -196,8 +196,9 @@ class WorkflowOrchestrator {
       }
 
       default: {
-        console.log(chalk.yellow(`   ⚠️ Unknown pre-action type: ${action.type}`));
-        return { success: true };
+        // Fail fast on unknown action types to catch configuration errors early
+        console.warn(chalk.yellow(`   ⚠️ Unknown pre-action type: ${action.type}`));
+        return { success: false, reason: `unknown_action_type: ${action.type}` };
       }
     }
   }
@@ -301,7 +302,10 @@ class WorkflowOrchestrator {
       }
 
       default: {
-        return { success: true };
+        // Fail fast on unknown action types to catch configuration errors early
+        // Consistent with _executePreAction behavior
+        console.warn(chalk.yellow(`   ⚠️ Unknown post-action type: ${action.type}`));
+        return { success: false, reason: `unknown_action_type: ${action.type}` };
       }
     }
   }
@@ -683,20 +687,38 @@ class WorkflowOrchestrator {
 
   /**
    * Resume workflow from a specific phase
+   * Honors parallel_phases configuration and resets timing for accurate summary
    * @param {number} fromPhase - Phase number to resume from
    */
   async resumeFrom(fromPhase) {
+    // Reset startTime for accurate duration reporting in resumed execution
+    this.executionState.startTime = Date.now();
+
     if (!this.workflow) {
       await this.loadWorkflow();
     }
 
     const sequence = this.workflow.sequence || [];
+    const orchestration = this.workflow.orchestration || {};
+    const parallelPhases = orchestration.parallel_phases || [];
     const remainingPhases = sequence.filter((p) => p.phase >= fromPhase && !p.workflow_end);
 
     console.log(chalk.yellow(`\n🔄 Resuming from phase ${fromPhase}...`));
+    console.log(chalk.gray(`   Remaining phases: ${remainingPhases.length}`));
+    console.log(chalk.gray(`   Parallel phases: ${parallelPhases.join(', ') || 'None'}`));
 
-    for (const phase of remainingPhases) {
-      await this._executeSinglePhase(phase);
+    // Use same grouping logic as execute() to honor parallel_phases
+    const phaseGroups = this._groupPhases(remainingPhases, parallelPhases);
+
+    // Execute each group (same logic as execute())
+    for (const group of phaseGroups) {
+      if (group.parallel && this.options.parallel) {
+        await this._executeParallelPhases(group.phases);
+      } else {
+        for (const phase of group.phases) {
+          await this._executeSinglePhase(phase);
+        }
+      }
     }
 
     return this._generateExecutionSummary();

@@ -230,15 +230,21 @@ class ChecklistRunner {
       return true;
     }
 
-    // Directory exists check
+    // Directory exists check - mirrors file-exists logic for consistency
     if (validationLower.includes('director') && validationLower.includes('exist')) {
       for (const targetPath of paths) {
-        if (targetPath) {
-          const fullPath = path.join(this.projectRoot, targetPath);
-          const stats = await fs.stat(fullPath).catch(() => null);
-          if (!stats || !stats.isDirectory()) {
-            return false;
-          }
+        // Skip falsy targetPath entries (consistent with file-exists)
+        if (!targetPath) {
+          continue;
+        }
+        const fullPath = path.join(this.projectRoot, targetPath);
+        // Use pathExists first for consistency, then verify it's a directory
+        if (!(await fs.pathExists(fullPath))) {
+          return false;
+        }
+        const stats = await fs.stat(fullPath);
+        if (!stats.isDirectory()) {
+          return false;
         }
       }
       return true;

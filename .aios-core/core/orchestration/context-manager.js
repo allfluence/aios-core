@@ -269,9 +269,13 @@ class ContextManager {
   /**
    * Export state for external use
    * Uses deep copy to prevent external mutation of internal state
-   * @returns {Object} Complete state object (deep copy)
+   * @returns {Object} Complete state object (deep copy), empty object if state not loaded
    */
   exportState() {
+    // Guard against null/undefined _stateCache (called before state loaded)
+    if (!this._stateCache) {
+      return {};
+    }
     return JSON.parse(JSON.stringify(this._stateCache));
   }
 
