@@ -260,11 +260,13 @@ class ChecklistRunner {
       for (const targetPath of paths) {
         if (targetPath) {
           const fullPath = path.join(this.projectRoot, targetPath);
-          if (await fs.pathExists(fullPath)) {
-            const content = await fs.readFile(fullPath, 'utf8');
-            if (!content.includes(searchTerm)) {
-              return false;
-            }
+          // Missing file = validation failure (file must exist to contain content)
+          if (!await fs.pathExists(fullPath)) {
+            return false;
+          }
+          const content = await fs.readFile(fullPath, 'utf8');
+          if (!content.includes(searchTerm)) {
+            return false;
           }
         }
       }
@@ -278,11 +280,13 @@ class ChecklistRunner {
       for (const targetPath of paths) {
         if (targetPath) {
           const fullPath = path.join(this.projectRoot, targetPath);
-          if (await fs.pathExists(fullPath)) {
-            const stats = await fs.stat(fullPath);
-            if (stats.size < minSize) {
-              return false;
-            }
+          // Missing file = validation failure (file must exist to have size)
+          if (!await fs.pathExists(fullPath)) {
+            return false;
+          }
+          const stats = await fs.stat(fullPath);
+          if (stats.size < minSize) {
+            return false;
           }
         }
       }

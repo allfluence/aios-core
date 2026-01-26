@@ -467,7 +467,7 @@ workflow:
       creates: docs/reviews/qa-review.md
       requires:
         - docs/prd/technical-debt-DRAFT.md
-        - docs/reviews/db-specialist-review.md
+        - docs/reviews/db-specialist-review.md (if exists)  # Phase 5 may be skipped if no database
         - docs/reviews/ux-specialist-review.md
       elicit: true
       duration_estimate: "30-45 min"

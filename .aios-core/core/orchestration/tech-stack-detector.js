@@ -251,7 +251,10 @@ class TechStackDetector {
 
     if (deps['mongoose'] || deps['mongodb']) {
       profile.hasDatabase = true;
-      profile.database.type = 'mongodb';
+      // Only set type if not already detected (preserve first detection)
+      if (!profile.database.type) {
+        profile.database.type = 'mongodb';
+      }
     }
 
     if (deps['mysql'] || deps['mysql2']) {

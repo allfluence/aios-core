@@ -37,6 +37,27 @@
 /**
  * Dispatches workflow phases to AIOS Skills
  */
+/**
+ * Primary agents (not aliases) - used by getAvailableAgents()
+ * Aliases like 'ux-expert' and 'github-devops' are excluded
+ */
+const PRIMARY_AGENTS = new Set([
+  'architect',
+  'data-engineer',
+  'dev',
+  'qa',
+  'pm',
+  'po',
+  'sm',
+  'analyst',
+  'ux-design-expert',
+  'devops',
+  'aios-master',
+]);
+
+/**
+ * Dispatches workflow phases to AIOS Skills
+ */
 class SkillDispatcher {
   /**
    * @param {Object} options - Configuration options
@@ -320,13 +341,11 @@ class SkillDispatcher {
   }
 
   /**
-   * Get all available agent IDs
+   * Get all available primary agent IDs (excludes aliases)
    * @returns {string[]}
    */
   getAvailableAgents() {
-    return Object.keys(this.skillMapping).filter(
-      (k) => !k.includes('-') || k === 'data-engineer' || k === 'ux-design-expert'
-    );
+    return Object.keys(this.skillMapping).filter((k) => PRIMARY_AGENTS.has(k));
   }
 
   /**

@@ -255,9 +255,14 @@ class ContextManager {
    * @param {boolean} keepMetadata - Whether to preserve metadata
    */
   async reset(keepMetadata = true) {
-    const metadata = keepMetadata ? this._stateCache?.metadata : {};
+    // Preserve metadata if requested, defaulting to empty object if cache is null
+    const savedMetadata = keepMetadata ? (this._stateCache?.metadata ?? {}) : {};
     this._stateCache = this._createInitialState();
-    this._stateCache.metadata = metadata;
+    // Merge saved metadata with default metadata from _createInitialState
+    this._stateCache.metadata = {
+      ...this._stateCache.metadata,
+      ...savedMetadata,
+    };
     await this._saveState();
   }
 

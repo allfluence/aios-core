@@ -108,17 +108,39 @@ class ConditionEvaluator {
       return evaluator();
     }
 
+    // Handle negation first
+    if (condition.startsWith('!')) {
+      return !this.evaluate(condition.substring(1).trim());
+    }
+
     // Handle complex condition expressions
-    if (condition.includes('&&')) {
+    // LIMITATION: Mixed && and || without parentheses uses left-to-right evaluation
+    // For predictable behavior, use only && or only || in a single expression
+    const hasAnd = condition.includes('&&');
+    const hasOr = condition.includes('||');
+
+    if (hasAnd && hasOr) {
+      // Warn about mixed operators - evaluate as && groups separated by ||
+      // e.g., "a && b || c && d" becomes ["a && b", "c && d"], any group passing = true
+      console.warn(
+        `[ConditionEvaluator] Mixed && and || in condition: "${condition}". ` +
+          'Using OR-of-ANDs evaluation. Consider using only one operator type.'
+      );
+      const orGroups = condition.split('||').map((g) => g.trim());
+      return orGroups.some((group) => {
+        if (group.includes('&&')) {
+          return group.split('&&').every((c) => this.evaluate(c.trim()));
+        }
+        return this.evaluate(group);
+      });
+    }
+
+    if (hasAnd) {
       return condition.split('&&').every((c) => this.evaluate(c.trim()));
     }
 
-    if (condition.includes('||')) {
+    if (hasOr) {
       return condition.split('||').some((c) => this.evaluate(c.trim()));
-    }
-
-    if (condition.startsWith('!')) {
-      return !this.evaluate(condition.substring(1).trim());
     }
 
     // Handle dot-notation access to profile
@@ -249,8 +271,48 @@ class ConditionEvaluator {
       return failed;
     }
 
-    // Handle composite conditions
-    const conditions = phase.condition.includes('&&')
+    const hasAnd = phase.condition.includes('&&');
+    const hasOr = phase.condition.includes('||');
+
+    // Handle mixed operators: OR-of-ANDs
+    if (hasAnd && hasOr) {
+      const orGroups = phase.condition.split('||').map((g) => g.trim());
+      // For OR groups, only report failures if ALL groups fail
+      const groupResults = orGroups.map((group) => ({
+        group,
+        passed: this.evaluate(group),
+      }));
+
+      // If any group passed, no failed conditions to report
+      if (groupResults.some((r) => r.passed)) {
+        return failed;
+      }
+
+      // All groups failed - report each failed group
+      for (const result of groupResults) {
+        if (!result.passed) {
+          failed.push(result.group);
+        }
+      }
+      return failed;
+    }
+
+    // Handle pure OR conditions
+    if (hasOr) {
+      const conditions = phase.condition.split('||').map((c) => c.trim());
+      // For OR, only fail if ALL conditions fail
+      const allFailed = conditions.every((c) => !this.evaluate(c));
+      if (allFailed) {
+        // Report all failed conditions
+        for (const condition of conditions) {
+          failed.push(condition);
+        }
+      }
+      return failed;
+    }
+
+    // Handle pure AND conditions (original behavior)
+    const conditions = hasAnd
       ? phase.condition.split('&&').map((c) => c.trim())
       : [phase.condition];
 
