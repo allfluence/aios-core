@@ -8,9 +8,9 @@
 # - File types for categorization
 #
 version: 3.10.0
-generated_at: "2026-01-28T23:04:54.423Z"
+generated_at: "2026-01-28T23:07:19.312Z"
 generator: scripts/generate-install-manifest.js
-file_count: 635
+file_count: 636
 files:
   - path: cli/commands/generate/index.js
     hash: sha256:36f8e38ab767fa5478d8dabac548c66dc2c0fc521c216e954ac33fcea0ba597b
@@ -236,6 +236,10 @@ files:
     hash: sha256:6096071a078593e6cc9a5cab8263611f1fad614eedf0f565efdc3542dd9be219
     type: core
     size: 5989
+  - path: core/health-check/checks/local/environment-vars.js
+    hash: sha256:773731c70b8dbe5c6517c13a5edd8ad15bb0a166e2395a30e1c449108821bc78
+    type: core
+    size: 3330
   - path: core/health-check/checks/local/git-install.js
     hash: sha256:ac2b83dc52b3d6dae946453624e386a0f2d3a8ff561f9b0de6f20b70bf6ab8bf
     type: core
