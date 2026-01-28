@@ -132,8 +132,8 @@ function runDoctor() {
   const nodeVersion = process.version.replace('v', '');
   const requiredNodeVersion = '18.0.0';
   const compareVersions = (a, b) => {
-    const pa = a.split('.').map(n => parseInt(n, 10));
-    const pb = b.split('.').map(n => parseInt(n, 10));
+    const pa = a.split('.').map((n) => parseInt(n, 10));
+    const pb = b.split('.').map((n) => parseInt(n, 10));
     for (let i = 0; i < 3; i++) {
       const na = pa[i] || 0;
       const nb = pb[i] || 0;
@@ -144,7 +144,9 @@ function runDoctor() {
   };
   const nodeOk = compareVersions(nodeVersion, requiredNodeVersion) >= 0;
 
-  console.log(`${nodeOk ? '✔' : '✗'} Node.js version: ${process.version} ${nodeOk ? '(meets requirement: >=18.0.0)' : '(requires >=18.0.0)'}`);
+  console.log(
+    `${nodeOk ? '✔' : '✗'} Node.js version: ${process.version} ${nodeOk ? '(meets requirement: >=18.0.0)' : '(requires >=18.0.0)'}`
+  );
   if (!nodeOk) hasErrors = true;
 
   // Check npm
@@ -192,23 +194,36 @@ async function initProject(projectName) {
     process.exit(1);
   }
 
-  console.log(`🚀 Creating new AIOS project: ${projectName}\n`);
+  // Handle "." to install in current directory
+  const isCurrentDir = projectName === '.';
+  const targetPath = isCurrentDir ? process.cwd() : path.join(process.cwd(), projectName);
+  const displayName = isCurrentDir ? path.basename(process.cwd()) : projectName;
 
-  const targetPath = path.join(process.cwd(), projectName);
+  console.log(`Creating new AIOS project: ${displayName}\n`);
 
   // Check if directory exists
   if (fs.existsSync(targetPath)) {
-    console.error(`❌ Directory already exists: ${projectName}`);
-    console.log('Use a different name or remove the existing directory.');
-    process.exit(1);
+    // Allow if directory is empty or only has hidden files
+    const contents = fs.readdirSync(targetPath).filter((f) => !f.startsWith('.'));
+    if (contents.length > 0 && !isCurrentDir) {
+      console.error(`❌ Directory already exists and is not empty: ${projectName}`);
+      console.log('Use a different name or remove the existing directory.');
+      process.exit(1);
+    }
+    // Directory exists but is empty or is current dir - proceed
+    if (!isCurrentDir) {
+      console.log(`✓ Using existing empty directory: ${projectName}`);
+    }
+  } else {
+    // Create project directory
+    fs.mkdirSync(targetPath, { recursive: true });
+    console.log(`✓ Created directory: ${projectName}`);
   }
 
-  // Create project directory
-  fs.mkdirSync(targetPath, { recursive: true });
-  console.log(`✓ Created directory: ${projectName}`);
-
-  // Change to project directory
-  process.chdir(targetPath);
+  // Change to project directory (if not already there)
+  if (!isCurrentDir) {
+    process.chdir(targetPath);
+  }
 
   // Run the initialization wizard
   await runWizard();
@@ -230,7 +245,7 @@ async function main() {
 
     case 'install':
       // Install in current project
-      console.log('🚀 AIOS-FullStack Installation\n');
+      console.log('AIOS-FullStack Installation\n');
       await runWizard();
       break;
 
@@ -262,7 +277,7 @@ async function main() {
 
     case undefined:
       // No arguments - run wizard directly (npx default behavior)
-      console.log('🚀 AIOS-FullStack Installation\n');
+      console.log('AIOS-FullStack Installation\n');
       await runWizard();
       break;
 
@@ -274,7 +289,7 @@ async function main() {
 }
 
 // Execute main function
-main().catch(error => {
+main().catch((error) => {
   console.error('❌ Fatal error:', error.message);
   process.exit(1);
 });

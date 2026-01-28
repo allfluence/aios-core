@@ -6,7 +6,6 @@
 const claudeCode = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/claude-code');
 const cursor = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/cursor');
 const windsurf = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/windsurf');
-const trae = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/trae');
 const antigravity = require('../../.aios-core/infrastructure/scripts/ide-sync/transformers/antigravity');
 
 describe('IDE Transformers', () => {
@@ -81,7 +80,9 @@ describe('IDE Transformers', () => {
     it('should not duplicate sync footer', () => {
       const agentWithFooter = {
         ...sampleAgent,
-        raw: sampleAgent.raw + '\n---\n*AIOS Agent - Synced from .aios-core/development/agents/dev.md*',
+        raw:
+          sampleAgent.raw +
+          '\n---\n*AIOS Agent - Synced from .aios-core/development/agents/dev.md*',
       };
       const result = claudeCode.transform(agentWithFooter);
       const footerCount = (result.match(/Synced from/g) || []).length;
@@ -186,50 +187,6 @@ describe('IDE Transformers', () => {
     });
   });
 
-  describe('trae transformer', () => {
-    it('should generate project rules format', () => {
-      const result = trae.transform(sampleAgent);
-      expect(result).toContain('# AIOS Agent: Dex');
-      expect(result).toContain('## Identity');
-    });
-
-    it('should include identity table', () => {
-      const result = trae.transform(sampleAgent);
-      expect(result).toContain('| ID | @dev |');
-      expect(result).toContain('| Name | Dex |');
-      expect(result).toContain('| Icon | 💻 |');
-    });
-
-    it('should include Core Commands section', () => {
-      const result = trae.transform(sampleAgent);
-      expect(result).toContain('## Core Commands');
-      expect(result).toContain('*help');
-      expect(result).toContain('*exit');
-    });
-
-    it('should include Quick Reference section', () => {
-      const result = trae.transform(sampleAgent);
-      expect(result).toContain('## Quick Reference');
-    });
-
-    it('should include All Commands section', () => {
-      const result = trae.transform(sampleAgent);
-      expect(result).toContain('## All Commands');
-      expect(result).toContain('*debug');
-    });
-
-    it('should include Dependencies section', () => {
-      const result = trae.transform(sampleAgent);
-      expect(result).toContain('## Dependencies');
-      expect(result).toContain('### Tasks');
-      expect(result).toContain('### Tools');
-    });
-
-    it('should have correct format identifier', () => {
-      expect(trae.format).toBe('project-rules');
-    });
-  });
-
   describe('antigravity transformer', () => {
     it('should generate cursor-style format', () => {
       const result = antigravity.transform(sampleAgent);
@@ -254,7 +211,7 @@ describe('IDE Transformers', () => {
   });
 
   describe('all transformers', () => {
-    const transformers = [claudeCode, cursor, windsurf, trae, antigravity];
+    const transformers = [claudeCode, cursor, windsurf, antigravity];
 
     it('should handle agent with minimal data', () => {
       const minimal = {

@@ -165,29 +165,29 @@ describe('validator', () => {
   describe('validateAllIdes', () => {
     it('should validate multiple IDEs', () => {
       const cursorDir = path.join(tempDir, 'cursor');
-      const traeDir = path.join(tempDir, 'trae');
+      const windsurfDir = path.join(tempDir, 'windsurf');
 
       fs.ensureDirSync(cursorDir);
-      fs.ensureDirSync(traeDir);
+      fs.ensureDirSync(windsurfDir);
 
       fs.writeFileSync(path.join(cursorDir, 'agent.md'), 'cursor content');
-      fs.writeFileSync(path.join(traeDir, 'agent.md'), 'trae content');
+      fs.writeFileSync(path.join(windsurfDir, 'agent.md'), 'windsurf content');
 
       const ideConfigs = {
         cursor: {
           expectedFiles: [{ filename: 'agent.md', content: 'cursor content' }],
           targetDir: cursorDir,
         },
-        trae: {
-          expectedFiles: [{ filename: 'agent.md', content: 'trae content' }],
-          targetDir: traeDir,
+        windsurf: {
+          expectedFiles: [{ filename: 'agent.md', content: 'windsurf content' }],
+          targetDir: windsurfDir,
         },
       };
 
       const result = validateAllIdes(ideConfigs, {});
 
       expect(result.ides.cursor).toBeDefined();
-      expect(result.ides.trae).toBeDefined();
+      expect(result.ides.windsurf).toBeDefined();
       expect(result.summary.total).toBe(2);
       expect(result.summary.synced).toBe(2);
       expect(result.summary.pass).toBe(true);

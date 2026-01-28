@@ -6,6 +6,10 @@
 
 # Guia de Desarrollo de Squads
 
+> 🌐 [EN](../../guides/squads-guide.md) | [PT](../../pt/guides/squads-guide.md) | **ES**
+
+---
+
 Guia completa para crear, validar, publicar y gestionar Squads en AIOS.
 
 > **AIOS Squads:** Equipos de agentes de IA trabajando contigo
@@ -17,7 +21,7 @@ Guia completa para crear, validar, publicar y gestionar Squads en AIOS.
 3. [Arquitectura de Squad](#arquitectura-de-squad)
 4. [Creando Squads](#creando-squads)
 5. [Disenador de Squad](#disenador-de-squad)
-6. [Analizando y Extendiendo Squads](#analizando--extendiendo-squads) *(NUEVO)*
+6. [Analizando y Extendiendo Squads](#analizando--extendiendo-squads) _(NUEVO)_
 7. [Validando Squads](#validando-squads)
 8. [Publicacion y Distribucion](#publicacion--distribucion)
 9. [Migracion desde Formato Legacy](#migracion-desde-formato-legacy)
@@ -31,14 +35,14 @@ Guia completa para crear, validar, publicar y gestionar Squads en AIOS.
 
 Los Squads son equipos modulares de agentes de IA que extienden la funcionalidad de AIOS. Cada squad es un paquete autocontenido que incluye:
 
-| Componente | Proposito |
-|-----------|---------|
-| **Agentes** | Personas de IA especificas del dominio |
-| **Tareas** | Flujos de trabajo ejecutables (TASK-FORMAT-SPEC-V1) |
-| **Workflows** | Orquestaciones de multiples pasos |
+| Componente        | Proposito                                                 |
+| ----------------- | --------------------------------------------------------- |
+| **Agentes**       | Personas de IA especificas del dominio                    |
+| **Tareas**        | Flujos de trabajo ejecutables (TASK-FORMAT-SPEC-V1)       |
+| **Workflows**     | Orquestaciones de multiples pasos                         |
 | **Configuracion** | Estandares de codigo, stack tecnologico, arbol de fuentes |
-| **Plantillas** | Plantillas de generacion de documentos |
-| **Herramientas** | Integraciones de herramientas personalizadas |
+| **Plantillas**    | Plantillas de generacion de documentos                    |
+| **Herramientas**  | Integraciones de herramientas personalizadas              |
 
 ### Niveles de Distribucion
 
@@ -54,10 +58,10 @@ Los Squads son equipos modulares de agentes de IA que extienden la funcionalidad
 
 ### Squads Oficiales
 
-| Squad | Version | Descripcion |
-|-------|---------|-------------|
-| [etl-squad](https://github.com/SynkraAI/aios-squads/tree/main/etl) | 2.0.0 | Recoleccion y transformacion de datos |
-| [creator-squad](https://github.com/SynkraAI/aios-squads/tree/main/creator) | 1.0.0 | Utilidades de generacion de contenido |
+| Squad                                                                      | Version | Descripcion                           |
+| -------------------------------------------------------------------------- | ------- | ------------------------------------- |
+| [etl-squad](https://github.com/SynkraAI/aios-squads/tree/main/etl)         | 2.0.0   | Recoleccion y transformacion de datos |
+| [creator-squad](https://github.com/SynkraAI/aios-squads/tree/main/creator) | 1.0.0   | Utilidades de generacion de contenido |
 
 ---
 
@@ -134,18 +138,18 @@ Los Squads son equipos modulares de agentes de IA que extienden la funcionalidad
 
 ```yaml
 # Campos requeridos
-name: my-squad                    # kebab-case, identificador unico
-version: 1.0.0                    # Versionado semantico
+name: my-squad # kebab-case, identificador unico
+version: 1.0.0 # Versionado semantico
 description: Lo que hace este squad
 
 # Metadatos
 author: Tu Nombre <email@example.com>
 license: MIT
-slashPrefix: my                   # Prefijo de comando para IDE
+slashPrefix: my # Prefijo de comando para IDE
 
 # Compatibilidad AIOS
 aios:
-  minVersion: "2.1.0"
+  minVersion: '2.1.0'
   type: squad
 
 # Declaracion de componentes
@@ -162,16 +166,16 @@ components:
 
 # Herencia de configuracion
 config:
-  extends: extend                 # extend | override | none
+  extends: extend # extend | override | none
   coding-standards: config/coding-standards.md
   tech-stack: config/tech-stack.md
   source-tree: config/source-tree.md
 
 # Dependencias
 dependencies:
-  node: []                        # paquetes npm
-  python: []                      # paquetes pip
-  squads: []                      # Otros squads
+  node: [] # paquetes npm
+  python: [] # paquetes pip
+  squads: [] # Otros squads
 
 # Etiquetas de descubrimiento
 tags:
@@ -189,7 +193,7 @@ Solicitud del Usuario → Tarea → Ejecucion del Agente → Salida
                      Workflow (si es multi-paso)
 ```
 
-Las tareas deben seguir [TASK-FORMAT-SPECIFICATION-V1](../../.aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md).
+Las tareas deben seguir [TASK-FORMAT-SPECIFICATION-V1](../../../.aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md).
 
 ---
 
@@ -207,30 +211,30 @@ Las tareas deben seguir [TASK-FORMAT-SPECIFICATION-V1](../../.aios-core/docs/sta
 
 ### Comandos Disponibles
 
-| Comando | Descripcion |
-|---------|-------------|
-| `*create-squad {name}` | Crear nuevo squad con prompts |
+| Comando                                  | Descripcion                                    |
+| ---------------------------------------- | ---------------------------------------------- |
+| `*create-squad {name}`                   | Crear nuevo squad con prompts                  |
 | `*create-squad {name} --template {type}` | Crear desde plantilla (basic, etl, agent-only) |
-| `*create-squad {name} --from-design` | Crear desde blueprint de diseno |
-| `*validate-squad {name}` | Validar estructura del squad |
-| `*list-squads` | Listar todos los squads locales |
-| `*design-squad` | Disenar squad desde documentacion |
+| `*create-squad {name} --from-design`     | Crear desde blueprint de diseno                |
+| `*validate-squad {name}`                 | Validar estructura del squad                   |
+| `*list-squads`                           | Listar todos los squads locales                |
+| `*design-squad`                          | Disenar squad desde documentacion              |
 
 ### Plantillas
 
-| Plantilla | Caso de Uso |
-|----------|----------|
-| `basic` | Squad simple con un agente y una tarea |
-| `etl` | Extraccion, transformacion, carga de datos |
-| `agent-only` | Squad con agentes, sin tareas |
+| Plantilla    | Caso de Uso                                |
+| ------------ | ------------------------------------------ |
+| `basic`      | Squad simple con un agente y una tarea     |
+| `etl`        | Extraccion, transformacion, carga de datos |
+| `agent-only` | Squad con agentes, sin tareas              |
 
 ### Modos de Herencia de Configuracion
 
-| Modo | Comportamiento |
-|------|----------|
-| `extend` | Agregar reglas del squad a las reglas base de AIOS |
-| `override` | Reemplazar reglas base con reglas del squad |
-| `none` | Configuracion independiente |
+| Modo       | Comportamiento                                     |
+| ---------- | -------------------------------------------------- |
+| `extend`   | Agregar reglas del squad a las reglas base de AIOS |
+| `override` | Reemplazar reglas base con reglas del squad        |
+| `none`     | Configuracion independiente                        |
 
 ---
 
@@ -408,16 +412,16 @@ Siguientes pasos:
 
 ### Tipos de Componentes
 
-| Tipo | Directorio | Extension | Descripcion |
-|------|-----------|-----------|-------------|
-| agent | agents/ | .md | Definicion de persona de agente |
-| task | tasks/ | .md | Flujo de trabajo de tarea ejecutable |
-| workflow | workflows/ | .yaml | Orquestacion de multiples pasos |
-| checklist | checklists/ | .md | Lista de verificacion de validacion |
-| template | templates/ | .md | Plantilla de generacion de documentos |
-| tool | tools/ | .js | Integracion de herramienta personalizada |
-| script | scripts/ | .js | Script de automatizacion de utilidad |
-| data | data/ | .yaml | Configuracion de datos estaticos |
+| Tipo      | Directorio  | Extension | Descripcion                              |
+| --------- | ----------- | --------- | ---------------------------------------- |
+| agent     | agents/     | .md       | Definicion de persona de agente          |
+| task      | tasks/      | .md       | Flujo de trabajo de tarea ejecutable     |
+| workflow  | workflows/  | .yaml     | Orquestacion de multiples pasos          |
+| checklist | checklists/ | .md       | Lista de verificacion de validacion      |
+| template  | templates/  | .md       | Plantilla de generacion de documentos    |
+| tool      | tools/      | .js       | Integracion de herramienta personalizada |
+| script    | scripts/    | .js       | Script de automatizacion de utilidad     |
+| data      | data/       | .yaml     | Configuracion de datos estaticos         |
 
 ### Flujo de Trabajo de Mejora Continua
 
@@ -486,13 +490,13 @@ Trata las advertencias como errores.
 
 ### Verificaciones de Validacion
 
-| Verificacion | Descripcion |
-|-------|-------------|
-| **Esquema del Manifiesto** | squad.yaml contra JSON Schema |
-| **Estructura de Directorios** | Las carpetas requeridas existen |
-| **Formato de Tareas** | Las tareas siguen TASK-FORMAT-SPEC-V1 |
-| **Definiciones de Agentes** | Los agentes tienen campos requeridos |
-| **Dependencias** | Los archivos referenciados existen |
+| Verificacion                  | Descripcion                           |
+| ----------------------------- | ------------------------------------- |
+| **Esquema del Manifiesto**    | squad.yaml contra JSON Schema         |
+| **Estructura de Directorios** | Las carpetas requeridas existen       |
+| **Formato de Tareas**         | Las tareas siguen TASK-FORMAT-SPEC-V1 |
+| **Definiciones de Agentes**   | Los agentes tienen campos requeridos  |
+| **Dependencias**              | Los archivos referenciados existen    |
 
 ### Salida de Validacion
 
@@ -581,6 +585,7 @@ export SYNKRA_API_TOKEN="your-token"
 ### Detectando Squads Legacy
 
 Los squads legacy usan `config.yaml` en lugar de `squad.yaml` y pueden faltar:
+
 - Campo `aios.type`
 - Campo `aios.minVersion`
 - Estructura task-first
@@ -639,7 +644,7 @@ const { SquadLoader } = require('./.aios-core/development/scripts/squad');
 
 const loader = new SquadLoader({
   squadsPath: './squads',
-  verbose: false
+  verbose: false,
 });
 
 // Resolver ruta del squad
@@ -670,12 +675,12 @@ try {
 
 ### Codigos de Error
 
-| Codigo | Descripcion | Solucion |
-|------|-------------|----------|
-| `SQUAD_NOT_FOUND` | Directorio del squad no encontrado | Crear con `*create-squad` |
-| `MANIFEST_NOT_FOUND` | Sin archivo de manifiesto | Crear `squad.yaml` |
-| `YAML_PARSE_ERROR` | Sintaxis YAML invalida | Usar validador YAML |
-| `PERMISSION_DENIED` | Error de permisos de archivo | Verificar `chmod 644` |
+| Codigo               | Descripcion                        | Solucion                  |
+| -------------------- | ---------------------------------- | ------------------------- |
+| `SQUAD_NOT_FOUND`    | Directorio del squad no encontrado | Crear con `*create-squad` |
+| `MANIFEST_NOT_FOUND` | Sin archivo de manifiesto          | Crear `squad.yaml`        |
+| `YAML_PARSE_ERROR`   | Sintaxis YAML invalida             | Usar validador YAML       |
+| `PERMISSION_DENIED`  | Error de permisos de archivo       | Verificar `chmod 644`     |
 
 ---
 
@@ -716,6 +721,7 @@ npx js-yaml ./squads/my-squad/squad.yaml
 ```
 
 Problemas comunes:
+
 - Indentacion incorrecta (usar 2 espacios)
 - Comillas faltantes alrededor de caracteres especiales
 - Tabs en lugar de espacios
@@ -751,6 +757,7 @@ gh auth status
 ### Cual es la diferencia entre un Squad y un Expansion Pack?
 
 **Squads** son el nuevo estandar (AIOS 2.1+) que reemplaza a los Expansion Packs. Los Squads tienen:
+
 - Arquitectura task-first
 - Validacion con JSON Schema
 - Distribucion de tres niveles
@@ -787,7 +794,7 @@ Los Squads requieren AIOS 2.1.0+. Configurar en el manifiesto:
 
 ```yaml
 aios:
-  minVersion: "2.1.0"
+  minVersion: '2.1.0'
 ```
 
 ### Como pruebo mi Squad antes de publicar?
@@ -808,11 +815,11 @@ npm test -- tests/squads/my-squad/
 
 ## Recursos Relacionados
 
-- [TASK-FORMAT-SPECIFICATION-V1](../../.aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md)
+- [TASK-FORMAT-SPECIFICATION-V1](../../../.aios-core/docs/standards/TASK-FORMAT-SPECIFICATION-V1.md)
 - [Guia de Contribucion de Squads](./contributing-squads.md)
 - [Guia de Migracion de Squad](./squad-migration.md)
 - [Referencia de API de Squads](../api/squads-api.md)
-- [Agente @squad-creator](../../.aios-core/development/agents/squad-creator.md)
+- [Agente @squad-creator](../../../.aios-core/development/agents/squad-creator.md)
 - [Repositorio aios-squads](https://github.com/SynkraAI/aios-squads)
 
 ---
@@ -824,6 +831,6 @@ npm test -- tests/squads/my-squad/
 
 ---
 
-*AIOS Squads: Equipos de agentes de IA trabajando contigo*
+_AIOS Squads: Equipos de agentes de IA trabajando contigo_
 
 **Version:** 2.1.0 | **Actualizado:** 2025-12-26 | **Stories:** SQS-8, SQS-11

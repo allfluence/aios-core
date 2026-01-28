@@ -1,33 +1,48 @@
 /**
  * Wizard Questions Definitions
- * 
+ *
  * Modular question system for AIOS installation wizard
  * Questions from Stories 1.3-1.6 will be added here
- * 
+ *
  * @module wizard/questions
  */
 
 const { colors } = require('../utils/aios-colors');
 const { createInquirerValidator, validateProjectType } = require('./validators');
+const { t, getLanguageChoices, setLanguage } = require('./i18n');
+
+/**
+ * Get language selection question (first question)
+ * @returns {Object} Inquirer question object
+ */
+function getLanguageQuestion() {
+  return {
+    type: 'list',
+    name: 'language',
+    message: '🌐 Language:',
+    choices: getLanguageChoices(),
+    default: 'en',
+  };
+}
 
 /**
  * Get project type question (Story 1.3)
- * This is a placeholder - full implementation in Story 1.3
- * 
+ * Uses i18n for translation
+ *
  * @returns {Object} Inquirer question object
  */
 function getProjectTypeQuestion() {
   return {
     type: 'list',
     name: 'projectType',
-    message: colors.primary('What type of project are you setting up?'),
+    message: colors.primary(t('projectTypeQuestion')),
     choices: [
       {
-        name: colors.highlight('Greenfield') + colors.dim(' (new project from scratch)'),
+        name: colors.highlight(t('greenfield')) + colors.dim(` (${t('greenfieldDesc')})`),
         value: 'greenfield',
       },
       {
-        name: 'Brownfield' + colors.dim(' (existing project integration)'),
+        name: t('brownfield') + colors.dim(` (${t('brownfieldDesc')})`),
         value: 'brownfield',
       },
     ],
@@ -59,27 +74,19 @@ function getPackageManagerQuestion(detectedPM = 'npm') {
     message: colors.primary('Which package manager should be used?'),
     choices: [
       {
-        name: detectedPM === 'npm'
-          ? colors.highlight('npm') + colors.dim(' (detected)')
-          : 'npm',
+        name: detectedPM === 'npm' ? colors.highlight('npm') + colors.dim(' (detected)') : 'npm',
         value: 'npm',
       },
       {
-        name: detectedPM === 'yarn'
-          ? colors.highlight('yarn') + colors.dim(' (detected)')
-          : 'yarn',
+        name: detectedPM === 'yarn' ? colors.highlight('yarn') + colors.dim(' (detected)') : 'yarn',
         value: 'yarn',
       },
       {
-        name: detectedPM === 'pnpm'
-          ? colors.highlight('pnpm') + colors.dim(' (detected)')
-          : 'pnpm',
+        name: detectedPM === 'pnpm' ? colors.highlight('pnpm') + colors.dim(' (detected)') : 'pnpm',
         value: 'pnpm',
       },
       {
-        name: detectedPM === 'bun'
-          ? colors.highlight('bun') + colors.dim(' (detected)')
-          : 'bun',
+        name: detectedPM === 'bun' ? colors.highlight('bun') + colors.dim(' (detected)') : 'bun',
         value: 'bun',
       },
     ],
@@ -100,7 +107,8 @@ function getMCPQuestions() {
       message: colors.primary('Select MCPs to install (project-level):'),
       choices: [
         {
-          name: colors.highlight('Browser (Puppeteer)') + colors.dim(' - Web automation and testing'),
+          name:
+            colors.highlight('Browser (Puppeteer)') + colors.dim(' - Web automation and testing'),
           value: 'browser',
           checked: true,
         },
@@ -166,7 +174,9 @@ function getExpansionPackQuestions() {
       message: colors.primary('Select Expansion Packs to install (optional):'),
       choices: [
         {
-          name: colors.highlight('expansion-creator') + colors.dim(' - Tools to create custom expansion packs'),
+          name:
+            colors.highlight('expansion-creator') +
+            colors.dim(' - Tools to create custom expansion packs'),
           value: 'expansion-creator',
           checked: false,
         },
@@ -194,6 +204,9 @@ function getExpansionPackQuestions() {
 function buildQuestionSequence(_context = {}) {
   const questions = [];
 
+  // Language selection (first question)
+  questions.push(getLanguageQuestion());
+
   // Story 1.2: Foundation (project type only)
   questions.push(getProjectTypeQuestion());
 
@@ -201,10 +214,13 @@ function buildQuestionSequence(_context = {}) {
   questions.push(...getIDEQuestions());
 
   // Story 1.5/1.8: MCP Selection
-  questions.push(...getMCPQuestions());
+  // DISABLED: MCPs are advanced config that can confuse beginners
+  // TODO: Remove entirely in future version - each project has unique MCP needs
+  // questions.push(...getMCPQuestions());
 
-  // Expansion Pack Selection (v2.1)
-  questions.push(...getExpansionPackQuestions());
+  // Expansion Pack Selection (v2.1) - DISABLED: Squads replaced expansion-packs (OSR-8)
+  // TODO: Remove entirely in future version
+  // questions.push(...getExpansionPackQuestions());
 
   // Story 1.7: Package Manager - Auto-detected (no question needed)
   // The wizard will auto-detect and use the appropriate package manager
@@ -223,13 +239,13 @@ function buildQuestionSequence(_context = {}) {
 /**
  * Get question by ID
  * Useful for testing individual questions
- * 
+ *
  * @param {string} questionId - Question identifier
  * @returns {Object|null} Question object or null if not found
  */
 function getQuestionById(questionId) {
   const questionMap = {
-    'projectType': getProjectTypeQuestion(),
+    projectType: getProjectTypeQuestion(),
     // Future questions will be added here
   };
 
@@ -237,6 +253,7 @@ function getQuestionById(questionId) {
 }
 
 module.exports = {
+  getLanguageQuestion,
   getProjectTypeQuestion,
   getIDEQuestions,
   getMCPQuestions,
@@ -246,4 +263,3 @@ module.exports = {
   buildQuestionSequence,
   getQuestionById,
 };
-

@@ -36,9 +36,9 @@ const {
   SquadLoader,
 } = require('../../../.aios-core/development/scripts/squad');
 
-// Test paths
+// Test paths - use unique directory to avoid parallel test collisions
 const FIXTURES_PATH = path.join(__dirname, '..', 'fixtures', 'squad');
-const TEMP_PATH = path.join(__dirname, 'temp-integration');
+const TEMP_PATH = path.join(__dirname, 'temp-download-publish');
 
 // Check if network tests should run
 const RUN_NETWORK_TESTS = process.env.AIOS_INTEGRATION_TESTS === 'true';

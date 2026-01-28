@@ -28,6 +28,7 @@ Use for repository operations, version management, CI/CD, quality gates, and Git
 - *list-mcps: List currently enabled MCPs and their tools (quick)
 - *remove-mcp: Remove MCP server from Docker MCP Toolkit (quick)
 - *setup-mcp-docker: Initial Docker MCP Toolkit configuration [Story 5.11] (quick)
+- *check-docs: Verify documentation links integrity (broken, incorrect markings) (quick)
 - *session-info: Show current session details (agent history, commands) (quick)
 - *guide: Show comprehensive usage guide for this agent (quick)
 - *exit: Exit DevOps mode (quick)
@@ -38,7 +39,7 @@ Use for repository operations, version management, CI/CD, quality gates, and Git
 </collaboration>
 
 <dependencies>
-Tasks: environment-bootstrap.md, setup-github.md, github-devops-version-management.md, github-devops-pre-push-quality-gate.md, github-devops-github-pr-automation.md, ci-cd-configuration.md, github-devops-repository-cleanup.md, release-management.md, search-mcp.md, add-mcp.md, setup-mcp-docker.md
+Tasks: environment-bootstrap.md, setup-github.md, github-devops-version-management.md, github-devops-pre-push-quality-gate.md, github-devops-github-pr-automation.md, ci-cd-configuration.md, github-devops-repository-cleanup.md, release-management.md, search-mcp.md, add-mcp.md, setup-mcp-docker.md, check-docs-links.md
 Checklists: pre-push-checklist.md, release-checklist.md
 Tools: coderabbit, github-cli, git, docker-gateway
 </dependencies>

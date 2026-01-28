@@ -6,6 +6,10 @@
 
 # Principios Rectores del Método AIOS
 
+> 🌐 [EN](../GUIDING-PRINCIPLES.md) | [PT](../pt/GUIDING-PRINCIPLES.md) | **ES**
+
+---
+
 El Método AIOS es un framework de lenguaje natural para el desarrollo de software asistido por IA. Estos principios aseguran que las contribuciones mantengan la efectividad del método.
 
 ## Principios Fundamentales
@@ -46,7 +50,7 @@ El Método AIOS es un framework de lenguaje natural para el desarrollo de softwa
 - Documentación pesada o bases de conocimiento
 - Cualquier cosa que inflara los agentes del núcleo
 
-Vea la [Guía de Squads](../docs/Squads.md) para ejemplos detallados e ideas.
+Vea la [Visión General de Squads](../guides/squads-overview.md) para ejemplos detallados e ideas.
 
 ### Reglas de Diseño de Agentes
 
@@ -71,7 +75,7 @@ Vea la [Guía de Squads](../docs/Squads.md) para ejemplos detallados e ideas.
 
 ### Reglas de Plantillas
 
-Las plantillas siguen la especificación de [Plantilla de Documento AIOS](common/utils/aios-doc-template.md) usando formato YAML:
+Las plantillas siguen la especificación de [Plantilla de Documento AIOS](../../common/utils/aios-doc-template.md) usando formato YAML:
 
 1. **Estructura**: Las plantillas se definen en YAML con metadatos claros, configuración de flujo de trabajo y jerarquía de secciones
 2. **Separación de Responsabilidades**: Las instrucciones para LLMs están en campos `instruction`, separadas del contenido

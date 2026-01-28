@@ -35,29 +35,23 @@ architecture:
 
 customTechnicalDocuments: null
 
-# Official framework documentation location (Story 6.11)
-# Prefer docs/framework/ for portable framework standards
-# docs/architecture/ contains project-specific analysis and decisions
+# Official framework documentation location
+# English docs in root, translations in /pt and /es folders
 devLoadAlwaysFiles:
-  - docs/en/framework/coding-standards.md
-  - docs/en/framework/tech-stack.md
-  - docs/en/framework/source-tree.md
+  - docs/framework/coding-standards.md
+  - docs/framework/tech-stack.md
+  - docs/framework/source-tree.md
 
-# Fallback patterns for backward compatibility and alternative naming
-# These will be tried if the primary files above are not found
+# Fallback patterns for translations
 devLoadAlwaysFilesFallback:
   # Portuguese docs
-  - docs/pt-BR/framework/coding-standards.md
-  - docs/pt-BR/framework/tech-stack.md
-  - docs/pt-BR/framework/source-tree.md
+  - docs/pt/framework/coding-standards.md
+  - docs/pt/framework/tech-stack.md
+  - docs/pt/framework/source-tree.md
   # Spanish docs
   - docs/es/framework/coding-standards.md
   - docs/es/framework/tech-stack.md
   - docs/es/framework/source-tree.md
-  # Legacy architecture location (deprecated)
-  - docs/en/architecture/coding-standards.md
-  - docs/en/architecture/tech-stack.md
-  - docs/en/architecture/source-tree.md
 
 devDebugLog: .ai/debug-log.md
 devStoryLocation: docs/stories

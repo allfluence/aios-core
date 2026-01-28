@@ -6,6 +6,10 @@
 
 # Documentación del Framework AIOS
 
+> 🌐 [EN](../../framework/README.md) | [PT](../../pt/framework/README.md) | **ES**
+
+---
+
 **Estado:** Estándares Oficiales del Framework
 **Creado:** 2025-01-16 (Story 6.1.2.6)
 **Objetivo de Migración:** Q2 2026 → repositorio `SynkraAI/aios-core`
@@ -22,11 +26,11 @@ Este directorio contiene la **documentación oficial del framework AIOS** que de
 
 ## Inventario de Documentación
 
-| Documento | Propósito | Audiencia |
-|----------|---------|----------|
-| [**coding-standards.md**](coding-standards.md) | Estándares JavaScript/TypeScript, convenciones de nomenclatura, reglas de calidad de código | Todos los desarrolladores |
-| [**tech-stack.md**](tech-stack.md) | Elecciones tecnológicas, frameworks, bibliotecas y estándares de herramientas | Arquitectos, desarrolladores |
-| [**source-tree.md**](source-tree.md) | Estructura de directorios, organización de archivos y patrones de diseño del proyecto | Todos los miembros del equipo |
+| Documento                                      | Propósito                                                                                   | Audiencia                     |
+| ---------------------------------------------- | ------------------------------------------------------------------------------------------- | ----------------------------- |
+| [**coding-standards.md**](coding-standards.md) | Estándares JavaScript/TypeScript, convenciones de nomenclatura, reglas de calidad de código | Todos los desarrolladores     |
+| [**tech-stack.md**](tech-stack.md)             | Elecciones tecnológicas, frameworks, bibliotecas y estándares de herramientas               | Arquitectos, desarrolladores  |
+| [**source-tree.md**](source-tree.md)           | Estructura de directorios, organización de archivos y patrones de diseño del proyecto       | Todos los miembros del equipo |
 
 ---
 
@@ -43,6 +47,7 @@ Este directorio contiene la **documentación oficial del framework AIOS** que de
 ### Compatibilidad hacia Atrás
 
 Para compatibilidad hacia atrás, la documentación del framework permanece accesible en **ambas** ubicaciones hasta Q3 2026:
+
 - **Nueva ubicación** (preferida): `docs/framework/{nombre-doc}.md`
 - **Ubicación antigua** (obsoleta): `docs/architecture/{nombre-doc}.md`
 
@@ -53,12 +58,14 @@ Para compatibilidad hacia atrás, la documentación del framework permanece acce
 ## Documentación de Framework vs. Proyecto
 
 ### Documentación del Framework (`docs/framework/`)
+
 - **Alcance**: Portable a través de todos los proyectos AIOS
 - **Ejemplos**: Estándares de codificación, stack tecnológico, estructura del árbol de código fuente
 - **Ciclo de vida**: Reside en el repositorio `SynkraAI/aios-core`
 - **Cambios**: Requieren aprobación a nivel de framework
 
 ### Documentación del Proyecto (`docs/architecture/project-decisions/`)
+
 - **Alcance**: Específico para la implementación brownfield
 - **Ejemplos**: Análisis de decisiones, revisiones arquitectónicas, decisiones de integración
 - **Ciclo de vida**: Reside permanentemente en el repositorio del proyecto
@@ -69,30 +76,24 @@ Para compatibilidad hacia atrás, la documentación del framework permanece acce
 ## Guías de Uso
 
 ### Para Desarrolladores
+
 1. **Lea la documentación del framework durante la incorporación** - Comprenda los estándares de AIOS
 2. **Consulte durante el desarrollo** - Asegure el cumplimiento con los patrones del framework
 3. **Proponga cambios mediante PRs** - Los estándares del framework evolucionan con aportes de la comunidad
 
 ### Para Arquitectos
+
 1. **Mantenga la documentación del framework** - Mantenga los estándares actualizados y prácticos
 2. **Revise PRs para cumplimiento** - Asegure que el código siga los estándares documentados
 3. **Planifique la migración** - Prepárese para la separación del repositorio en Q2 2026
 
 ### Para Mantenedores del Framework AIOS
+
 1. **Control de versiones** - Rastree cambios en los estándares del framework
 2. **Preparación para la migración** - Asegure que la documentación esté lista para la separación del repositorio
 3. **Consistencia entre proyectos** - Aplique los estándares de manera uniforme
 
 ---
 
-## Documentos Relacionados
-
-- **Decisiones de Arquitectura**: [`docs/decisions/decision-005-repository-restructuring-FINAL.md`](../decisions/decision-005-repository-restructuring-FINAL.md)
-- **Historia de Migración**: [`docs/stories/aios migration/story-6.1.2.6-framework-config-system.md`](../stories/aios migration/story-6.1.2.6-framework-config-system.md)
-- **Documentación Específica del Proyecto**: [`docs/architecture/project-decisions/`](../architecture/project-decisions/)
-
----
-
 **Última Actualización**: 2025-12-14
 **Mantenedor**: Equipo del Framework AIOS
-**¿Preguntas?** Ver [Epic 6.1 - Agent Identity System](../epics/epic-6.1-agent-identity-system.md)

@@ -217,12 +217,12 @@ tools/
 
 ### Riesgos
 
-| Riesgo                           | Probabilidad | Impacto | Mitigacion                              |
-| -------------------------------- | ------------ | ------- | --------------------------------------- |
-| Auto-reparacion causa dano       | Bajo         | Alto    | Blocklist estricta, backups obligatorios |
-| Objetivos de rendimiento no cumplidos | Medio    | Medio   | Caching agresivo, ejecucion paralela    |
-| Verificaciones personalizadas muy complejas | Bajo | Bajo  | Proporcionar ejemplos, limitar tipos de verificacion |
-| Scope creep de dashboard         | Medio        | Medio   | Limites estrictos de componentes compartidos |
+| Riesgo                                      | Probabilidad | Impacto | Mitigacion                                           |
+| ------------------------------------------- | ------------ | ------- | ---------------------------------------------------- |
+| Auto-reparacion causa dano                  | Bajo         | Alto    | Blocklist estricta, backups obligatorios             |
+| Objetivos de rendimiento no cumplidos       | Medio        | Medio   | Caching agresivo, ejecucion paralela                 |
+| Verificaciones personalizadas muy complejas | Bajo         | Bajo    | Proporcionar ejemplos, limitar tipos de verificacion |
+| Scope creep de dashboard                    | Medio        | Medio   | Limites estrictos de componentes compartidos         |
 
 ---
 
@@ -361,18 +361,15 @@ tools/
 
 ### Referencias Internas
 
-- [Story 3.11: Quality Gates Dashboard](../stories/v2.1/sprint-3/story-3.11-quality-gates-dashboard.md)
-- [Story HCS-1: Investigacion](../stories/epics/epic-health-check-system/story-hcs-1-investigation.md)
-- [Story HCS-2: Implementacion](../stories/epics/epic-health-check-system/story-hcs-2-implementation.md)
-- [Estandares de Codigo](../framework/coding-standards.md)
+- [Estandares de Codigo](../../framework/coding-standards.md)
 
 ---
 
 ## Registro de Decisiones
 
-| Fecha       | Decision                          | Autor               |
-| ----------- | --------------------------------- | ------------------- |
-| 2025-12-30  | Propuesta inicial de arquitectura | @architect via @dev |
+| Fecha      | Decision                          | Autor               |
+| ---------- | --------------------------------- | ------------------- |
+| 2025-12-30 | Propuesta inicial de arquitectura | @architect via @dev |
 
 ---
 

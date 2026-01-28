@@ -2,6 +2,10 @@
 
 # Como Contribuir con Pull Requests
 
+> 🌐 [EN](../how-to-contribute-with-pull-requests.md) | [PT](../pt/how-to-contribute-with-pull-requests.md) | **ES**
+
+---
+
 **Nuevo en GitHub y en pull requests?** Esta guia te orientara a traves de los conceptos basicos paso a paso.
 
 ## Que es un Pull Request?
@@ -135,7 +139,7 @@ git push origin fix/typo-in-readme
 
 - Reporta bugs usando la [plantilla de reporte de bugs](https://github.com/SynkraAIinc/@synkra/aios-core/issues/new?template=bug_report.md)
 - Sugiere features usando la [plantilla de solicitud de feature](https://github.com/SynkraAIinc/@synkra/aios-core/issues/new?template=feature_request.md)
-- Lee las [Directrices de Contribucion](../CONTRIBUTING.md) completas
+- Lee las [Directrices de Contribucion](../../CONTRIBUTING.md) completas
 
 ## Ejemplo: Buenos PRs vs Malos
 

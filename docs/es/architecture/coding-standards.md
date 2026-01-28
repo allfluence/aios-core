@@ -10,6 +10,10 @@
 
 # Estandares de Codigo AIOS
 
+> 🌐 [EN](../../architecture/coding-standards.md) | [PT](../../pt/architecture/coding-standards.md) | **ES**
+
+---
+
 **Version:** 1.1
 **Ultima Actualizacion:** 2025-12-14
 **Estado:** OBSOLETO - Ver docs/framework/coding-standards.md
@@ -36,6 +40,7 @@
 Este documento define los estandares oficiales de codigo para el desarrollo del framework AIOS. Todas las contribuciones de codigo deben adherirse a estos estandares para asegurar consistencia, mantenibilidad y calidad.
 
 **Aplicacion:**
+
 - ESLint (automatizado)
 - Prettier (automatizado)
 - Revision de CodeRabbit (automatizado)
@@ -56,7 +61,7 @@ const data = await fetchData();
 const { id, name } = data;
 
 // ❌ INCORRECTO: Sintaxis obsoleta
-fetchData().then(function(data) {
+fetchData().then(function (data) {
   var id = data.id;
   var name = data.name;
 });
@@ -98,14 +103,15 @@ function processAgent(agent) {
 
 // ❌ INCORRECTO: 4 espacios o tabs
 function processAgent(agent) {
-    if (agent.enabled) {
-        return loadAgent(agent);
-    }
-    return null;
+  if (agent.enabled) {
+    return loadAgent(agent);
+  }
+  return null;
 }
 ```
 
 **Configuracion de Prettier:**
+
 ```json
 {
   "printWidth": 100,
@@ -123,14 +129,14 @@ function processAgent(agent) {
 
 ```javascript
 // ✅ CORRECTO: Maximo 100 caracteres
-const result = await executeTask(
-  taskName,
-  taskArgs,
-  { timeout: 5000, retry: 3 }
-);
+const result = await executeTask(taskName, taskArgs, { timeout: 5000, retry: 3 });
 
 // ❌ INCORRECTO: Mas de 100 caracteres
-const result = await executeTask(taskName, taskArgs, { timeout: 5000, retry: 3, failureCallback: onFailure });
+const result = await executeTask(taskName, taskArgs, {
+  timeout: 5000,
+  retry: 3,
+  failureCallback: onFailure,
+});
 ```
 
 #### Comillas
@@ -141,7 +147,7 @@ const agentName = 'developer';
 const message = `Agent ${agentName} activated`;
 
 // ❌ INCORRECTO: Comillas dobles (excepto JSON)
-const agentName = "developer";
+const agentName = 'developer';
 ```
 
 ### Patrones Modernos de JavaScript
@@ -164,9 +170,8 @@ async function loadAgent(agentId) {
 // ❌ INCORRECTO: Cadenas de Promise
 function loadAgent(agentId) {
   return fetchAgent(agentId)
-    .then(agent => loadConfig(agent.configPath)
-      .then(config => ({ agent, config })))
-    .catch(error => {
+    .then((agent) => loadConfig(agent.configPath).then((config) => ({ agent, config })))
+    .catch((error) => {
       console.error(`Error al cargar agente ${agentId}:`, error);
       throw error;
     });
@@ -194,7 +199,7 @@ const activeAgents = agents.filter((agent) => agent.enabled);
 const agentNames = agents.map((agent) => agent.name);
 
 // ❌ INCORRECTO: Funciones tradicionales para callbacks simples
-const activeAgents = agents.filter(function(agent) {
+const activeAgents = agents.filter(function (agent) {
   return agent.enabled;
 });
 ```
@@ -267,15 +272,15 @@ docs/
 
 ```javascript
 // ✅ CORRECTO: Kebab-case para archivos
-agent-executor.js
-task-runner.js
-greeting-builder.js
-context-detector.js
+agent - executor.js;
+task - runner.js;
+greeting - builder.js;
+context - detector.js;
 
 // ❌ INCORRECTO: camelCase o PascalCase para archivos
-agentExecutor.js
-TaskRunner.js
-GreetingBuilder.js
+agentExecutor.js;
+TaskRunner.js;
+GreetingBuilder.js;
 ```
 
 ### Estructura de Modulos
@@ -400,7 +405,7 @@ class AgentManager {
 
   async getAgent(id) {
     // API publica
-    return this._loadFromCache(id) || await this._fetchAgent(id);
+    return this._loadFromCache(id) || (await this._fetchAgent(id));
   }
 }
 ```
@@ -484,6 +489,7 @@ function processAgent(agent) {
 ```
 
 **Refactorizar funciones complejas:**
+
 ```javascript
 // ✅ CORRECTO: Funciones auxiliares extraidas
 function processAgent(agent) {
@@ -599,8 +605,8 @@ Cada modulo/directorio debe tener un README.md:
 const { executeAgent } = require('./agent-executor');
 
 const result = await executeAgent('dev', {
-  yoloMode: true,
-  storyPath: 'docs/stories/story-6.1.2.5.md'
+yoloMode: true,
+storyPath: 'docs/stories/story-6.1.2.5.md'
 });
 \`\`\`
 
@@ -654,10 +660,7 @@ describe('ContextDetector', () => {
 
     it('deberia retornar "workflow" cuando el patron de comando coincide con story_development', async () => {
       // Given (Dado)
-      const conversationHistory = [
-        { command: 'validate-story-draft' },
-        { command: 'develop' }
-      ];
+      const conversationHistory = [{ command: 'validate-story-draft' }, { command: 'develop' }];
 
       // When (Cuando)
       const result = await detectSessionType(conversationHistory, null);
@@ -717,6 +720,7 @@ wip
 ```
 
 **Formato:**
+
 ```
 <tipo>: <descripcion> [Story <id>]
 
@@ -726,6 +730,7 @@ wip
 ```
 
 **Tipos:**
+
 - `feat`: Nueva funcionalidad
 - `fix`: Correccion de bug
 - `docs`: Cambios en documentacion
@@ -863,6 +868,7 @@ jobs:
 ### Integracion con CodeRabbit
 
 Todos los PRs son revisados automaticamente por CodeRabbit para:
+
 - Problemas de calidad de codigo
 - Vulnerabilidades de seguridad
 - Problemas de rendimiento
@@ -873,19 +879,18 @@ Todos los PRs son revisados automaticamente por CodeRabbit para:
 
 ## Historial de Versiones
 
-| Version | Fecha | Cambios | Autor |
-|---------|-------|---------|-------|
-| 1.0 | 2025-01-15 | Documento inicial de estandares de codigo | Aria (architect) |
-| 1.1 | 2025-12-14 | Actualizado aviso de migracion a SynkraAI/aios-core [Story 6.10] | Dex (dev) |
+| Version | Fecha      | Cambios                                                          | Autor            |
+| ------- | ---------- | ---------------------------------------------------------------- | ---------------- |
+| 1.0     | 2025-01-15 | Documento inicial de estandares de codigo                        | Aria (architect) |
+| 1.1     | 2025-12-14 | Actualizado aviso de migracion a SynkraAI/aios-core [Story 6.10] | Dex (dev)        |
 
 ---
 
 **Documentos Relacionados:**
+
 - [Tech Stack](./tech-stack.md)
 - [Source Tree](./source-tree.md)
-- [Decision 005: Reestructuracion de Repositorio](../decisions/decision-005-repository-restructuring-FINAL.md)
-- [Story 6.1.2.5: Sistema de Carga Contextual de Agentes](../stories/aios%20migration/story-6.1.2.5-contextual-agent-load-system.md)
 
 ---
 
-*Este es un estandar oficial del framework AIOS. Todas las contribuciones de codigo deben cumplir con el.*
+_Este es un estandar oficial del framework AIOS. Todas las contribuciones de codigo deben cumplir con el._

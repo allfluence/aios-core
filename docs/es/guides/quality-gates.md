@@ -6,11 +6,14 @@
 
 # Guía del Sistema de Quality Gates de AIOS
 
+> 🌐 [EN](../../guides/quality-gates.md) | [PT](../../pt/guides/quality-gates.md) | **ES**
+
+---
+
 > Guía completa del sistema de quality gates de 3 capas para Synkra AIOS.
 
 **Versión:** 2.1.0
 **Última Actualización:** 2025-12-01
-**Story:** [2.16 - Documentation Sprint 2](../stories/v2.1/sprint-2/story-2.16-documentation.md)
 
 ---
 
@@ -42,26 +45,27 @@ graph LR
     style L3 fill:#fff3e0
 ```
 
-| Capa | Tipo | Velocidad | Propósito |
-|------|------|-----------|-----------|
-| **Capa 1** | Automatizada | ~30s | Detectar errores de sintaxis, linting, tipos |
-| **Capa 2** | Asistida por IA | ~5m | Detectar errores de lógica, seguridad, patrones |
-| **Capa 3** | Humana | Variable | Revisión estratégica, aprobación final |
+| Capa       | Tipo            | Velocidad | Propósito                                       |
+| ---------- | --------------- | --------- | ----------------------------------------------- |
+| **Capa 1** | Automatizada    | ~30s      | Detectar errores de sintaxis, linting, tipos    |
+| **Capa 2** | Asistida por IA | ~5m       | Detectar errores de lógica, seguridad, patrones |
+| **Capa 3** | Humana          | Variable  | Revisión estratégica, aprobación final          |
 
 ---
 
 ## Capa 1: Verificaciones Pre-commit
 
 ### Propósito
+
 Verificaciones rápidas y locales que se ejecutan antes de que el código sea comprometido. Detecta problemas obvios inmediatamente.
 
 ### Verificaciones Incluidas
 
-| Verificación | Herramienta | Timeout | Descripción |
-|--------------|-------------|---------|-------------|
-| **Lint** | ESLint | 60s | Estilo de código y mejores prácticas |
-| **Test** | Jest | 5m | Pruebas unitarias con cobertura |
-| **TypeCheck** | TypeScript | 2m | Validación de tipos estáticos |
+| Verificación  | Herramienta | Timeout | Descripción                          |
+| ------------- | ----------- | ------- | ------------------------------------ |
+| **Lint**      | ESLint      | 60s     | Estilo de código y mejores prácticas |
+| **Test**      | Jest        | 5m      | Pruebas unitarias con cobertura      |
+| **TypeCheck** | TypeScript  | 2m      | Validación de tipos estáticos        |
 
 ### Configuración
 
@@ -69,24 +73,24 @@ Verificaciones rápidas y locales que se ejecutan antes de que el código sea co
 # .aios-core/core/quality-gates/quality-gate-config.yaml
 layer1:
   enabled: true
-  failFast: true  # Detener en la primera falla
+  failFast: true # Detener en la primera falla
   checks:
     lint:
       enabled: true
-      command: "npm run lint"
-      failOn: "error"  # error | warning
-      timeout: 60000   # 1 minuto
+      command: 'npm run lint'
+      failOn: 'error' # error | warning
+      timeout: 60000 # 1 minuto
     test:
       enabled: true
-      command: "npm test"
-      timeout: 300000  # 5 minutos
+      command: 'npm test'
+      timeout: 300000 # 5 minutos
       coverage:
         enabled: true
         minimum: 80
     typecheck:
       enabled: true
-      command: "npm run typecheck"
-      timeout: 120000  # 2 minutos
+      command: 'npm run typecheck'
+      timeout: 120000 # 2 minutos
 ```
 
 ### Ejecutando Capa 1
@@ -133,14 +137,15 @@ CAPA 1 APROBADA (85.6s)
 ## Capa 2: Automatización de PR
 
 ### Propósito
+
 Revisión de código asistida por IA que se ejecuta en pull requests. Detecta problemas más profundos como errores de lógica, vulnerabilidades de seguridad y problemas arquitectónicos.
 
 ### Herramientas Integradas
 
-| Herramienta | Propósito | Severidad Bloqueante |
-|-------------|-----------|----------------------|
-| **CodeRabbit** | Revisión de código con IA | CRÍTICO |
-| **Quinn (@qa)** | Revisión de QA automatizada | CRÍTICO |
+| Herramienta     | Propósito                   | Severidad Bloqueante |
+| --------------- | --------------------------- | -------------------- |
+| **CodeRabbit**  | Revisión de código con IA   | CRÍTICO              |
+| **Quinn (@qa)** | Revisión de QA automatizada | CRÍTICO              |
 
 ### Configuración
 
@@ -150,8 +155,8 @@ layer2:
   enabled: true
   coderabbit:
     enabled: true
-    command: "coderabbit --prompt-only -t uncommitted"
-    timeout: 900000  # 15 minutos
+    command: 'coderabbit --prompt-only -t uncommitted'
+    timeout: 900000 # 15 minutos
     blockOn:
       - CRITICAL
     warnOn:
@@ -163,10 +168,10 @@ layer2:
   quinn:
     enabled: true
     autoReview: true
-    agentPath: ".claude/commands/AIOS/agents/qa.md"
+    agentPath: '.claude/commands/AIOS/agents/qa.md'
     severity:
-      block: ["CRITICAL"]
-      warn: ["HIGH", "MEDIUM"]
+      block: ['CRITICAL']
+      warn: ['HIGH', 'MEDIUM']
 ```
 
 ### Ejecutando Capa 2
@@ -184,12 +189,12 @@ aios qa run --layer=2 --tool=quinn
 
 ### Niveles de Severidad
 
-| Severidad | Acción | Descripción |
-|-----------|--------|-------------|
-| **CRÍTICO** | Bloquear | Vulnerabilidad de seguridad, riesgo de pérdida de datos, cambio disruptivo |
-| **ALTO** | Advertir + Documentar | Problema de rendimiento, validación faltante, anti-patrón |
-| **MEDIO** | Documentar | Code smell, sugerencia de mejora, riesgo menor |
-| **BAJO** | Ignorar | Preferencia de estilo, optimización menor |
+| Severidad   | Acción                | Descripción                                                                |
+| ----------- | --------------------- | -------------------------------------------------------------------------- |
+| **CRÍTICO** | Bloquear              | Vulnerabilidad de seguridad, riesgo de pérdida de datos, cambio disruptivo |
+| **ALTO**    | Advertir + Documentar | Problema de rendimiento, validación faltante, anti-patrón                  |
+| **MEDIO**   | Documentar            | Code smell, sugerencia de mejora, riesgo menor                             |
+| **BAJO**    | Ignorar               | Preferencia de estilo, optimización menor                                  |
 
 ### Integración con CodeRabbit
 
@@ -230,6 +235,7 @@ const result = await manager.runQuinnReview(pullRequestId);
 ## Capa 3: Revisión Humana
 
 ### Propósito
+
 Revisión humana estratégica para aprobación final. Asegura que los requisitos de negocio se cumplan y las decisiones arquitectónicas sean sólidas.
 
 ### Configuración
@@ -239,24 +245,24 @@ Revisión humana estratégica para aprobación final. Asegura que los requisitos
 layer3:
   enabled: true
   requireSignoff: true
-  assignmentStrategy: "auto"  # auto | manual | round-robin
-  defaultReviewer: "@architect"
+  assignmentStrategy: 'auto' # auto | manual | round-robin
+  defaultReviewer: '@architect'
   checklist:
     enabled: true
-    template: "strategic-review-checklist"
+    template: 'strategic-review-checklist'
     minItems: 5
   signoff:
     required: true
-    expiry: 86400000  # 24 horas en ms
+    expiry: 86400000 # 24 horas en ms
 ```
 
 ### Estrategias de Asignación
 
-| Estrategia | Descripción |
-|------------|-------------|
-| **auto** | Asignar basado en propiedad de archivos y experiencia |
-| **manual** | Asignar revisor manualmente |
-| **round-robin** | Rotar entre miembros del equipo |
+| Estrategia      | Descripción                                           |
+| --------------- | ----------------------------------------------------- |
+| **auto**        | Asignar basado en propiedad de archivos y experiencia |
+| **manual**      | Asignar revisor manualmente                           |
+| **round-robin** | Rotar entre miembros del equipo                       |
 
 ### Lista de Verificación de Revisión
 
@@ -266,21 +272,25 @@ La lista de verificación de revisión estratégica asegura que los revisores cu
 ## Lista de Verificación de Revisión Estratégica
 
 ### Arquitectura
+
 - [ ] Los cambios se alinean con la arquitectura del sistema
 - [ ] No se introdujeron dependencias no autorizadas
 - [ ] Se mantiene compatibilidad hacia atrás
 
 ### Seguridad
+
 - [ ] No se exponen datos sensibles
 - [ ] Validación de entrada presente
 - [ ] Autenticación/autorización correcta
 
 ### Calidad
+
 - [ ] El código es mantenible y legible
 - [ ] Las pruebas son exhaustivas
 - [ ] Documentación actualizada
 
 ### Negocio
+
 - [ ] Criterios de aceptación cumplidos
 - [ ] Experiencia de usuario considerada
 - [ ] Rendimiento aceptable
@@ -338,6 +348,7 @@ aios qa status --pr=123
 ```
 
 **Salida:**
+
 ```
 Estado de Quality Gate
 ======================
@@ -485,7 +496,7 @@ aios qa run --layer=1 --fail-fast
 
 ```yaml
 # quality-gate-config.yaml
-version: "1.0"
+version: '1.0'
 
 # Capa 1: Verificaciones pre-commit
 layer1:
@@ -494,19 +505,19 @@ layer1:
   checks:
     lint:
       enabled: true
-      command: "npm run lint"
-      failOn: "error"
+      command: 'npm run lint'
+      failOn: 'error'
       timeout: 60000
     test:
       enabled: true
-      command: "npm test"
+      command: 'npm test'
       timeout: 300000
       coverage:
         enabled: true
         minimum: 80
     typecheck:
       enabled: true
-      command: "npm run typecheck"
+      command: 'npm run typecheck'
       timeout: 120000
 
 # Capa 2: Automatización PR
@@ -514,7 +525,7 @@ layer2:
   enabled: true
   coderabbit:
     enabled: true
-    command: "coderabbit --prompt-only -t uncommitted"
+    command: 'coderabbit --prompt-only -t uncommitted'
     timeout: 900000
     blockOn: [CRITICAL]
     warnOn: [HIGH]
@@ -523,7 +534,7 @@ layer2:
   quinn:
     enabled: true
     autoReview: true
-    agentPath: ".claude/commands/AIOS/agents/qa.md"
+    agentPath: '.claude/commands/AIOS/agents/qa.md'
     severity:
       block: [CRITICAL]
       warn: [HIGH, MEDIUM]
@@ -532,11 +543,11 @@ layer2:
 layer3:
   enabled: true
   requireSignoff: true
-  assignmentStrategy: "auto"
-  defaultReviewer: "@architect"
+  assignmentStrategy: 'auto'
+  defaultReviewer: '@architect'
   checklist:
     enabled: true
-    template: "strategic-review-checklist"
+    template: 'strategic-review-checklist'
     minItems: 5
   signoff:
     required: true
@@ -544,14 +555,14 @@ layer3:
 
 # Reportes
 reports:
-  location: ".aios/qa-reports"
-  format: "json"
+  location: '.aios/qa-reports'
+  format: 'json'
   retention: 30
   includeMetrics: true
 
 # Persistencia de estado
 status:
-  location: ".aios/qa-status.json"
+  location: '.aios/qa-status.json'
   updateOnChange: true
 
 # Salida detallada
@@ -568,28 +579,28 @@ verbose:
 
 ### Fallas de Capa 1
 
-| Problema | Solución |
-|----------|----------|
-| Errores de lint | Ejecutar `npm run lint -- --fix` para auto-corregir |
-| Fallas de pruebas | Verificar salida de pruebas, actualizar pruebas o corregir código |
+| Problema             | Solución                                                          |
+| -------------------- | ----------------------------------------------------------------- |
+| Errores de lint      | Ejecutar `npm run lint -- --fix` para auto-corregir               |
+| Fallas de pruebas    | Verificar salida de pruebas, actualizar pruebas o corregir código |
 | Errores de TypeCheck | Revisar anotaciones de tipo, corregir incompatibilidades de tipos |
-| Timeout | Aumentar timeout en configuración u optimizar pruebas |
+| Timeout              | Aumentar timeout en configuración u optimizar pruebas             |
 
 ### Fallas de Capa 2
 
-| Problema | Solución |
-|----------|----------|
-| CodeRabbit crítico | Atender problemas de seguridad/cambios disruptivos |
-| Timeout de CodeRabbit | Verificar red, intentar ejecución manual |
-| Quinn bloqueó | Revisar feedback de @qa, actualizar código |
+| Problema              | Solución                                           |
+| --------------------- | -------------------------------------------------- |
+| CodeRabbit crítico    | Atender problemas de seguridad/cambios disruptivos |
+| Timeout de CodeRabbit | Verificar red, intentar ejecución manual           |
+| Quinn bloqueó         | Revisar feedback de @qa, actualizar código         |
 
 ### Problemas de Capa 3
 
-| Problema | Solución |
-|----------|----------|
-| Sin revisor asignado | Establecer defaultReviewer en configuración |
-| Aprobación expirada | Solicitar nueva revisión |
-| Lista de verificación incompleta | Completar todos los elementos requeridos |
+| Problema                         | Solución                                    |
+| -------------------------------- | ------------------------------------------- |
+| Sin revisor asignado             | Establecer defaultReviewer en configuración |
+| Aprobación expirada              | Solicitar nueva revisión                    |
+| Lista de verificación incompleta | Completar todos los elementos requeridos    |
 
 ---
 
@@ -597,8 +608,7 @@ verbose:
 
 - [Arquitectura del Sistema de Módulos](../architecture/module-system.md)
 - [Guía de Descubrimiento de Servicios](./service-discovery.md)
-- [Story 2.10: Quality Gate Manager](../stories/v2.1/sprint-2/story-2.10-quality-gate-manager.md)
 
 ---
 
-*Guía del Sistema de Quality Gates de Synkra AIOS v2.1*
+_Guía del Sistema de Quality Gates de Synkra AIOS v2.1_

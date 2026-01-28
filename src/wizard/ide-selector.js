@@ -10,6 +10,7 @@
 const inquirer = require('inquirer');
 const { getIDEChoices, getIDEKeys } = require('../config/ide-configs');
 const { colors } = require('../utils/aios-colors');
+const { t } = require('./i18n');
 
 /**
  * Validate IDE selection (at least one required)
@@ -27,7 +28,7 @@ function validateIDESelection(selectedIDEs) {
 
   // Validate all selected IDEs are valid
   const validIDEs = getIDEKeys();
-  const invalidIDEs = selectedIDEs.filter(ide => !validIDEs.includes(ide));
+  const invalidIDEs = selectedIDEs.filter((ide) => !validIDEs.includes(ide));
 
   if (invalidIDEs.length > 0) {
     return `Invalid IDE selections: ${invalidIDEs.join(', ')}`;
@@ -52,7 +53,7 @@ async function selectIDEs() {
     {
       type: 'checkbox',
       name: 'selectedIDEs',
-      message: colors.primary('Select IDE(s) for AIOS configuration:') + colors.dim('\n  (Use spacebar to select, enter to confirm)'),
+      message: colors.primary(t('ideQuestion')) + colors.dim(`\n  (${t('ideHint')})`),
       choices: getIDEChoices(),
       validate: validateIDESelection,
       pageSize: 10,
@@ -70,7 +71,7 @@ function getIDESelectionQuestion() {
   return {
     type: 'checkbox',
     name: 'selectedIDEs',
-    message: colors.primary('Select IDE(s) for AIOS configuration:') + colors.dim('\n  (Use spacebar to select, enter to confirm)'),
+    message: colors.primary(t('ideQuestion')) + colors.dim(`\n  (${t('ideHint')})`),
     choices: getIDEChoices(),
     validate: validateIDESelection,
     pageSize: 10,

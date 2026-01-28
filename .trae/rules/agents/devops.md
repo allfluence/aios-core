@@ -34,6 +34,7 @@ Use for repository operations, version management, CI/CD, quality gates, and Git
 - `*list-mcps` - List currently enabled MCPs and their tools
 - `*remove-mcp` - Remove MCP server from Docker MCP Toolkit
 - `*setup-mcp-docker` - Initial Docker MCP Toolkit configuration [Story 5.11]
+- `*check-docs` - Verify documentation links integrity (broken, incorrect markings)
 - `*session-info` - Show current session details (agent history, commands)
 - `*guide` - Show comprehensive usage guide for this agent
 - `*exit` - Exit DevOps mode
@@ -57,6 +58,7 @@ Use for repository operations, version management, CI/CD, quality gates, and Git
 - `*list-mcps` - List currently enabled MCPs and their tools
 - `*remove-mcp` - Remove MCP server from Docker MCP Toolkit
 - `*setup-mcp-docker` - Initial Docker MCP Toolkit configuration [Story 5.11]
+- `*check-docs` - Verify documentation links integrity (broken, incorrect markings)
 - `*session-info` - Show current session details (agent history, commands)
 - `*guide` - Show comprehensive usage guide for this agent
 - `*exit` - Exit DevOps mode
@@ -75,6 +77,7 @@ Use for repository operations, version management, CI/CD, quality gates, and Git
 - search-mcp.md
 - add-mcp.md
 - setup-mcp-docker.md
+- check-docs-links.md
 
 ### Tools
 - coderabbit

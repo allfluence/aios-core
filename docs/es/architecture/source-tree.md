@@ -10,6 +10,10 @@
 
 # Estructura del Arbol de Codigo Fuente AIOS
 
+> 🌐 [EN](../../architecture/source-tree.md) | [PT](../../pt/architecture/source-tree.md) | **ES**
+
+---
+
 **Version:** 1.1
 **Ultima Actualizacion:** 2025-12-14
 **Estado:** OBSOLETO - Ver docs/framework/source-tree.md
@@ -33,10 +37,12 @@
 ## Descripcion General
 
 AIOS usa una **arquitectura de doble capa**:
+
 1. **Framework Core** (`.aios-core/`) - Componentes portables del framework
 2. **Workspace del Proyecto** (raiz) - Implementacion especifica del proyecto
 
 **Filosofia:**
+
 - Los componentes del framework son **portables** (se mueven entre proyectos)
 - Los archivos del proyecto son **especificos** (implementacion brownfield)
 - Clara **separacion de responsabilidades** (framework vs proyecto)
@@ -414,17 +420,17 @@ workflows:
 
 # Dependencias
 dependencies:
-  aios-core: ">=2.1.0"
+  aios-core: '>=2.1.0'
 ```
 
 ### Migracion desde Paquetes de Expansion
 
-| Legacy (Obsoleto) | Actual (Squads) |
-|-------------------|-----------------|
-| Directorio `Squads/` | Plantilla `templates/squad/` |
+| Legacy (Obsoleto)               | Actual (Squads)                 |
+| ------------------------------- | ------------------------------- |
+| Directorio `Squads/`            | Plantilla `templates/squad/`    |
 | Config `expansionPacksLocation` | Config `squadsTemplateLocation` |
-| Manifiesto `pack.yaml` | Manifiesto `squad.yaml` |
-| Carga directa | Creacion basada en plantilla |
+| Manifiesto `pack.yaml`          | Manifiesto `squad.yaml`         |
+| Carga directa                   | Creacion basada en plantilla    |
 
 ---
 
@@ -689,18 +695,16 @@ outputs/                               # Salidas de runtime (gitignored)
 
 - [Estandares de Codigo](./coding-standards.md)
 - [Tech Stack](./tech-stack.md)
-- [Decision 005: Reestructuracion de Repositorio](../decisions/decision-005-repository-restructuring-FINAL.md)
-- [Story 6.1.2.5: Sistema de Carga Contextual de Agentes](../stories/aios%20migration/story-6.1.2.5-contextual-agent-load-system.md)
 
 ---
 
 ## Historial de Versiones
 
-| Version | Fecha | Cambios | Autor |
-|---------|-------|---------|-------|
-| 1.0 | 2025-01-15 | Documentacion inicial de arbol de codigo | Aria (architect) |
-| 1.1 | 2025-12-14 | Actualizada org a SynkraAI, reemplazados Paquetes de Expansion con sistema de Squads [Story 6.10] | Dex (dev) |
+| Version | Fecha      | Cambios                                                                                           | Autor            |
+| ------- | ---------- | ------------------------------------------------------------------------------------------------- | ---------------- |
+| 1.0     | 2025-01-15 | Documentacion inicial de arbol de codigo                                                          | Aria (architect) |
+| 1.1     | 2025-12-14 | Actualizada org a SynkraAI, reemplazados Paquetes de Expansion con sistema de Squads [Story 6.10] | Dex (dev)        |
 
 ---
 
-*Este es un estandar oficial del framework AIOS. Toda colocacion de archivos debe seguir esta estructura.*
+_Este es un estandar oficial del framework AIOS. Toda colocacion de archivos debe seguir esta estructura._

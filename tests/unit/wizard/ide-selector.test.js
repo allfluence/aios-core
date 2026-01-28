@@ -5,7 +5,10 @@
  * Tests validation and selection logic
  */
 
-const { validateIDESelection, getIDESelectionQuestion } = require('../../../src/wizard/ide-selector');
+const {
+  validateIDESelection,
+  getIDESelectionQuestion,
+} = require('../../../src/wizard/ide-selector');
 const { getIDEKeys } = require('../../../src/config/ide-configs');
 
 describe('IDE Selector', () => {
@@ -21,11 +24,11 @@ describe('IDE Selector', () => {
     });
 
     it('should accept multiple IDE selections', () => {
-      const result = validateIDESelection(['cursor', 'windsurf', 'trae', 'antigravity']);
+      const result = validateIDESelection(['cursor', 'windsurf', 'antigravity']);
       expect(result).toBe(true);
     });
 
-    it('should accept all 9 IDE selections', () => {
+    it('should accept all 5 IDE selections', () => {
       const allIDEs = getIDEKeys();
       const result = validateIDESelection(allIDEs);
       expect(result).toBe(true);
@@ -64,15 +67,15 @@ describe('IDE Selector', () => {
       expect(question).toHaveProperty('validate');
     });
 
-    it('should have 9 IDE choices', () => {
+    it('should have 5 IDE choices', () => {
       const question = getIDESelectionQuestion();
-      expect(question.choices).toHaveLength(9);
+      expect(question.choices).toHaveLength(5);
     });
 
     it('should have valid choice structure', () => {
       const question = getIDESelectionQuestion();
 
-      question.choices.forEach(choice => {
+      question.choices.forEach((choice) => {
         expect(choice).toHaveProperty('name');
         expect(choice).toHaveProperty('value');
         expect(typeof choice.name).toBe('string');

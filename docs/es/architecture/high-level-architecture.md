@@ -2,6 +2,10 @@
 
 # Arquitectura de Alto Nivel AIOS v2.1
 
+> 🌐 [EN](../../architecture/high-level-architecture.md) | [PT](../../pt/architecture/high-level-architecture.md) | **ES**
+
+---
+
 **Versión:** 2.1.0
 **Última Actualización:** 2025-12-09
 **Estado:** Documento Oficial de Arquitectura
@@ -27,15 +31,15 @@
 
 ### Capacidades Clave v2.1
 
-| Capacidad | Descripción |
-|------------|-------------|
-| **11 Agentes Especializados** | Dev, QA, Architect, PM, PO, SM, Analyst, Data Engineer, DevOps, UX, Master |
-| **115+ Tareas Ejecutables** | Creación de stories, generación de código, testing, deployment, documentación |
-| **52+ Plantillas** | PRDs, stories, documentos de arquitectura, reglas IDE, quality gates |
-| **Arquitectura de 4 Módulos** | Core, Development, Product, Infrastructure |
-| **Quality Gates de 3 Capas** | Pre-commit, Automatización PR, Revisión Humana |
-| **Estrategia Multi-Repo** | 3 repositorios públicos + 2 privados |
-| **Sistema de Squad** | Equipos modulares de agentes IA (ETL, Creator, MMOS) |
+| Capacidad                     | Descripción                                                                   |
+| ----------------------------- | ----------------------------------------------------------------------------- |
+| **11 Agentes Especializados** | Dev, QA, Architect, PM, PO, SM, Analyst, Data Engineer, DevOps, UX, Master    |
+| **115+ Tareas Ejecutables**   | Creación de stories, generación de código, testing, deployment, documentación |
+| **52+ Plantillas**            | PRDs, stories, documentos de arquitectura, reglas IDE, quality gates          |
+| **Arquitectura de 4 Módulos** | Core, Development, Product, Infrastructure                                    |
+| **Quality Gates de 3 Capas**  | Pre-commit, Automatización PR, Revisión Humana                                |
+| **Estrategia Multi-Repo**     | 3 repositorios públicos + 2 privados                                          |
+| **Sistema de Squad**          | Equipos modulares de agentes IA (ETL, Creator, MMOS)                          |
 
 ---
 
@@ -184,27 +188,27 @@
 
 ### Alcance de Paquetes npm
 
-| Paquete | Registry | Licencia |
-|---------|----------|---------|
-| `@aios/core` | npm público | Commons Clause |
-| `@aios/squad-etl` | npm público | MIT |
-| `@aios/squad-creator` | npm público | MIT |
-| `@aios/squad-mmos` | npm público | MIT |
-| `@aios/mcp-presets` | npm público | Apache 2.0 |
+| Paquete               | Registry    | Licencia       |
+| --------------------- | ----------- | -------------- |
+| `@aios/core`          | npm público | Commons Clause |
+| `@aios/squad-etl`     | npm público | MIT            |
+| `@aios/squad-creator` | npm público | MIT            |
+| `@aios/squad-mmos`    | npm público | MIT            |
+| `@aios/mcp-presets`   | npm público | Apache 2.0     |
 
 ---
 
 ## Stack Tecnológico
 
-| Categoría | Tecnología | Versión | Notas |
-|----------|------------|---------|-------|
-| Runtime | Node.js | ≥18.0.0 | Plataforma para todos los scripts |
-| Lenguaje | TypeScript/JavaScript | ES2022 | Desarrollo principal |
-| Definición | Markdown + YAML | N/A | Agentes, tareas, plantillas |
-| Gestor Paquetes | npm | ≥9.0.0 | Gestión de dependencias |
-| Quality Gates | Husky + lint-staged | Latest | Hooks pre-commit |
-| Code Review | CodeRabbit | Latest | Revisión potenciada por IA |
-| CI/CD | GitHub Actions | N/A | Workflows de automatización |
+| Categoría       | Tecnología            | Versión | Notas                             |
+| --------------- | --------------------- | ------- | --------------------------------- |
+| Runtime         | Node.js               | ≥18.0.0 | Plataforma para todos los scripts |
+| Lenguaje        | TypeScript/JavaScript | ES2022  | Desarrollo principal              |
+| Definición      | Markdown + YAML       | N/A     | Agentes, tareas, plantillas       |
+| Gestor Paquetes | npm                   | ≥9.0.0  | Gestión de dependencias           |
+| Quality Gates   | Husky + lint-staged   | Latest  | Hooks pre-commit                  |
+| Code Review     | CodeRabbit            | Latest  | Revisión potenciada por IA        |
+| CI/CD           | GitHub Actions        | N/A     | Workflows de automatización       |
 
 ---
 
@@ -265,28 +269,28 @@
 
 ### Resumen de Módulos
 
-| Módulo | Ruta | Propósito | Contenidos Clave |
-|--------|------|---------|--------------|
-| **Core** | `.aios-core/core/` | Fundación del framework | Config, Registry, QG, MCP, Session |
-| **Development** | `.aios-core/development/` | Artefactos de desarrollo | Agentes, Tareas, Workflows, Scripts |
-| **Product** | `.aios-core/product/` | Artefactos PM | Plantillas, Checklists, Data |
-| **Infrastructure** | `.aios-core/infrastructure/` | Config del sistema | Scripts, Tools, Integraciones |
+| Módulo             | Ruta                         | Propósito                | Contenidos Clave                    |
+| ------------------ | ---------------------------- | ------------------------ | ----------------------------------- |
+| **Core**           | `.aios-core/core/`           | Fundación del framework  | Config, Registry, QG, MCP, Session  |
+| **Development**    | `.aios-core/development/`    | Artefactos de desarrollo | Agentes, Tareas, Workflows, Scripts |
+| **Product**        | `.aios-core/product/`        | Artefactos PM            | Plantillas, Checklists, Data        |
+| **Infrastructure** | `.aios-core/infrastructure/` | Config del sistema       | Scripts, Tools, Integraciones       |
 
 ### Sistema de Agentes
 
-| Agente | ID | Arquetipo | Responsabilidad |
-|-------|-----|-----------|----------------|
-| Dex | `dev` | Constructor | Implementación de código |
-| Quinn | `qa` | Guardián | Aseguramiento de calidad |
-| Aria | `architect` | Arquitecto | Arquitectura técnica |
-| Nova | `po` | Visionario | Backlog de producto |
-| Kai | `pm` | Equilibrador | Estrategia de producto |
-| River | `sm` | Facilitador | Facilitación de procesos |
-| Zara | `analyst` | Explorador | Análisis de negocio |
-| Dara | `data-engineer` | Arquitecto | Ingeniería de datos |
-| Felix | `devops` | Optimizador | CI/CD y operaciones |
-| Uma | `ux-expert` | Creador | Experiencia de usuario |
-| Pax | `aios-master` | Orquestador | Orquestación del framework |
+| Agente | ID              | Arquetipo    | Responsabilidad            |
+| ------ | --------------- | ------------ | -------------------------- |
+| Dex    | `dev`           | Constructor  | Implementación de código   |
+| Quinn  | `qa`            | Guardián     | Aseguramiento de calidad   |
+| Aria   | `architect`     | Arquitecto   | Arquitectura técnica       |
+| Nova   | `po`            | Visionario   | Backlog de producto        |
+| Kai    | `pm`            | Equilibrador | Estrategia de producto     |
+| River  | `sm`            | Facilitador  | Facilitación de procesos   |
+| Zara   | `analyst`       | Explorador   | Análisis de negocio        |
+| Dara   | `data-engineer` | Arquitecto   | Ingeniería de datos        |
+| Felix  | `devops`        | Optimizador  | CI/CD y operaciones        |
+| Uma    | `ux-expert`     | Creador      | Experiencia de usuario     |
+| Pax    | `aios-master`   | Orquestador  | Orquestación del framework |
 
 ---
 
@@ -344,7 +348,7 @@
 
 - [Sistema de Módulos](./module-system.md) - Arquitectura detallada de módulos
 - [ARCHITECTURE-INDEX.md](./ARCHITECTURE-INDEX.md) - Índice completo de documentación
-- [AIOS-LIVRO-DE-OURO-V2.1-COMPLETE.md](../../.aios-core/docs/standards/AIOS-LIVRO-DE-OURO-V2.1-COMPLETE.md) - Guía completa del framework
+- [AIOS-LIVRO-DE-OURO-V2.1-COMPLETE.md](../../../.aios-core/docs/standards/AIOS-LIVRO-DE-OURO-V2.1-COMPLETE.md) - Guía completa del framework
 
 ---
 

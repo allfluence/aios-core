@@ -123,5 +123,8 @@
     ".aios-core/development/agents/*.md": [
       "npm run sync:ide"
     ]
+  },
+  "overrides": {
+    "tar": "^7.5.7"
   }
 }

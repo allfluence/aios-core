@@ -9,6 +9,7 @@ Este directorio contiene configuraciones de Squad de ejemplo para ayudarte a com
 ### 1. Agente Simple (`simple-agent.yaml`)
 
 Un ejemplo mínimo de agente enfocado en tareas de documentación. Es un excelente punto de partida para:
+
 - Comprender la estructura del agente
 - Aprender definiciones de comandos
 - Patrones básicos de indicación del sistema
@@ -16,6 +17,7 @@ Un ejemplo mínimo de agente enfocado en tareas de documentación. Es un excelen
 ### 2. Squad de Procesador de Datos (`data-processor-squad.yaml`)
 
 Un manifiesto de squad completo que muestra:
+
 - Múltiples agentes trabajando juntos
 - Definiciones de tareas con dependencias
 - Orquestación de flujos de trabajo
@@ -37,13 +39,14 @@ code my-squad/agents/my-agent.yaml
 ### Aprender Leyendo
 
 Cada ejemplo incluye comentarios explicando:
+
 - Por qué se utilizan ciertos patrones
 - Mejores prácticas siendo demostradas
 - Puntos de personalización comunes
 
 ## Crear el Tuyo Propio
 
-1. Comienza con la [Plantilla de Squad](../../../templates/squad/)
+1. Comienza con la [Plantilla de Squad](../../../../templates/squad/)
 2. Consulta estos ejemplos para patrones
 3. Sigue la [Guía de Squads](../squads-guide.md)
 
@@ -54,8 +57,8 @@ Cada ejemplo incluye comentarios explicando:
 1. Crea tu ejemplo en este directorio
 2. Agrega comentarios claros explicando el patrón
 3. Actualiza este README con la descripción
-4. Envía un PR siguiendo [CONTRIBUTING.md](../../../CONTRIBUTING.md)
+4. Envía un PR siguiendo [CONTRIBUTING.md](../../../../CONTRIBUTING.md)
 
 ---
 
-*AIOS Squads: Equipos de agentes de IA trabajando contigo* 🤖
+_AIOS Squads: Equipos de agentes de IA trabajando contigo_ 🤖

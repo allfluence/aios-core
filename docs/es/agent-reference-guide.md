@@ -6,6 +6,10 @@
 
 # Guia de Referencia de Agentes PV de HybridOps
 
+> 🌐 [EN](../agent-reference-guide.md) | [PT](../pt/agent-reference-guide.md) | **ES**
+
+---
+
 **Version**: 2.0
 **Ultima Actualizacion**: 2025-10-19
 **Story**: 1.9 - Implementacion Completa de Agentes PV
@@ -20,17 +24,17 @@ Esta guia proporciona una referencia completa para los 9 agentes mejorados con P
 
 ## Referencia Rapida
 
-| Fase | Nombre del Agente | Comando | Rol en Workflow | Puntuacion de Veracidad |
-|------|------------------|---------|-----------------|------------------------|
-| 1 | process-mapper-pv | `/process-mapper` | Descubrimiento y Analisis de Procesos | 0.90 |
-| 2 | process-architect-pv | `/process-architect` | Diseno de Arquitectura del Sistema | 0.85 |
-| 3 | executor-designer-pv | `/executor-designer` | Asignacion de Ejecutores y Definicion de Roles | 0.88 |
-| 4 | workflow-designer-pv | `/workflow-designer` | Optimizacion de Procesos y Automatizacion de Workflow | 0.85 |
-| 5 | qa-validator-pv | `/qa-validator` | QA y Validacion | 0.95 |
-| 6 | clickup-engineer-pv | `/clickup-engineer` | Creacion de Tareas en ClickUp | 0.80 |
-| 7 | agent-creator-pv | `/agent-creator` | Arquitectura de Agentes IA y Diseno de Persona | 0.80 |
-| 8 | validation-reviewer-pv | `/validation-reviewer` | Revision Final de Compuerta de Calidad y Aprobacion | 0.90 |
-| 9 | documentation-writer-pv | `/documentation-writer` | Redaccion Tecnica y Arquitectura de Conocimiento | 0.85 |
+| Fase | Nombre del Agente       | Comando                 | Rol en Workflow                                       | Puntuacion de Veracidad |
+| ---- | ----------------------- | ----------------------- | ----------------------------------------------------- | ----------------------- |
+| 1    | process-mapper-pv       | `/process-mapper`       | Descubrimiento y Analisis de Procesos                 | 0.90                    |
+| 2    | process-architect-pv    | `/process-architect`    | Diseno de Arquitectura del Sistema                    | 0.85                    |
+| 3    | executor-designer-pv    | `/executor-designer`    | Asignacion de Ejecutores y Definicion de Roles        | 0.88                    |
+| 4    | workflow-designer-pv    | `/workflow-designer`    | Optimizacion de Procesos y Automatizacion de Workflow | 0.85                    |
+| 5    | qa-validator-pv         | `/qa-validator`         | QA y Validacion                                       | 0.95                    |
+| 6    | clickup-engineer-pv     | `/clickup-engineer`     | Creacion de Tareas en ClickUp                         | 0.80                    |
+| 7    | agent-creator-pv        | `/agent-creator`        | Arquitectura de Agentes IA y Diseno de Persona        | 0.80                    |
+| 8    | validation-reviewer-pv  | `/validation-reviewer`  | Revision Final de Compuerta de Calidad y Aprobacion   | 0.90                    |
+| 9    | documentation-writer-pv | `/documentation-writer` | Redaccion Tecnica y Arquitectura de Conocimiento      | 0.85                    |
 
 ---
 
@@ -47,17 +51,20 @@ Esta guia proporciona una referencia completa para los 9 agentes mejorados con P
 Descubrir, analizar y mapear los procesos de negocio actuales para identificar oportunidades de automatizacion y puntos de dolor.
 
 **Comandos Principales**:
+
 - `*map-process <process-name>` - Mapeo integral de procesos
 - `*analyze-opportunity <opportunity-id>` - Analisis de ROI y viabilidad
 - `*identify-pain-points <process-id>` - Identificacion de cuellos de botella
 
 **Salidas Clave**:
+
 - Mapas de procesos (estado actual)
 - Identificacion de stakeholders
 - Analisis de puntos de dolor
 - Evaluacion de oportunidades de automatizacion
 
 **Puntos de Integracion**:
+
 - **Recibe**: Requisitos de negocio, input de stakeholders
 - **Produce**: Documentacion de procesos para Fase 2 (Arquitectura)
 - **Entrega a**: process-architect-pv
@@ -77,22 +84,26 @@ Descubrir, analizar y mapear los procesos de negocio actuales para identificar o
 Disenar arquitectura del sistema y definir vision de estado final con alineacion estrategica.
 
 **Comandos Principales**:
+
 - `*design-architecture <process-id>` - Diseno de arquitectura del sistema
 - `*define-vision <initiative-name>` - Definicion de vision de estado final
 - `*assess-feasibility <design-id>` - Evaluacion de viabilidad tecnica
 
 **Salidas Clave**:
+
 - Diagramas de arquitectura del sistema
 - Especificaciones de flujo de datos
 - Puntos de integracion
 - Documento de vision de estado final
 
 **Puntos de Integracion**:
+
 - **Recibe**: Mapas de procesos de Fase 1
 - **Produce**: Especificaciones de arquitectura para Fase 3 (Ejecutores)
 - **Entrega a**: executor-designer-pv
 
 **Validacion**: **Checkpoint 1 - Alineacion Estrategica (PV_BS_001)**
+
 - Claridad de vision de estado final >=0.8
 - Puntuacion de prioridad estrategica >=0.7
 - Sin condiciones de VETO
@@ -110,22 +121,26 @@ Disenar arquitectura del sistema y definir vision de estado final con alineacion
 Definir roles y asignar ejecutores (humanos o IA) para cada paso del proceso con validacion de coherencia.
 
 **Comandos Principales**:
+
 - `*design-executors <process-id>` - Diseno de roles de ejecutores
 - `*assess-coherence <executor-id>` - Evaluacion de veracidad y coherencia
 - `*assign-responsibilities <process-id>` - Creacion de matriz RACI
 
 **Salidas Clave**:
+
 - Definiciones de ejecutores
 - Descripciones de roles
 - Evaluaciones de coherencia
 - Matrices RACI
 
 **Puntos de Integracion**:
+
 - **Recibe**: Especificaciones de arquitectura de Fase 2
 - **Produce**: Asignaciones de ejecutores para Fase 4 (Workflows)
 - **Entrega a**: workflow-designer-pv
 
 **Validacion**: **Checkpoint 2 - Escaneo de Coherencia (PV_PA_001)**
+
 - Todos los ejecutores: veracidad >=0.7 (VETO)
 - Coherencia ponderada >=0.8 para APROBAR
 - Adherencia al sistema >=0.6
@@ -143,22 +158,26 @@ Definir roles y asignar ejecutores (humanos o IA) para cada paso del proceso con
 Disenar workflows detallados, identificar candidatos de automatizacion y calcular ROI con aplicacion de guardrails.
 
 **Comandos Principales**:
+
 - `*analyze-process <process-id>` - Analisis de eficiencia de procesos
 - `*design-workflow <process-id>` - Diseno de workflow con logica de automatizacion
 - `*calculate-roi <automation-id>` - Calculo de ROI y punto de equilibrio
 
 **Salidas Clave**:
+
 - Diagramas de workflow (Mermaid)
 - Especificaciones de automatizacion
 - Calculos de ROI
 - Definiciones de guardrails
 
 **Puntos de Integracion**:
+
 - **Recibe**: Asignaciones de ejecutores de Fase 3
 - **Produce**: Especificaciones de workflow para Fase 5 (QA)
 - **Entrega a**: qa-validator-pv
 
 **Validacion**: **Checkpoint 3 - Preparacion para Automatizacion (PV_PM_001)**
+
 - Punto de inflexion: frecuencia >2x/mes
 - Guardrails presentes (VETO)
 - Estandarizacion >=0.7
@@ -178,22 +197,26 @@ Disenar workflows detallados, identificar candidatos de automatizacion y calcula
 Definir compuertas de calidad, estrategias de prueba y validar contra el framework de 10 dimensiones META_AXIOMAS.
 
 **Comandos Principales**:
+
 - `*validate-phase <phase-id>` - Validacion especifica de fase
 - `*check-compliance <workflow-id>` - Verificacion de cumplimiento de Axiomas
 - `*generate-test-plan <workflow-id>` - Generacion de plan de pruebas integral
 
 **Salidas Clave**:
+
 - Planes de prueba con casos de prueba
 - Definiciones de compuertas de calidad
 - Reportes de evaluacion de Axiomas
 - Suites de pruebas de regresion
 
 **Puntos de Integracion**:
+
 - **Recibe**: Especificaciones de workflow de Fase 4
 - **Produce**: Documentacion de aseguramiento de calidad para Fase 6 (ClickUp)
 - **Entrega a**: clickup-engineer-pv
 
 **Validacion**: **Checkpoint 4 - Cumplimiento de Axiomas**
+
 - Puntuacion general >=7.0/10.0
 - Ninguna dimension individual <6.0/10.0
 - 10 dimensiones validadas: Veracidad, Coherencia, Alineacion Estrategica, Excelencia Operacional, Capacidad de Innovacion, Gestion de Riesgos, Optimizacion de Recursos, Valor para Stakeholders, Sostenibilidad, Adaptabilidad
@@ -213,22 +236,26 @@ Definir compuertas de calidad, estrategias de prueba y validar contra el framewo
 Crear estructura de workspace de ClickUp con Anatomia de Tareas apropiada y disparadores de automatizacion.
 
 **Comandos Principales**:
+
 - `*create-workspace <workflow-id>` - Creacion de workspace de ClickUp
 - `*generate-tasks <workflow-id>` - Generacion de tareas con Anatomia de Tareas
 - `*setup-automation <task-id>` - Configuracion de disparadores de automatizacion
 
 **Salidas Clave**:
+
 - Estructura de workspace de ClickUp
 - Tareas con Anatomia de Tareas de 8 campos
 - Disparadores de automatizacion
 - Mapas de dependencias de tareas
 
 **Puntos de Integracion**:
+
 - **Recibe**: Documentacion de QA de Fase 5
 - **Produce**: Configuracion de ClickUp para Fase 7 (Agentes)
 - **Entrega a**: agent-creator-pv
 
 **Validacion**: **Checkpoint 5 - Anatomia de Tareas**
+
 - Todos los 8 campos de Anatomia de Tareas presentes: task_name, status, responsible_executor, execution_type, estimated_time, input, output, action_items
 - Dependencias correctamente mapeadas
 - Asignados coherentes (pasaron PV_PA_001)
@@ -246,17 +273,20 @@ Crear estructura de workspace de ClickUp con Anatomia de Tareas apropiada y disp
 Disenar personas de agentes IA, calibrar puntuaciones de veracidad y generar configuraciones de agentes con validacion de axiomas.
 
 **Comandos Principales**:
+
 - `*design-agent <agent-name>` - Diseno interactivo de agente
 - `*generate-yaml <agent-id>` - Exportacion de configuracion YAML del agente
 - `*test-agent-coherence <agent-id>` - Validacion de alineacion persona-comando
 
 **Salidas Clave**:
+
 - Definiciones de persona de agente (Markdown)
 - Configuraciones YAML de agentes
 - Reportes de calibracion de veracidad
 - Documentacion de referencia de comandos
 
 **Puntos de Integracion**:
+
 - **Recibe**: Configuracion de ClickUp de Fase 6
 - **Produce**: Definiciones de agentes para Fase 8 (Revision de Validacion)
 - **Entrega a**: validation-reviewer-pv
@@ -278,17 +308,20 @@ Disenar personas de agentes IA, calibrar puntuaciones de veracidad y generar con
 Conducir revision end-to-end del workflow, evaluar riesgos y proporcionar firma formal con autoridad de VETO.
 
 **Comandos Principales**:
+
 - `*review-workflow <workflow-id>` - Revision integral end-to-end
 - `*assess-risks <workflow-id>` - Identificacion de riesgos y validacion de mitigacion
 - `*generate-signoff <workflow-id>` - Generacion de documento de aprobacion formal
 
 **Salidas Clave**:
+
 - Reportes de revision de workflow
 - Evaluaciones de riesgos con planes de mitigacion
 - Documentos de firma
 - Reportes de preparacion para deploy
 
 **Puntos de Integracion**:
+
 - **Recibe**: Definiciones de agentes de Fase 7
 - **Produce**: Documentos de aprobacion para Fase 9 (Documentacion)
 - **Entrega a**: documentation-writer-pv
@@ -310,11 +343,13 @@ Conducir revision end-to-end del workflow, evaluar riesgos y proporcionar firma 
 Transformar workflows aprobados en documentacion clara y accionable incluyendo runbooks, guias y documentacion de procesos.
 
 **Comandos Principales**:
+
 - `*generate-runbook <workflow-name>` - Creacion de runbook operacional
 - `*write-guide <guide-type> <topic>` - Generacion de guia de usuario
 - `*document-process <process-name>` - Documentacion de proceso de negocio
 
 **Salidas Clave**:
+
 - Runbooks operacionales
 - Guias de usuario
 - Documentacion de procesos
@@ -322,6 +357,7 @@ Transformar workflows aprobados en documentacion clara y accionable incluyendo r
 - Tarjetas de referencia rapida
 
 **Puntos de Integracion**:
+
 - **Recibe**: Documentos de aprobacion de Fase 8
 - **Produce**: Documentacion final para usuarios finales y equipos de operaciones
 - **Entrega a**: Usuarios finales, equipo de operaciones, equipo de capacitacion, auditoria/cumplimiento
@@ -365,13 +401,13 @@ Fase 9: Documentacion (documentation-writer-pv)
 
 ### Checkpoints de Validacion
 
-| Checkpoint | Fase | Agente | Heuristica/Validador | Condicion de VETO |
-|-----------|------|--------|---------------------|-------------------|
-| 1 | 2 | process-architect-pv | PV_BS_001 | Ninguna |
-| 2 | 3 | executor-designer-pv | PV_PA_001 | Veracidad <0.7 |
-| 3 | 4 | workflow-designer-pv | PV_PM_001 | Sin guardrails |
-| 4 | 5 | qa-validator-pv | axioma-validator | Dimension <6.0 |
-| 5 | 5 | qa-validator-pv | task-anatomy | Campos faltantes |
+| Checkpoint | Fase | Agente               | Heuristica/Validador | Condicion de VETO |
+| ---------- | ---- | -------------------- | -------------------- | ----------------- |
+| 1          | 2    | process-architect-pv | PV_BS_001            | Ninguna           |
+| 2          | 3    | executor-designer-pv | PV_PA_001            | Veracidad <0.7    |
+| 3          | 4    | workflow-designer-pv | PV_PM_001            | Sin guardrails    |
+| 4          | 5    | qa-validator-pv      | axioma-validator     | Dimension <6.0    |
+| 5          | 5    | qa-validator-pv      | task-anatomy         | Campos faltantes  |
 
 ---
 
@@ -379,12 +415,12 @@ Fase 9: Documentacion (documentation-writer-pv)
 
 Las puntuaciones de veracidad calibran cuan conservadoramente un agente hace afirmaciones y recomendaciones:
 
-| Rango de Puntuacion | Descripcion | Ejemplos de Agentes |
-|--------------------|-------------|---------------------|
-| 0.95-1.00 | Extremadamente Alta - Evaluacion imparcial y objetiva | qa-validator-pv (0.95) |
-| 0.85-0.94 | Muy Alta - Honesto, minimo optimismo | process-mapper-pv (0.90), validation-reviewer-pv (0.90), executor-designer-pv (0.88) |
-| 0.75-0.84 | Alta - Objetivo pero permite algo de creatividad | process-architect-pv (0.85), workflow-designer-pv (0.85), documentation-writer-pv (0.85) |
-| 0.70-0.74 | Moderada-Alta - Realismo equilibrado | clickup-engineer-pv (0.80), agent-creator-pv (0.80) |
+| Rango de Puntuacion | Descripcion                                           | Ejemplos de Agentes                                                                      |
+| ------------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| 0.95-1.00           | Extremadamente Alta - Evaluacion imparcial y objetiva | qa-validator-pv (0.95)                                                                   |
+| 0.85-0.94           | Muy Alta - Honesto, minimo optimismo                  | process-mapper-pv (0.90), validation-reviewer-pv (0.90), executor-designer-pv (0.88)     |
+| 0.75-0.84           | Alta - Objetivo pero permite algo de creatividad      | process-architect-pv (0.85), workflow-designer-pv (0.85), documentation-writer-pv (0.85) |
+| 0.70-0.74           | Moderada-Alta - Realismo equilibrado                  | clickup-engineer-pv (0.80), agent-creator-pv (0.80)                                      |
 
 **Nota**: Puntuaciones por debajo de 0.70 disparan condiciones de VETO en validacion de coherencia (Checkpoint 2).
 
@@ -448,6 +484,7 @@ Todos los agentes usan integracion de mente Pedro Valerio con:
 ### Framework META_AXIOMAS
 
 Jerarquia de creencias de 4 niveles:
+
 - **Nivel -4**: Existencial (Fundamento de Verdad)
 - **Nivel -3**: Epistemologico (Verificacion de Conocimiento)
 - **Nivel -2**: Social (Contexto de Colaboracion)
@@ -462,6 +499,7 @@ Jerarquia de creencias de 4 niveles:
 ### Guardrails
 
 Todos los agentes aplican:
+
 - Manejo de errores con logica de reintento
 - Reglas de validacion (umbrales minimos)
 - Mecanismos de rollback (restauracion de checkpoint)
@@ -513,17 +551,17 @@ Todos los agentes aplican:
 
 ## Documentacion Relacionada
 
-- [Diagrama de Workflow](../.claude/commands/hybridOps/docs/workflow-diagram.md) - Representacion visual del workflow de 9 fases
-- [Workflow YAML](../.claude/commands/hybridOps/workflows/hybrid-ops-pv.yaml) - Configuracion de orquestacion de workflow
+- [Diagrama de Workflow](../guides/hybridOps/workflow-diagram.md) - Representación visual del workflow de 9 fases
+- [Workflow YAML](../guides/hybridOps/hybrid-ops-pv.yaml) - Configuración de orquestración de workflow
 
 ---
 
 ## Historial de Versiones
 
-| Version | Fecha | Cambios | Story |
-|---------|-------|---------|-------|
-| 2.0 | 2025-10-19 | Agregados 5 agentes faltantes (Fases 4, 5, 7, 8, 9), referencias de workflow actualizadas | 1.9 |
-| 1.0 | 2025-10-19 | Guia inicial con 4 agentes existentes | 1.8 |
+| Version | Fecha      | Cambios                                                                                   | Story |
+| ------- | ---------- | ----------------------------------------------------------------------------------------- | ----- |
+| 2.0     | 2025-10-19 | Agregados 5 agentes faltantes (Fases 4, 5, 7, 8, 9), referencias de workflow actualizadas | 1.9   |
+| 1.0     | 2025-10-19 | Guia inicial con 4 agentes existentes                                                     | 1.8   |
 
 ---
 

@@ -193,7 +193,7 @@ describe('IDE Config Generator', () => {
     });
 
     it('should create directory for IDEs that require it', async () => {
-      const selectedIDEs = ['trae'];
+      const selectedIDEs = ['antigravity'];
       const wizardState = { projectName: 'test', projectType: 'greenfield' };
 
       const result = await generateIDEConfigs(selectedIDEs, wizardState, {
@@ -202,8 +202,8 @@ describe('IDE Config Generator', () => {
 
       expect(result.success).toBe(true);
 
-      // Trae v2.1 uses .trae/rules.md (text format, not JSON)
-      const configPath = path.join(testDir, '.trae', 'rules.md');
+      // AntiGravity uses .antigravity/rules.md
+      const configPath = path.join(testDir, '.antigravity', 'rules.md');
       expect(await fs.pathExists(configPath)).toBe(true);
     });
 
@@ -225,9 +225,8 @@ describe('IDE Config Generator', () => {
       expect(content).toContain('Development Rules');
     });
 
-    it('should create roo-code config in .roo directory', async () => {
-      // roo-code uses .roo/rules.md (text format)
-      const selectedIDEs = ['roo-code'];
+    it('should create github-copilot config in .github directory', async () => {
+      const selectedIDEs = ['github-copilot'];
       const wizardState = { projectName: 'test', projectType: 'greenfield' };
 
       const result = await generateIDEConfigs(selectedIDEs, wizardState, {
@@ -236,7 +235,7 @@ describe('IDE Config Generator', () => {
 
       expect(result.success).toBe(true);
 
-      const configPath = path.join(testDir, '.roo', 'rules.md');
+      const configPath = path.join(testDir, '.github', 'copilot-instructions.md');
       expect(await fs.pathExists(configPath)).toBe(true);
 
       const content = await fs.readFile(configPath, 'utf8');
@@ -246,7 +245,7 @@ describe('IDE Config Generator', () => {
 
     it('should create text config files successfully', async () => {
       // All v2.1 IDEs use text (markdown) format for rules
-      const selectedIDEs = ['cline'];
+      const selectedIDEs = ['antigravity'];
       const wizardState = { projectName: 'test', projectType: 'greenfield' };
 
       const result = await generateIDEConfigs(selectedIDEs, wizardState, {
@@ -255,7 +254,7 @@ describe('IDE Config Generator', () => {
 
       expect(result.success).toBe(true);
 
-      const configPath = path.join(testDir, '.cline', 'rules.md');
+      const configPath = path.join(testDir, '.antigravity', 'rules.md');
       expect(await fs.pathExists(configPath)).toBe(true);
     });
 

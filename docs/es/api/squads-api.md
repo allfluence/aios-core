@@ -7,6 +7,7 @@ API REST para sincronizar squads con Synkra y descubrir squads del marketplace.
 ## Vision General
 
 La API de Squads permite:
+
 - **Sync**: Enviar squads locales a la nube de Synkra
 - **Marketplace**: Descubrir y explorar squads publicos
 - **Gestion**: Actualizar visibilidad, eliminar squads
@@ -45,16 +46,16 @@ POST /api/squads/sync
 
 **Cuerpo de la Solicitud**:
 
-| Campo | Tipo | Requerido | Descripcion |
-|-------|------|-----------|-------------|
-| `squadData` | object | Si | Datos del manifiesto del squad |
-| `squadData.name` | string | Si | Nombre del squad |
-| `squadData.version` | string | Si | Version semantica |
-| `squadData.description` | string | No | Descripcion del squad |
-| `squadData.author` | string | No | Nombre del autor |
-| `squadData.components` | object | No | Componentes del squad |
-| `isPublic` | boolean | No | Hacer visible publicamente (predeterminado: false) |
-| `isOfficial` | boolean | No | Marcar como oficial (solo admin) |
+| Campo                   | Tipo    | Requerido | Descripcion                                        |
+| ----------------------- | ------- | --------- | -------------------------------------------------- |
+| `squadData`             | object  | Si        | Datos del manifiesto del squad                     |
+| `squadData.name`        | string  | Si        | Nombre del squad                                   |
+| `squadData.version`     | string  | Si        | Version semantica                                  |
+| `squadData.description` | string  | No        | Descripcion del squad                              |
+| `squadData.author`      | string  | No        | Nombre del autor                                   |
+| `squadData.components`  | object  | No        | Componentes del squad                              |
+| `isPublic`              | boolean | No        | Hacer visible publicamente (predeterminado: false) |
+| `isOfficial`            | boolean | No        | Marcar como oficial (solo admin)                   |
 
 **Ejemplo de Solicitud**:
 
@@ -118,10 +119,10 @@ POST /api/squads/sync/batch
 
 **Cuerpo de la Solicitud**:
 
-| Campo | Tipo | Requerido | Descripcion |
-|-------|------|-----------|-------------|
-| `squads` | array | Si | Array de objetos de datos de squad |
-| `isPublic` | boolean | No | Hacer todos los squads publicos (predeterminado: false) |
+| Campo      | Tipo    | Requerido | Descripcion                                             |
+| ---------- | ------- | --------- | ------------------------------------------------------- |
+| `squads`   | array   | Si        | Array de objetos de datos de squad                      |
+| `isPublic` | boolean | No        | Hacer todos los squads publicos (predeterminado: false) |
 
 **Ejemplo de Solicitud**:
 
@@ -200,14 +201,14 @@ GET /api/squads
 
 **Parametros de Consulta**:
 
-| Parametro | Tipo | Predeterminado | Descripcion |
-|-----------|------|----------------|-------------|
-| `page` | number | 1 | Numero de pagina |
-| `limit` | number | 20 | Items por pagina (max: 100) |
-| `tags` | string | - | Filtro de tags separados por coma |
-| `author` | string | - | Filtrar por autor |
-| `search` | string | - | Buscar en nombre/descripcion |
-| `official` | boolean | - | Filtrar solo squads oficiales |
+| Parametro  | Tipo    | Predeterminado | Descripcion                       |
+| ---------- | ------- | -------------- | --------------------------------- |
+| `page`     | number  | 1              | Numero de pagina                  |
+| `limit`    | number  | 20             | Items por pagina (max: 100)       |
+| `tags`     | string  | -              | Filtro de tags separados por coma |
+| `author`   | string  | -              | Filtrar por autor                 |
+| `search`   | string  | -              | Buscar en nombre/descripcion      |
+| `official` | boolean | -              | Filtrar solo squads oficiales     |
 
 **Ejemplo de Solicitud**:
 
@@ -263,10 +264,10 @@ GET /api/squads/mine
 
 **Parametros de Consulta**:
 
-| Parametro | Tipo | Predeterminado | Descripcion |
-|-----------|------|----------------|-------------|
-| `page` | number | 1 | Numero de pagina |
-| `limit` | number | 20 | Items por pagina |
+| Parametro | Tipo   | Predeterminado | Descripcion      |
+| --------- | ------ | -------------- | ---------------- |
+| `page`    | number | 1              | Numero de pagina |
+| `limit`   | number | 20             | Items por pagina |
 
 **Ejemplo de Solicitud**:
 
@@ -317,9 +318,9 @@ GET /api/squads/:id
 
 **Parametros de Ruta**:
 
-| Parametro | Tipo | Descripcion |
-|-----------|------|-------------|
-| `id` | string | UUID del squad o squad_id |
+| Parametro | Tipo   | Descripcion               |
+| --------- | ------ | ------------------------- |
+| `id`      | string | UUID del squad o squad_id |
 
 **Ejemplo de Solicitud**:
 
@@ -389,14 +390,14 @@ PATCH /api/squads/:id
 
 **Parametros de Ruta**:
 
-| Parametro | Tipo | Descripcion |
-|-----------|------|-------------|
-| `id` | string | UUID del squad o squad_id |
+| Parametro | Tipo   | Descripcion               |
+| --------- | ------ | ------------------------- |
+| `id`      | string | UUID del squad o squad_id |
 
 **Cuerpo de la Solicitud**:
 
-| Campo | Tipo | Descripcion |
-|-------|------|-------------|
+| Campo      | Tipo    | Descripcion                    |
+| ---------- | ------- | ------------------------------ |
 | `isPublic` | boolean | Establecer visibilidad publica |
 
 **Ejemplo de Solicitud**:
@@ -437,9 +438,9 @@ DELETE /api/squads/:id
 
 **Parametros de Ruta**:
 
-| Parametro | Tipo | Descripcion |
-|-----------|------|-------------|
-| `id` | string | UUID del squad o squad_id |
+| Parametro | Tipo   | Descripcion               |
+| --------- | ------ | ------------------------- |
+| `id`      | string | UUID del squad o squad_id |
 
 **Ejemplo de Solicitud**:
 
@@ -471,9 +472,9 @@ POST /api/squads/validate
 
 **Cuerpo de la Solicitud**:
 
-| Campo | Tipo | Requerido | Descripcion |
-|-------|------|-----------|-------------|
-| `squadData` | object | Si | Manifiesto del squad a validar |
+| Campo       | Tipo   | Requerido | Descripcion                    |
+| ----------- | ------ | --------- | ------------------------------ |
+| `squadData` | object | Si        | Manifiesto del squad a validar |
 
 **Ejemplo de Solicitud**:
 
@@ -496,10 +497,7 @@ curl -X POST https://api.synkra.ai/api/squads/validate \
   "data": {
     "valid": true,
     "errors": [],
-    "warnings": [
-      "Falta campo recomendado: description",
-      "Falta campo aios.minVersion"
-    ]
+    "warnings": ["Falta campo recomendado: description", "Falta campo aios.minVersion"]
   }
 }
 ```
@@ -511,10 +509,7 @@ curl -X POST https://api.synkra.ai/api/squads/validate \
   "success": false,
   "data": {
     "valid": false,
-    "errors": [
-      "nombre es requerido",
-      "version debe ser semver valido"
-    ],
+    "errors": ["nombre es requerido", "version debe ser semver valido"],
     "warnings": []
   }
 }
@@ -524,14 +519,14 @@ curl -X POST https://api.synkra.ai/api/squads/validate \
 
 ## Codigos de Error
 
-| Codigo HTTP | Significado |
-|-------------|-------------|
-| 200 | Exito |
-| 400 | Solicitud Incorrecta - Entrada invalida |
-| 401 | No Autorizado - Autenticacion faltante o invalida |
-| 403 | Prohibido - Permisos insuficientes |
-| 404 | No Encontrado - El squad no existe |
-| 500 | Error Interno del Servidor |
+| Codigo HTTP | Significado                                       |
+| ----------- | ------------------------------------------------- |
+| 200         | Exito                                             |
+| 400         | Solicitud Incorrecta - Entrada invalida           |
+| 401         | No Autorizado - Autenticacion faltante o invalida |
+| 403         | Prohibido - Permisos insuficientes                |
+| 404         | No Encontrado - El squad no existe                |
+| 500         | Error Interno del Servidor                        |
 
 ### Formato de Respuesta de Error
 
@@ -546,11 +541,11 @@ curl -X POST https://api.synkra.ai/api/squads/validate \
 
 ## Limites de Tasa
 
-| Plan | Solicitudes/min | Solicitudes/dia |
-|------|-----------------|-----------------|
-| Gratis | 60 | 1,000 |
-| Pro | 300 | 10,000 |
-| Enterprise | Ilimitado | Ilimitado |
+| Plan       | Solicitudes/min | Solicitudes/dia |
+| ---------- | --------------- | --------------- |
+| Gratis     | 60              | 1,000           |
+| Pro        | 300             | 10,000          |
+| Enterprise | Ilimitado       | Ilimitado       |
 
 Headers de limite de tasa:
 
@@ -663,11 +658,11 @@ Importa esta coleccion en Postman o Insomnia:
             "url": {
               "raw": "{{baseUrl}}/api/squads?page=1&limit=20",
               "query": [
-                {"key": "page", "value": "1"},
-                {"key": "limit", "value": "20"},
-                {"key": "tags", "value": "devops", "disabled": true},
-                {"key": "search", "value": "", "disabled": true},
-                {"key": "official", "value": "true", "disabled": true}
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "tags", "value": "devops", "disabled": true },
+                { "key": "search", "value": "", "disabled": true },
+                { "key": "official", "value": "true", "disabled": true }
               ]
             }
           }
@@ -751,7 +746,7 @@ Guarda el JSON anterior como `synkra-squads-api.postman_collection.json` e impor
 
 - [Guia de Desarrollo de Squads](../guides/squads-guide.md)
 - [Contribuir Squads](../guides/contributing-squads.md)
-- [Agente @squad-creator](../../.aios-core/development/agents/squad-creator.md)
+- [Agente @squad-creator](../../../.aios-core/development/agents/squad-creator.md)
 
 ---
 

@@ -6,11 +6,14 @@
 
 # Motor de Plantillas v2.0
 
+> 🌐 [EN](../../guides/template-engine-v2.md) | [PT](../../pt/guides/template-engine-v2.md) | **ES**
+
+---
+
 > Motor de generación de documentos y sustitución de variables para Synkra AIOS.
 
 **Versión:** 2.0
 **Última Actualización:** 2025-12-05
-**Story:** [3.12 - Documentation Sprint 3](../stories/v2.1/sprint-3/story-3.12-documentation-sprint-3.md)
 
 ---
 
@@ -20,13 +23,13 @@ El Motor de Plantillas proporciona una forma consistente de generar documentos (
 
 ### Características Principales
 
-| Característica | Sintaxis | Descripción |
-|----------------|----------|-------------|
-| Variables | `{{VAR_NAME}}` | Sustitución simple de variables |
-| Condicionales | `{{#IF_CONDITION}}...{{/IF_CONDITION}}` | Bloques condicionales |
-| Bucles | `{{#EACH_ITEMS}}...{{/EACH_ITEMS}}` | Iterar sobre arrays |
-| Rutas Anidadas | `{{user.name}}` | Acceder a propiedades de objetos anidados |
-| Escape | `\{{literal}}` | Prevenir el procesamiento de plantilla |
+| Característica | Sintaxis                                | Descripción                               |
+| -------------- | --------------------------------------- | ----------------------------------------- |
+| Variables      | `{{VAR_NAME}}`                          | Sustitución simple de variables           |
+| Condicionales  | `{{#IF_CONDITION}}...{{/IF_CONDITION}}` | Bloques condicionales                     |
+| Bucles         | `{{#EACH_ITEMS}}...{{/EACH_ITEMS}}`     | Iterar sobre arrays                       |
+| Rutas Anidadas | `{{user.name}}`                         | Acceder a propiedades de objetos anidados |
+| Escape         | `\{{literal}}`                          | Prevenir el procesamiento de plantilla    |
 
 ---
 
@@ -53,7 +56,7 @@ const variables = {
   TITLE: 'My Document',
   AUTHOR: 'Dex (@dev)',
   DATE: '2025-12-05',
-  SUMMARY: 'This is a generated document.'
+  SUMMARY: 'This is a generated document.',
 };
 
 const output = engine.process(template, variables);
@@ -69,6 +72,7 @@ Created by: Dex (@dev)
 Date: 2025-12-05
 
 ## Summary
+
 This is a generated document.
 ```
 
@@ -90,6 +94,7 @@ const engine = new TemplateEngine();
 Procesa una cadena de plantilla con las variables proporcionadas.
 
 **Parámetros:**
+
 - `template` (string) - Cadena de plantilla con marcadores de posición
 - `variables` (Object) - Pares clave-valor para sustitución
 
@@ -105,16 +110,17 @@ const result = engine.process('Hello, {{NAME}}!', { NAME: 'World' });
 Carga un archivo de plantilla y lo procesa.
 
 **Parámetros:**
+
 - `templatePath` (string) - Ruta al archivo de plantilla
 - `variables` (Object) - Variables a sustituir
 
 **Retorna:** `Promise<string>` - Plantilla procesada
 
 ```javascript
-const result = await engine.loadAndProcess(
-  '.aios-core/product/templates/story-tmpl.md',
-  { STORY_ID: '3.12', TITLE: 'Documentation' }
-);
+const result = await engine.loadAndProcess('.aios-core/product/templates/story-tmpl.md', {
+  STORY_ID: '3.12',
+  TITLE: 'Documentation',
+});
 ```
 
 #### `validateTemplate(template, requiredVars)`
@@ -122,6 +128,7 @@ const result = await engine.loadAndProcess(
 Valida que una plantilla tenga todos los marcadores de posición requeridos.
 
 **Parámetros:**
+
 - `template` (string) - Plantilla a validar
 - `requiredVars` (string[]) - Lista de nombres de variables requeridas
 
@@ -139,6 +146,7 @@ if (!validation.valid) {
 Extrae todas las variables usadas en una plantilla.
 
 **Parámetros:**
+
 - `template` (string) - Plantilla a analizar
 
 **Retorna:** `Object` - `{ simple: string[], conditionals: string[], loops: string[] }`
@@ -155,6 +163,7 @@ console.log('Loop variables:', vars.loops);
 Escapa caracteres especiales en la entrada del usuario para prevenir inyección.
 
 **Parámetros:**
+
 - `input` (string) - Entrada del usuario a escapar
 
 **Retorna:** `string` - Entrada escapada
@@ -192,9 +201,9 @@ const variables = {
     name: 'AIOS',
     owner: {
       name: 'Pedro',
-      email: 'pedro@example.com'
-    }
-  }
+      email: 'pedro@example.com',
+    },
+  },
 };
 ```
 
@@ -204,6 +213,7 @@ Incluye contenido solo si una variable es verdadera (truthy):
 
 ```markdown
 {{#IF_HAS_DEPENDENCIES}}
+
 ## Dependencies
 
 This project depends on:
@@ -214,7 +224,7 @@ This project depends on:
 ```javascript
 const variables = {
   HAS_DEPENDENCIES: true,
-  DEPENDENCIES: '- react\n- typescript'
+  DEPENDENCIES: '- react\n- typescript',
 };
 ```
 
@@ -226,8 +236,9 @@ Iterar sobre arrays:
 ## Tasks
 
 {{#EACH_TASKS}}
+
 - [ ] {{ITEM.title}} ({{ITEM.priority}})
-{{/EACH_TASKS}}
+      {{/EACH_TASKS}}
 ```
 
 ```javascript
@@ -235,12 +246,13 @@ const variables = {
   TASKS: [
     { title: 'Write docs', priority: 'HIGH' },
     { title: 'Add tests', priority: 'MEDIUM' },
-    { title: 'Review code', priority: 'LOW' }
-  ]
+    { title: 'Review code', priority: 'LOW' },
+  ],
 };
 ```
 
 **Variables de Contexto de Bucle:**
+
 - `{{ITEM}}` - Elemento actual
 - `{{INDEX}}` - Índice actual (basado en 0)
 - `{{FIRST}}` - Booleano, verdadero si es el primer elemento
@@ -262,19 +274,20 @@ Salida: `To use variables, write {{VARIABLE_NAME}}.`
 
 ### Plantillas de Documentos
 
-| Plantilla | Ubicación | Propósito |
-|-----------|-----------|-----------|
-| **PRD** | `templates/prd-tmpl.md` | Documento de Requisitos de Producto |
-| **ADR** | `templates/adr-tmpl.md` | Registro de Decisión de Arquitectura |
-| **PMDR** | `templates/pmdr-tmpl.md` | Registro de Decisión de Mapeo de Procesos |
-| **DBDR** | `templates/dbdr-tmpl.md` | Registro de Diseño de Base de Datos |
-| **Story** | `templates/story-tmpl.yaml` | Historia de Usuario |
-| **Epic** | `templates/epic-tmpl.md` | Definición de Épica |
-| **Task** | `templates/task-tmpl.md` | Definición de Tarea |
+| Plantilla | Ubicación                   | Propósito                                 |
+| --------- | --------------------------- | ----------------------------------------- |
+| **PRD**   | `templates/prd-tmpl.md`     | Documento de Requisitos de Producto       |
+| **ADR**   | `templates/adr-tmpl.md`     | Registro de Decisión de Arquitectura      |
+| **PMDR**  | `templates/pmdr-tmpl.md`    | Registro de Decisión de Mapeo de Procesos |
+| **DBDR**  | `templates/dbdr-tmpl.md`    | Registro de Diseño de Base de Datos       |
+| **Story** | `templates/story-tmpl.yaml` | Historia de Usuario                       |
+| **Epic**  | `templates/epic-tmpl.md`    | Definición de Épica                       |
+| **Task**  | `templates/task-tmpl.md`    | Definición de Tarea                       |
 
 ### Ubicación de Plantillas
 
 Todas las plantillas están almacenadas en:
+
 ```
 .aios-core/product/templates/
 ```
@@ -297,16 +310,19 @@ Todas las plantillas están almacenadas en:
 {{DESCRIPTION}}
 
 {{#IF_HAS_PROPS}}
+
 ## Properties
 
 | Name | Type | Default | Description |
-|------|------|---------|-------------|
+| ---- | ---- | ------- | ----------- |
+
 {{#EACH_PROPS}}
 | {{ITEM.name}} | {{ITEM.type}} | {{ITEM.default}} | {{ITEM.description}} |
 {{/EACH_PROPS}}
 {{/IF_HAS_PROPS}}
 
 {{#IF_HAS_EXAMPLES}}
+
 ## Examples
 
 {{EXAMPLES}}
@@ -320,7 +336,7 @@ Crear un archivo de esquema (opcional pero recomendado):
 ```yaml
 # my-template.schema.yaml
 name: component-template
-version: "1.0"
+version: '1.0'
 description: Template for component documentation
 
 variables:
@@ -367,9 +383,9 @@ const output = engine.process(template, {
   HAS_PROPS: true,
   PROPS: [
     { name: 'variant', type: 'string', default: 'primary', description: 'Button style' },
-    { name: 'size', type: 'string', default: 'medium', description: 'Button size' }
+    { name: 'size', type: 'string', default: 'medium', description: 'Button size' },
   ],
-  HAS_EXAMPLES: false
+  HAS_EXAMPLES: false,
 });
 ```
 
@@ -381,11 +397,13 @@ const output = engine.process(template, {
 
 ```markdown
 <!-- Bueno -->
+
 {{STORY_TITLE}}
 {{ACCEPTANCE_CRITERIA}}
 {{AUTHOR_NAME}}
 
 <!-- Malo -->
+
 {{T}}
 {{AC}}
 {{N}}
@@ -397,7 +415,7 @@ const output = engine.process(template, {
 const variables = {
   TITLE: title || 'Untitled',
   DATE: date || new Date().toISOString().split('T')[0],
-  VERSION: version || '1.0'
+  VERSION: version || '1.0',
 };
 ```
 
@@ -423,6 +441,7 @@ const output = engine.process(template, { USER_CONTENT: safeInput });
 
 ```markdown
 {{#IF_HAS_NOTES}}
+
 ## Notes
 
 {{NOTES}}
@@ -435,12 +454,12 @@ const output = engine.process(template, { USER_CONTENT: safeInput });
 
 ### Problemas Comunes
 
-| Problema | Solución |
-|----------|----------|
-| Variable no reemplazada | Verificar que la ortografía coincida exactamente (sensible a mayúsculas) |
-| Bucle produce salida vacía | Asegurar que la variable sea un array, no undefined |
-| Condicional siempre falso | Verificar que la variable sea verdadera (no cadena vacía/0/null) |
-| Inyección de plantilla | Usar `escapeInput()` para valores proporcionados por el usuario |
+| Problema                   | Solución                                                                 |
+| -------------------------- | ------------------------------------------------------------------------ |
+| Variable no reemplazada    | Verificar que la ortografía coincida exactamente (sensible a mayúsculas) |
+| Bucle produce salida vacía | Asegurar que la variable sea un array, no undefined                      |
+| Condicional siempre falso  | Verificar que la variable sea verdadera (no cadena vacía/0/null)         |
+| Inyección de plantilla     | Usar `escapeInput()` para valores proporcionados por el usuario          |
 
 ### Modo de Depuración
 
@@ -459,8 +478,7 @@ console.log('Validation result:', validation);
 ## Documentación Relacionada
 
 - [Guía de Quality Gates](./quality-gates.md)
-- [Story 3.6: Template Engine Core](../stories/v2.1/sprint-3/story-3.6-template-engine-core.md)
 
 ---
 
-*Synkra AIOS Motor de Plantillas v2.0*
+_Synkra AIOS Motor de Plantillas v2.0_

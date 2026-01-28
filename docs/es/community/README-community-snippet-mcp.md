@@ -12,29 +12,29 @@ Para discusiones, preguntas e interaccion con la comunidad, visita nuestro hub c
 
 **[Discusiones de la Comunidad AIOS](https://github.com/SynkraAI/aios-core/discussions)**
 
-| Necesidad | Donde Ir |
-|-----------|----------|
-| **Preguntas sobre MCP?** | Usa la [categoria "Ecosistema MCP"](https://github.com/SynkraAI/aios-core/discussions/categories/mcp-ecosystem) |
-| **Ideas de funcionalidades?** | Inicia una [Discusion en "Ideas"](https://github.com/SynkraAI/aios-core/discussions/categories/ideas) |
-| **Encontraste un bug?** | [Abre un issue](https://github.com/SynkraAI/mcp-ecosystem/issues/new/choose) en **este repositorio** |
-| **Necesitas ayuda?** | Pregunta en ["Preguntas y Respuestas"](https://github.com/SynkraAI/aios-core/discussions/categories/q-a) |
-| **Construiste algo genial?** | Comparte en ["Mostrar y Contar"](https://github.com/SynkraAI/aios-core/discussions/categories/show-and-tell) |
+| Necesidad                     | Donde Ir                                                                                                        |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Preguntas sobre MCP?**      | Usa la [categoria "Ecosistema MCP"](https://github.com/SynkraAI/aios-core/discussions/categories/mcp-ecosystem) |
+| **Ideas de funcionalidades?** | Inicia una [Discusion en "Ideas"](https://github.com/SynkraAI/aios-core/discussions/categories/ideas)           |
+| **Encontraste un bug?**       | [Abre un issue](https://github.com/SynkraAI/mcp-ecosystem/issues/new/choose) en **este repositorio**            |
+| **Necesitas ayuda?**          | Pregunta en ["Preguntas y Respuestas"](https://github.com/SynkraAI/aios-core/discussions/categories/q-a)        |
+| **Construiste algo genial?**  | Comparte en ["Mostrar y Contar"](https://github.com/SynkraAI/aios-core/discussions/categories/show-and-tell)    |
 
 ### Que Hay en Este Repositorio?
 
-| Componente | Descripcion |
-|------------|-------------|
-| **Docker MCP Toolkit** | Servidores MCP preconfigurados ejecutandose en contenedores Docker |
-| **Presets MCP** | Configuraciones curadas para diferentes flujos de trabajo (dev, investigacion, etc.) |
-| **Configs de IDE** | Configuraciones de integracion para VS Code, Cursor, Claude Code |
-| **Servicio Gateway** | Gateway HTTP/SSE para conexiones MCP confiables |
+| Componente             | Descripcion                                                                          |
+| ---------------------- | ------------------------------------------------------------------------------------ |
+| **Docker MCP Toolkit** | Servidores MCP preconfigurados ejecutandose en contenedores Docker                   |
+| **Presets MCP**        | Configuraciones curadas para diferentes flujos de trabajo (dev, investigacion, etc.) |
+| **Configs de IDE**     | Configuraciones de integracion para VS Code, Cursor, Claude Code                     |
+| **Servicio Gateway**   | Gateway HTTP/SSE para conexiones MCP confiables                                      |
 
 ### Enlaces Rapidos
 
-- [Configuracion de Docker MCP Toolkit](docs/docker-mcp-setup.md)
-- [Presets Disponibles](presets/)
-- [Guia de Integracion con IDE](docs/ide-integration.md)
-- [Guia de Solucion de Problemas](docs/troubleshooting.md)
+- [Configuración de Docker MCP Toolkit](../../docker-mcp-setup.md)
+- [Presets Disponibles](../../../presets/)
+- [Guía de Integración con IDE](../../ide-integration.md)
+- [Guia de Solucion de Problemas](../../troubleshooting.md)
 
 ### Proponer un Nuevo Servidor MCP
 

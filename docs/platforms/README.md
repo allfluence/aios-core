@@ -57,15 +57,15 @@ flowchart TD
 
 | Priority | Platform | Guide | Description |
 |:--------:|----------|-------|-------------|
-| ⭐⭐⭐ | **Claude Code** | [EN](en/claude-code.md) \| [PT-BR](pt-BR/claude-code.md) | Anthropic's official CLI - **Recommended** |
-| ⭐⭐⭐ | **Cursor** | [EN](en/cursor.md) \| [PT-BR](pt-BR/cursor.md) | AI-first code editor with Composer |
-| ⭐⭐ | **Windsurf** | [EN](en/windsurf.md) \| [PT-BR](pt-BR/windsurf.md) | AI-powered IDE with Cascade flow |
-| ⭐⭐ | **Cline** | [EN](en/cline.md) \| [PT-BR](pt-BR/cline.md) | VS Code AI coding assistant |
-| ⭐ | **GitHub Copilot** | [EN](en/github-copilot.md) \| [PT-BR](pt-BR/github-copilot.md) | GitHub's AI pair programmer |
-| ⭐⭐ | **AntiGravity** | [EN](en/antigravity.md) \| [PT-BR](pt-BR/antigravity.md) | Google's agentic development platform |
-| ⭐ | **Roo Code** | [EN](en/roo-code.md) \| [PT-BR](pt-BR/roo-code.md) | Mode-based VS Code extension |
-| ⭐ | **Gemini CLI** | [EN](en/gemini-cli.md) \| [PT-BR](pt-BR/gemini-cli.md) | Google AI CLI assistant |
-| ⭐ | **Trae** | [EN](en/trae.md) \| [PT-BR](pt-BR/trae.md) | Modern AI code editor |
+| ⭐⭐⭐ | **Claude Code** | [EN](./claude-code.md) \| [PT](../pt/platforms/claude-code.md) | Anthropic's official CLI - **Recommended** |
+| ⭐⭐⭐ | **Cursor** | [EN](./cursor.md) \| [PT](../pt/platforms/cursor.md) | AI-first code editor with Composer |
+| ⭐⭐ | **Windsurf** | [EN](./windsurf.md) \| [PT](../pt/platforms/windsurf.md) | AI-powered IDE with Cascade flow |
+| ⭐⭐ | **Cline** | [EN](./cline.md) \| [PT](../pt/platforms/cline.md) | VS Code AI coding assistant |
+| ⭐ | **GitHub Copilot** | [EN](./github-copilot.md) \| [PT](../pt/platforms/github-copilot.md) | GitHub's AI pair programmer |
+| ⭐⭐ | **AntiGravity** | [EN](./antigravity.md) \| [PT](../pt/platforms/antigravity.md) | Google's agentic development platform |
+| ⭐ | **Roo Code** | [EN](./roo-code.md) \| [PT](../pt/platforms/roo-code.md) | Mode-based VS Code extension |
+| ⭐ | **Gemini CLI** | [EN](./gemini-cli.md) \| [PT](../pt/platforms/gemini-cli.md) | Google AI CLI assistant |
+| ⭐ | **Trae** | [EN](./trae.md) \| [PT](../pt/platforms/trae.md) | Modern AI code editor |
 
 ### Technical Specifications
 
@@ -323,15 +323,15 @@ flowchart TD
 
 | Prioridade | Plataforma | Guia | Descrição |
 |:----------:|------------|------|-----------|
-| ⭐⭐⭐ | **Claude Code** | [EN](en/claude-code.md) \| [PT-BR](pt-BR/claude-code.md) | CLI oficial da Anthropic - **Recomendado** |
-| ⭐⭐⭐ | **Cursor** | [EN](en/cursor.md) \| [PT-BR](pt-BR/cursor.md) | Editor de código AI-first com Composer |
-| ⭐⭐ | **Windsurf** | [EN](en/windsurf.md) \| [PT-BR](pt-BR/windsurf.md) | IDE com IA e Cascade flow |
-| ⭐⭐ | **Cline** | [EN](en/cline.md) \| [PT-BR](pt-BR/cline.md) | Assistente de código IA para VS Code |
-| ⭐ | **GitHub Copilot** | [EN](en/github-copilot.md) \| [PT-BR](pt-BR/github-copilot.md) | Programador par IA do GitHub |
-| ⭐⭐ | **AntiGravity** | [EN](en/antigravity.md) \| [PT-BR](pt-BR/antigravity.md) | Plataforma de desenvolvimento agêntico do Google |
-| ⭐ | **Roo Code** | [EN](en/roo-code.md) \| [PT-BR](pt-BR/roo-code.md) | Extensão VS Code baseada em modos |
-| ⭐ | **Gemini CLI** | [EN](en/gemini-cli.md) \| [PT-BR](pt-BR/gemini-cli.md) | Assistente CLI do Google AI |
-| ⭐ | **Trae** | [EN](en/trae.md) \| [PT-BR](pt-BR/trae.md) | Editor de código IA moderno |
+| ⭐⭐⭐ | **Claude Code** | [EN](./claude-code.md) \| [PT](../pt/platforms/claude-code.md) | CLI oficial da Anthropic - **Recomendado** |
+| ⭐⭐⭐ | **Cursor** | [EN](./cursor.md) \| [PT](../pt/platforms/cursor.md) | Editor de código AI-first com Composer |
+| ⭐⭐ | **Windsurf** | [EN](./windsurf.md) \| [PT](../pt/platforms/windsurf.md) | IDE com IA e Cascade flow |
+| ⭐⭐ | **Cline** | [EN](./cline.md) \| [PT](../pt/platforms/cline.md) | Assistente de código IA para VS Code |
+| ⭐ | **GitHub Copilot** | [EN](./github-copilot.md) \| [PT](../pt/platforms/github-copilot.md) | Programador par IA do GitHub |
+| ⭐⭐ | **AntiGravity** | [EN](./antigravity.md) \| [PT](../pt/platforms/antigravity.md) | Plataforma de desenvolvimento agêntico do Google |
+| ⭐ | **Roo Code** | [EN](./roo-code.md) \| [PT](../pt/platforms/roo-code.md) | Extensão VS Code baseada em modos |
+| ⭐ | **Gemini CLI** | [EN](./gemini-cli.md) \| [PT](../pt/platforms/gemini-cli.md) | Assistente CLI do Google AI |
+| ⭐ | **Trae** | [EN](./trae.md) \| [PT](../pt/platforms/trae.md) | Editor de código IA moderno |
 
 ### Arquitetura de Integração
 

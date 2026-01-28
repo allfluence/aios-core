@@ -6,61 +6,57 @@
 
 ## 🌐 Select Language / Selecione o Idioma / Seleccione el Idioma
 
-| Language | Status | Link |
-|----------|--------|------|
-| **English** | ✅ Complete | [📖 English Documentation](./en/getting-started.md) |
-| **Português (Brasil)** | ✅ Complete | [📖 Documentação em Português](./pt-BR/getting-started.md) |
-| **Español** | ✅ Complete | [📖 Documentación en Español](./es/getting-started.md) |
+| Language      | Status      | Link                                                    |
+| ------------- | ----------- | ------------------------------------------------------- |
+| **English**   | ✅ Complete | [📖 English Documentation](./getting-started.md)        |
+| **Português** | ✅ Complete | [📖 Documentação em Português](./pt/getting-started.md) |
+| **Español**   | ✅ Complete | [📖 Documentación en Español](./es/getting-started.md)  |
 
 ---
 
-## 📚 Documentation Structure / Estrutura da Documentação / Estructura de la Documentación
+## 📚 Documentation Structure
 
 ```
 docs/
-├── en/                    # English (primary)
+├── getting-started.md         # English (root)
+├── guides/                    # English
+├── installation/              # English
+├── architecture/              # English
+├── framework/                 # English
+├── platforms/                 # English
+│
+├── pt/                        # Português (translations)
 │   ├── getting-started.md
 │   ├── guides/
-│   ├── installation/
-│   ├── architecture/
-│   └── framework/
-├── pt-BR/                 # Português (Brasil)
-│   ├── getting-started.md
-│   ├── guides/
-│   ├── installation/
-│   ├── architecture/
-│   └── framework/
-├── es/                    # Español
-│   ├── getting-started.md
-│   ├── guides/
-│   ├── installation/
-│   ├── architecture/
-│   └── framework/
-└── platforms/             # Platform-specific guides (trilingual)
-    ├── en/
-    ├── pt-BR/
-    └── es/
+│   ├── platforms/
+│   └── ...
+│
+└── es/                        # Español (translations)
+    ├── getting-started.md
+    ├── guides/
+    ├── platforms/
+    └── ...
 ```
 
 ---
 
-## 🚀 Quick Links / Links Rápidos / Enlaces Rápidos
+## 🚀 Quick Links
 
 ### English
 
-- [Getting Started](./en/getting-started.md)
-- [Installation Guide](./en/installation/README.md)
-- [Architecture Overview](./en/architecture/ARCHITECTURE-INDEX.md)
-- [Agent Reference](./en/agent-reference-guide.md)
-- [Troubleshooting](./en/troubleshooting.md)
+- [Getting Started](./getting-started.md)
+- [Installation Guide](./installation/README.md)
+- [Architecture Overview](./architecture/ARCHITECTURE-INDEX.md)
+- [Agent Reference](./agent-reference-guide.md)
+- [Troubleshooting](./troubleshooting.md)
 
-### Português (Brasil)
+### Português
 
-- [Começando](./pt-BR/getting-started.md)
-- [Guia de Instalação](./pt-BR/installation/README.md)
-- [Visão Geral da Arquitetura](./pt-BR/architecture/ARCHITECTURE-INDEX.md)
-- [Referência de Agentes](./pt-BR/agent-reference-guide.md)
-- [Solução de Problemas](./pt-BR/troubleshooting.md)
+- [Começando](./pt/getting-started.md)
+- [Guia de Instalação](./pt/installation/README.md)
+- [Visão Geral da Arquitetura](./pt/architecture/ARCHITECTURE-INDEX.md)
+- [Referência de Agentes](./pt/agent-reference-guide.md)
+- [Solução de Problemas](./pt/troubleshooting.md)
 
 ### Español
 
@@ -72,33 +68,34 @@ docs/
 
 ---
 
-## 🤝 Contributing to Documentation / Contribuindo com a Documentação / Contribuyendo a la Documentación
+## 🤝 Contributing to Documentation
 
-### For Translators / Para Tradutores / Para Traductores
+### For Translators
 
-We follow the [Kubernetes localization standards](https://kubernetes.io/docs/contribute/localization/):
+We follow industry-standard i18n practices:
 
-1. Each language has its own directory (`en/`, `pt-BR/`, `es/`)
-2. File structure mirrors the English version
-3. Add translation header to each file:
+1. English content lives in the root (`docs/`)
+2. Translations go in language folders (`docs/pt/`, `docs/es/`)
+3. File structure mirrors the English version
+4. Add translation header to each file:
    ```markdown
    <!--
-     Translation: PT-BR | ES
-     Original: /docs/en/[filename].md
+     Translation: PT | ES
+     Original: /docs/[filename].md
      Last sync: YYYY-MM-DD
    -->
    ```
 
-### Translation Status / Status da Tradução / Estado de la Traducción
+### Translation Status
 
-| Section | EN | PT-BR | ES |
-|---------|-----|-------|-----|
-| Getting Started | ✅ | ✅ | ✅ |
-| Guides | ✅ | ✅ | ✅ |
-| Installation | ✅ | ✅ | ✅ |
-| Architecture | ✅ | ✅ | ✅ |
-| Framework | ✅ | ✅ | ✅ |
-| Platforms | ✅ | ✅ | ✅ |
+| Section         | EN  | PT  | ES  |
+| --------------- | --- | --- | --- |
+| Getting Started | ✅  | ✅  | ✅  |
+| Guides          | ✅  | ✅  | ✅  |
+| Installation    | ✅  | ✅  | ✅  |
+| Architecture    | ✅  | ✅  | ✅  |
+| Framework       | ✅  | ✅  | ✅  |
+| Platforms       | ✅  | ✅  | ✅  |
 
 ---
 
@@ -108,4 +105,4 @@ This documentation is part of Synkra AIOS, licensed under [MIT License](../LICEN
 
 ---
 
-*Synkra AIOS - Orchestrating AI for Better Software Development*
+_Synkra AIOS - Orchestrating AI for Better Software Development_

@@ -5,7 +5,12 @@
 -->
 
 # Guía de Flujo de Trabajo Git de AIOS
-*Story: 2.2-git-workflow-implementation.yaml*
+
+> 🌐 [EN](../git-workflow-guide.md) | [PT](../pt/git-workflow-guide.md) | **ES**
+
+---
+
+_Story: 2.2-git-workflow-implementation.yaml_
 
 ## Tabla de Contenidos
 
@@ -78,12 +83,14 @@ Synkra AIOS implementa una estrategia de validación de **Defensa en Profundidad
 **Ubicación:** `.husky/pre-commit`
 
 **Qué valida:**
+
 - Calidad de código ESLint
 - Verificación de tipos TypeScript
 - Errores de sintaxis
 - Problemas de importación
 
 **Cómo funciona:**
+
 ```bash
 # Se dispara automáticamente al hacer commit
 git add .
@@ -95,6 +102,7 @@ git commit -m "feat: add feature"
 ```
 
 **Beneficios:**
+
 - ⚡ Retroalimentación rápida (<5s)
 - 💾 Con caché para velocidad
 - 🔒 Previene commits de código roto
@@ -107,12 +115,14 @@ git commit -m "feat: add feature"
 **Ubicación:** `.husky/pre-push`
 
 **Qué valida:**
+
 - Completitud de checkboxes de story vs estado
 - Secciones requeridas de story presentes
 - Consistencia de estado
 - Registros del agente Dev
 
 **Cómo funciona:**
+
 ```bash
 # Se dispara automáticamente al hacer push
 git push origin feature/my-feature
@@ -123,6 +133,7 @@ git push origin feature/my-feature
 **Reglas de Validación:**
 
 1. **Consistencia de Estado:**
+
 ```yaml
 # ❌ Inválido: completado pero tareas incompletas
 status: "completed"
@@ -138,6 +149,7 @@ tasks:
 ```
 
 2. **Secciones Requeridas:**
+
 - `id`
 - `title`
 - `description`
@@ -145,6 +157,7 @@ tasks:
 - `status`
 
 3. **Flujo de Estados:**
+
 ```
 ready → in progress → Ready for Review → completed
 ```
@@ -180,6 +193,7 @@ ready → in progress → Ready for Review → completed
    - Bloquea el merge si alguno falla
 
 **Monitoreo de Rendimiento:**
+
 - Job de rendimiento opcional
 - Mide tiempos de validación
 - Solo informativo
@@ -206,10 +220,7 @@ git commit --no-verify
 
 ```json
 {
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "cache": true,
@@ -218,6 +229,7 @@ git commit --no-verify
 ```
 
 **Características clave:**
+
 - Soporte para TypeScript
 - Caché habilitado
 - Advierte sobre console.log
@@ -239,6 +251,7 @@ git commit --no-verify
 ```
 
 **Características clave:**
+
 - Target ES2022
 - Modo estricto
 - Compilación incremental
@@ -247,6 +260,7 @@ git commit --no-verify
 ### Optimización de Rendimiento
 
 **Archivos de Caché:**
+
 - `.eslintcache` - Resultados de ESLint
 - `.tsbuildinfo` - Datos incrementales de TypeScript
 
@@ -254,6 +268,7 @@ git commit --no-verify
 **Ejecuciones subsiguientes:** <5s (con caché)
 
 **Invalidación de caché:**
+
 - Cambios de configuración
 - Actualizaciones de dependencias
 - Eliminación de archivos
@@ -279,6 +294,7 @@ git push --no-verify
 **Ubicación:** `.aios-core/utils/aios-validator.js`
 
 **Características:**
+
 - Salida de terminal coloreada
 - Indicadores de progreso
 - Mensajes de error claros
@@ -307,25 +323,28 @@ Warning:
 #### 1. Formato de Checkbox
 
 Formatos soportados:
+
 - `[x]` - Completado (minúscula)
 - `[X]` - Completado (mayúscula)
 - `[ ]` - Incompleto
 
 No reconocidos:
+
 - `[o]`, `[*]`, `[-]` - No cuentan como completos
 
 #### 2. Consistencia de Estado
 
-| Estado | Regla |
-|--------|-------|
-| `ready` | Ninguna tarea debería estar marcada |
-| `in progress` | Algunas tareas marcadas |
-| `Ready for Review` | Todas las tareas marcadas |
-| `completed` | Todas las tareas marcadas |
+| Estado             | Regla                               |
+| ------------------ | ----------------------------------- |
+| `ready`            | Ninguna tarea debería estar marcada |
+| `in progress`      | Algunas tareas marcadas             |
+| `Ready for Review` | Todas las tareas marcadas           |
+| `completed`        | Todas las tareas marcadas           |
 
 #### 3. Secciones Requeridas
 
 Todas las stories deben tener:
+
 ```yaml
 id: "X.X"
 title: "Story Title"
@@ -340,10 +359,11 @@ acceptance_criteria:
 #### 4. Registro del Agente Dev
 
 Recomendado pero no requerido:
+
 ```yaml
 dev_agent_record:
-  agent_model: "claude-sonnet-4-5"
-  implementation_date: "2025-01-23"
+  agent_model: 'claude-sonnet-4-5'
+  implementation_date: '2025-01-23'
 ```
 
 Advertencia si falta.
@@ -351,16 +371,19 @@ Advertencia si falta.
 ### Mensajes de Error
 
 **Secciones Requeridas Faltantes:**
+
 ```
 ✗ Missing required sections: description, acceptance_criteria
 ```
 
 **Inconsistencia de Estado:**
+
 ```
 ✗ Story marked as completed but only 12/15 tasks are checked
 ```
 
 **Archivo No Existente:**
+
 ```
 ✗ Story file not found: docs/stories/missing.yaml
 ```
@@ -443,12 +466,14 @@ if: always()
 ### Disparadores de CI
 
 **Eventos de Push:**
+
 - Rama `master`
 - Rama `develop`
 - Ramas `feature/**`
 - Ramas `bugfix/**`
 
 **Eventos de Pull Request:**
+
 - Contra `master`
 - Contra `develop`
 
@@ -672,17 +697,20 @@ git pull origin master
 **Soluciones:**
 
 1. Verificar instalación de Husky:
+
 ```bash
 npm run prepare
 ```
 
 2. Verificar que existen archivos de hook:
+
 ```bash
 ls -la .husky/pre-commit
 ls -la .husky/pre-push
 ```
 
 3. Verificar permisos de archivos (Unix):
+
 ```bash
 chmod +x .husky/pre-commit
 chmod +x .husky/pre-push
@@ -695,18 +723,21 @@ chmod +x .husky/pre-push
 **Soluciones:**
 
 1. Limpiar cachés:
+
 ```bash
 rm .eslintcache .tsbuildinfo
 git commit  # Reconstruye caché
 ```
 
 2. Verificar cambios de archivos:
+
 ```bash
 git status
 # Commit de menos archivos a la vez
 ```
 
 3. Actualizar dependencias:
+
 ```bash
 npm update
 ```
@@ -718,27 +749,31 @@ npm update
 **Problemas Comunes:**
 
 1. **Desajuste de checkbox:**
+
 ```yaml
 # Error: Estado completado pero tareas incompletas
-status: "completed"
+status: 'completed'
 tasks:
-  - "[x] Task 1"
-  - "[ ] Task 2"  # ← Corregir esto
+  - '[x] Task 1'
+  - '[ ] Task 2' # ← Corregir esto
+
 
 # Solución: Completar todas las tareas o cambiar estado
 ```
 
 2. **Secciones faltantes:**
+
 ```yaml
 # Error: Secciones requeridas faltantes
-id: "1.1"
-title: "Story"
+id: '1.1'
+title: 'Story'
 # Faltan: description, acceptance_criteria, status
 
 # Solución: Agregar secciones faltantes
 ```
 
 3. **YAML inválido:**
+
 ```yaml
 # Error: Sintaxis YAML inválida
 tasks:
@@ -755,6 +790,7 @@ tasks:
 **Causas Comunes:**
 
 1. **Diferencias de caché:**
+
 ```bash
 # Limpiar cachés locales
 rm -rf node_modules .eslintcache .tsbuildinfo coverage/
@@ -763,6 +799,7 @@ npm test
 ```
 
 2. **Diferencias de entorno:**
+
 ```bash
 # Usar misma versión de Node que CI (18)
 nvm use 18
@@ -770,6 +807,7 @@ npm test
 ```
 
 3. **Archivos sin commit:**
+
 ```bash
 # Verificar cambios sin commit
 git status
@@ -785,18 +823,21 @@ git stash
 **Verificar:**
 
 1. **Checks requeridos pasan:**
+
 ```bash
 gh pr checks
 # Todos deben mostrar ✓
 ```
 
 2. **Aprobaciones requeridas:**
+
 ```bash
 gh pr view
 # Verificar sección "Reviewers"
 ```
 
 3. **Rama está actualizada:**
+
 ```bash
 # Actualizar rama
 git checkout feature-branch
@@ -809,11 +850,13 @@ git push --force-with-lease
 ### Gestión de Caché
 
 **Mantener cachés:**
+
 - `.eslintcache` - Resultados de ESLint
 - `.tsbuildinfo` - Info de build de TypeScript
 - `coverage/` - Datos de cobertura de tests
 
 **Agregar a .gitignore:**
+
 ```gitignore
 .eslintcache
 .tsbuildinfo
@@ -829,6 +872,7 @@ coverage/
    - Más fácil de debuggear fallos
 
 2. **Probar durante el desarrollo:**
+
 ```bash
 # Ejecutar validación manualmente antes del commit
 npm run lint
@@ -852,6 +896,7 @@ npm test
 ### Rendimiento de Validación de Stories
 
 **Rendimiento Actual:**
+
 - Una sola story: <100ms
 - Todas las stories: <2s (típico)
 
@@ -866,6 +911,7 @@ npm test
 ### Saltando Validaciones
 
 **Cuándo es apropiado:**
+
 - Hotfixes de emergencia
 - Cambios solo de documentación
 - Cambios de configuración de CI
@@ -891,6 +937,7 @@ git commit -m "docs: update [skip ci]"
 **Agregar validadores personalizados:**
 
 1. **Crear función validadora:**
+
 ```javascript
 // .aios-core/utils/custom-validator.js
 module.exports = async function validateCustom() {
@@ -900,6 +947,7 @@ module.exports = async function validateCustom() {
 ```
 
 2. **Agregar al hook:**
+
 ```bash
 # .husky/pre-commit
 node .aios-core/utils/aios-validator.js pre-commit
@@ -907,6 +955,7 @@ node .aios-core/utils/custom-validator.js
 ```
 
 3. **Agregar a CI:**
+
 ```yaml
 # .github/workflows/ci.yml
 - name: Custom validation
@@ -918,6 +967,7 @@ node .aios-core/utils/custom-validator.js
 **Para monorepos:**
 
 1. **Validaciones con alcance:**
+
 ```javascript
 // Solo validar paquetes cambiados
 const changedFiles = execSync('git diff --name-only HEAD~1').toString();
@@ -925,6 +975,7 @@ const packages = getAffectedPackages(changedFiles);
 ```
 
 2. **Validación paralela de paquetes:**
+
 ```yaml
 strategy:
   matrix:
@@ -933,13 +984,12 @@ strategy:
 
 ## Referencias
 
-- **Story:** [2.2-git-workflow-implementation.yaml](../docs/stories/2.2-git-workflow-implementation.yaml)
-- **AIOS Validator:** [.aios-core/utils/aios-validator.js](../.aios-core/utils/aios-validator.js)
-- **CI Workflow:** [.github/workflows/ci.yml](../.github/workflows/ci.yml)
-- **Branch Protection Script:** [scripts/setup-branch-protection.js](../scripts/setup-branch-protection.js)
+- **AIOS Validator:** [.aios-core/utils/aios-validator.js](../../.aios-core/utils/aios-validator.js)
+- **CI Workflow:** [.github/workflows/ci.yml](../../.github/workflows/ci.yml)
 
 ---
 
 **¿Preguntas? ¿Problemas?**
+
 - [Abrir un Issue](https://github.com/SynkraAI/aios-core/issues)
 - [Unirse a Discord](https://discord.gg/gk8jAdXWmj)
