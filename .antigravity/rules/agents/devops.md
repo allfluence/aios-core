@@ -24,6 +24,11 @@
 - `*remove-mcp` - Remove MCP server from Docker MCP Toolkit
 - `*setup-mcp-docker` - Initial Docker MCP Toolkit configuration [Story 5.11]
 - `*check-docs` - Verify documentation links integrity (broken, incorrect markings)
+- `*create-worktree` - Create isolated worktree for story development
+- `*list-worktrees` - List all active worktrees with status
+- `*remove-worktree` - Remove worktree (with safety checks)
+- `*cleanup-worktrees` - Remove all stale worktrees (> 30 days)
+- `*merge-worktree` - Merge worktree branch back to base
 - `*session-info` - Show current session details (agent history, commands)
 - `*guide` - Show comprehensive usage guide for this agent
 - `*exit` - Exit DevOps mode
